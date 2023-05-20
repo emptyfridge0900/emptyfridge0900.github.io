@@ -1,0 +1,82 @@
+# The site theme to use.
+theme = "DeepThought"
+
+# The URL the site will be built for
+base_url = "https://emptyfridge0900.github.io/"
+
+# Whether to automatically compile all Sass files in the sass directory
+compile_sass = true
+
+
+# Whether to do syntax highlighting
+# Theme can be customised by setting the `highlight_theme` variable to a theme supported by Zola
+highlight_code = false
+
+
+taxonomies = [
+	{ name = "categories", feed = true, paginate_by = 10 },
+	{ name = "tags", fees = true, paginate_by = 10 },
+]
+
+# Whether to build a search index to be used later on by a JavaScript library
+build_search_index = true
+
+# Various slugification strategies, see below for details
+# Defaults to everything being a slug
+[slugify]
+paths = "on"
+taxonomies = "on"
+anchors = "on"
+
+[search]
+# Whether to include the title of the page/section in the index
+include_title = true
+# Whether to include the description of the page/section in the index
+include_description = true
+# Whether to include the path of the page/section in the index
+include_path = true
+# Whether to include the rendered content of the page/section in the index
+include_content = true
+# At which character to truncate the content to. Useful if you have a lot of pages and the index would
+# become too big to load on the site. Defaults to not being set.
+# truncate_content_length = 100
+
+[extra]
+# Put all your custom variables here
+galleria.enabled = true
+navbar_items = [
+	{code = "en",nav_items =[
+	{ url = "$BASE_URL/", name = "Home" },
+	{ url = "$BASE_URL/data_structure", name = "Data Structure" },
+	{ url = "$BASE_URL/leetcode", name = "Leet code" },
+	{ url = "$BASE_URL/rust", name = "Rust" },
+    { url = "$BASE_URL/assignments", name = "Assignments" },
+	{ url = "$BASE_URL/tags", name = "Tags" },
+	{ url = "$BASE_URL/categories", name = "Categories" },
+	]}
+]
+[extra.social]
+email = "emptyfridge0900@gmail.com"
+github = "emptyfridge0900"
+linkedin = "doosan-beak"
+
+[extra.favicon]
+favicon_16x16 = "/icons/favicon-16x16.png"
+favicon_32x32 = "/icons/favicon-32x32.png"
+apple_touch_icon = "/icons/apple-touch-icon.png"
+safari_pinned_tab = "/icons/safari-pinned-tab.svg"
+webmanifest = "/icons/site.webmanifest"
+
+
+
+[extra.author]
+name = "Doosan"
+avatar = "/images/avatar.png"
+
+
+[extra.commenting]
+disqus = "deepthought-theme"
+
+[extra.mapbox]
+enabled = true
+access_token = "pk.eyJ1IjoicmF0YW5zaHJlc2h0aGEiLCJhIjoiY2tla2s2NmM3MDd0ZzJzbXFtc3Y2YmU0NyJ9.0RhUnJPKbxHWw3xGPnnBlA"
