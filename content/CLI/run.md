@@ -13,15 +13,18 @@ docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
 이미지 pull하고, 새 container 만들고, 실행까지 한큐에
 
 자주 사용하는 옵션들
---name
--d detach
--p publish
--v volumn
--e environment variable
--i interactive
--t tty
--it interacive + tty
---link
+
+| Option      |             |
+| :---        |    :----:   |
+| --name     | name         |
+| -d   | detach             |
+| -p | publish              |
+| -v | volumn               |
+| -e | environment variable |
+| -i | interactive          |
+| -t | tty                  |
+| it | interactive + tty    |
+|--link| link to other container |
 
 
 
