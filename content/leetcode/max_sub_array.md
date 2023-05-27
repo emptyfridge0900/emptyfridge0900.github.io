@@ -34,8 +34,8 @@ Given an integer array nums, find the contiguous subarray (containing at least o
 > **Output:** -2147483647
 
 **Constraints:**
-- 1 <= nums.length <= 2 * $10^4$
-- -$10^4$ <= nums[i] <= $10^4$
+- 1 <= nums.length <= 2 * 10<sup>4</sup>
+- -10<sup>4</sup> <= nums[i] <= 10<sup>4</sup>
 
 ## solution
 ```rust
@@ -59,7 +59,7 @@ impl Solution {
     }
 }
 ```
-Time complexity is **O($n^2$)**  
+Time complexity is **O(n<sup>2</sup>)**  
 <br/>
 <br/>
 

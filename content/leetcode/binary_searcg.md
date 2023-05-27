@@ -24,12 +24,12 @@ You must write an algorithm with O(log n) runtime complexity.
 > **Explanation:** 2 does not exist in nums so return -1  
 
 **Constraints:**
-- 1 <= nums.length <= $10^4$  
-- -$10^4$ < nums[i], target < $10^4$  
+- 1 <= nums.length <= 10<sup>4</sup>  
+- -10<sup>4</sup> < nums[i], target < 10<sup>4</sup>  
 - All the integers in nums are unique.  
 - nums is sorted in ascending order.  
 
-
+## Solution
 ```rust
 pub fn search(nums: Vec<i32>,target: i32) -> i32{
     let mut left=0;
