@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title> - Leet code</title>
+    <link href="https://emptyfridge0900.github.io/categories/leet-code/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://emptyfridge0900.github.io/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-05-27T00:00:00+00:00</updated>
+    <id>https://emptyfridge0900.github.io/categories/leet-code/atom.xml</id>
+    <entry xml:lang="en">
+        <title>1539. Kth Missing Positive Number</title>
+        <published>2023-05-27T00:00:00+00:00</published>
+        <updated>2023-05-27T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://emptyfridge0900.github.io/leetcode/1539/" type="text/html"/>
+        <id>https://emptyfridge0900.github.io/leetcode/1539/</id>
+        
+        <content type="html">&lt;h2 id=&quot;problem&quot;&gt;Problem&lt;&#x2F;h2&gt;
+&lt;p&gt;Given an array &lt;em&gt;arr&lt;&#x2F;em&gt; of positive integers sorted in a strictly increasing order, and an integer &lt;em&gt;k&lt;&#x2F;em&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;Return the &lt;em&gt;k&lt;sup&gt;th&lt;sup&gt;&lt;&#x2F;em&gt; positive integer that is missing from this array.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;example-1&quot;&gt;Example 1.&lt;&#x2F;h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; arr = [2,3,4,7,11], k = 5&lt;br &#x2F;&gt;
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; 9&lt;br &#x2F;&gt;
+&lt;strong&gt;Explanation:&lt;&#x2F;strong&gt; The missing positive integers are [1,5,6,8,9,10,12,13,...]. The &lt;em&gt;5&lt;sup&gt;th&lt;sup&#x2F;&gt;&lt;&#x2F;em&gt; missing positive integer is 9. &lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h3 id=&quot;example-2&quot;&gt;Example 2.&lt;&#x2F;h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; arr = [1,2,3,4], k = 2&lt;br &#x2F;&gt;
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; 6&lt;br &#x2F;&gt;
+&lt;strong&gt;Explanation:&lt;&#x2F;strong&gt; The missing positive integers are [5,6,7,...]. The &lt;em&gt;2&lt;sup&gt;nd&lt;&#x2F;sup&gt;&lt;&#x2F;em&gt; missing positive integer is 6. &lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Constraints:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;1 &amp;lt;= arr.length &amp;lt;= 1000&lt;&#x2F;li&gt;
+&lt;li&gt;1 &amp;lt;= arr[i] &amp;lt;= 1000&lt;&#x2F;li&gt;
+&lt;li&gt;1 &amp;lt;= k &amp;lt;= 1000&lt;&#x2F;li&gt;
+&lt;li&gt;arr[i] &amp;lt; arr[j] for 1 &amp;lt;= i &amp;lt; j &amp;lt;= arr.length&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;개인적으로 난이도가 medium정도 되는거 같았다&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;&#x2F;h2&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;impl Solution{
+    pub fn find_kth_positive(arr:Vec&amp;lt;i32&amp;gt;, k:i32)-&amp;gt;i32{
+        let mut l:i32 = 0;
+        let mut h:i32 = (arr.len()-1) as i32;
+        while l&amp;lt;=h{
+            let m = (l+(h-l)&amp;#x2F;2) as usize;
+            let r = arr[m];
+            &amp;#x2F;&amp;#x2F;(m+1) 은 m번째 index에 있는 값을 나타낸다. 값이 strictly increasing order로 되어있기 때문
+            &amp;#x2F;&amp;#x2F;r-(m+1) = r-m-1;
+            let diff = r-(m as i32) -1;
+            &amp;#x2F;&amp;#x2F; diff가 목표로 하는 순번(k)에 가까워지려고 노력하자
+            if diff &amp;lt; k {
+                l = (m as i32) + 1;
+            } else {
+                h = (m as i32) - 1;
+            }
+        다
+        &amp;#x2F;&amp;#x2F;l이 있는 위치는 숫자 k번 만큼 빠져있는 인덱스다. 그래서 k를 더해주면 빠진 k번째 값을 얻을수 있다. 
+        l+k;
+    }
+}
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>441. Arranging Coins</title>
+        <published>2023-05-25T00:00:00+00:00</published>
+        <updated>2023-05-25T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://emptyfridge0900.github.io/leetcode/441/" type="text/html"/>
+        <id>https://emptyfridge0900.github.io/leetcode/441/</id>
+        
+        <content type="html">&lt;h2 id=&quot;problem&quot;&gt;Problem&lt;&#x2F;h2&gt;
+&lt;p&gt;You have n coins and you want to build a staircase with these coins. The staircase consists of &lt;em&gt;k&lt;&#x2F;em&gt; rows where the &lt;em&gt;i&lt;sup&gt;th&lt;sup&gt;&lt;&#x2F;em&gt; row has exactly &lt;em&gt;i&lt;&#x2F;em&gt; coins. The last row of the staircase &lt;strong&gt;may be&lt;&#x2F;strong&gt; incomplete.&lt;&#x2F;p&gt;
+&lt;p&gt;Given the integer &lt;em&gt;n&lt;&#x2F;em&gt;, return the number of &lt;strong&gt;complete rows&lt;&#x2F;strong&gt; of the staircase you will build.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;example-1&quot;&gt;Example 1.&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;leetcode&#x2F;arrangecoins1-grid.jpg&quot; alt=&quot;1&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; n = 5&lt;br &#x2F;&gt;
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; 2&lt;br &#x2F;&gt;
+&lt;strong&gt;Explanation:&lt;&#x2F;strong&gt; Because the &lt;em&gt;3&lt;sup&gt;rd&lt;sup&gt;&lt;&#x2F;em&gt; row is incomplete, we return 2. &lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h3 id=&quot;example-2&quot;&gt;Example 2.&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;leetcode&#x2F;arrangecoins2-grid.jpg&quot; alt=&quot;2&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; n = 8&lt;br &#x2F;&gt;
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; 3&lt;br &#x2F;&gt;
+&lt;strong&gt;Explanation:&lt;&#x2F;strong&gt; Because the &lt;em&gt;4&lt;sup&gt;rd&lt;sup&gt;&lt;&#x2F;em&gt; row is incomplete, we return 3. &lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;&#x2F;h2&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;impl Solution{
+    pub fn arrange_coins(n: i32) -&amp;gt; i32{
+        let mut l:i64 = 0;
+        let mut h:i64 = n as i64;
+
+        while l&amp;lt;=h{
+            let m:i64 = l+(h-l)&amp;#x2F;2;
+            let mut p:i64 = m*(m+1)&amp;#x2F;2;
+
+            &amp;#x2F;&amp;#x2F; p 를 i32로 변환하면 이상하게도 엄청 큰 수가 나옴 그래서 n을 i64로
+            if p == n as i64{
+                return m as i32;
+            }
+            if p &amp;gt; n as i64{
+                h = m-1;
+            } else {
+                l = m+1;
+            }
+        }
+        (l-1) as i32
+    }
+}
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>35. Search Insert Position</title>
+        <published>2023-05-22T00:00:00+00:00</published>
+        <updated>2023-05-22T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://emptyfridge0900.github.io/leetcode/35/" type="text/html"/>
+        <id>https://emptyfridge0900.github.io/leetcode/35/</id>
+        
+        <content type="html">&lt;h2 id=&quot;problem&quot;&gt;Problem&lt;&#x2F;h2&gt;
+&lt;p&gt;Given a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.&lt;&#x2F;p&gt;
+&lt;p&gt;You must write an algorithm with O(log n) runtime complexity.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Example 1:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; nums = [1,3,5,6], target = 5 
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; 2&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Example 2:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; nums = [1,3,5,6], target = 2 
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; 1&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Example 3:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; nums = [1,3,5,6], target = 7 
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; 4&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;&#x2F;h2&gt;
+&lt;pre data-lang=&quot;C#&quot; class=&quot;language-C# &quot;&gt;&lt;code class=&quot;language-C#&quot; data-lang=&quot;C#&quot;&gt;public class Solution{
+    public int SearchInsert(int[] nums, int target){
+        var low =0;
+        var high = nums.Length;
+        while(low&amp;lt;=high)
+        {
+            var med = (low+high)&amp;#x2F;2;
+            if(nums[med]=target)
+            {
+                return med;
+            }
+            if(nums[med]&amp;gt;target)
+            {
+                high=med-1;
+            }
+            else
+            {
+                low=med +1;
+            }
+        }
+        return low;
+    }
+}
+
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>374. Guess Number Higher or Lower</title>
+        <published>2023-05-22T00:00:00+00:00</published>
+        <updated>2023-05-22T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://emptyfridge0900.github.io/leetcode/374/" type="text/html"/>
+        <id>https://emptyfridge0900.github.io/leetcode/374/</id>
+        
+        <content type="html">&lt;h2 id=&quot;problem&quot;&gt;Problem&lt;&#x2F;h2&gt;
+&lt;p&gt;We are playing the Guess Game. The game is as follows:&lt;&#x2F;p&gt;
+&lt;p&gt;I pick a number from 1 to n. You have to guess which number I picked.&lt;&#x2F;p&gt;
+&lt;p&gt;Every time you guess wrong, I will tell you whether the number I picked is higher or lower than your guess.&lt;&#x2F;p&gt;
+&lt;p&gt;You call a pre-defined API int guess(int num), which returns three possible results:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;-1: Your guess is higher than the number I picked (i.e. num &amp;gt; pick).&lt;&#x2F;li&gt;
+&lt;li&gt;1: Your guess is lower than the number I picked (i.e. num &amp;lt; pick).&lt;&#x2F;li&gt;
+&lt;li&gt;0: your guess is equal to the number I picked (i.e. num == pick).
+Return the number that I picked.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;strong&gt;Example 1:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; n = 10, pick = 6
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; 6&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Example 2:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; n = 1, pick = 1&lt;br &#x2F;&gt;
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; 1&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Example 3:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; n = 2, pick = 1 
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; 1 &lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;&#x2F;h2&gt;
+&lt;pre data-lang=&quot;C#&quot; class=&quot;language-C# &quot;&gt;&lt;code class=&quot;language-C#&quot; data-lang=&quot;C#&quot;&gt;public class Solution : GuessGame{
+    public int GuessNumber(int n){
+        var low = 0;
+        var high = n;
+        var ret = 0;
+        while(low&amp;lt;=high)
+        {
+            var g = low+(high-low)&amp;#x2F;2;
+            if(guess(g)==0)
+            {
+                ret=g;
+                break;
+            }
+            if(guess(g)==-1)
+                high=g-1;
+            else
+                log=g+1;
+        }
+        return ret;
+    }
+}
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>704. Binary Search</title>
+        <published>2023-05-05T00:00:00+00:00</published>
+        <updated>2023-05-05T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://emptyfridge0900.github.io/leetcode/binary-searcg/" type="text/html"/>
+        <id>https://emptyfridge0900.github.io/leetcode/binary-searcg/</id>
+        
+        <content type="html">&lt;h2 id=&quot;problem&quot;&gt;Problem&lt;&#x2F;h2&gt;
+&lt;p&gt;Given an array of integers nums which is sorted in ascending order, and an integer target, write a function to search target in nums. If target exists, then return its index. Otherwise, return -1.&lt;&#x2F;p&gt;
+&lt;p&gt;You must write an algorithm with O(log n) runtime complexity.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Example 1:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; nums = [-1,0,3,5,9,12], target = 9&lt;br &#x2F;&gt;
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; 4&lt;br &#x2F;&gt;
+&lt;strong&gt;Explanation:&lt;&#x2F;strong&gt; 9 exists in nums and its index is 4&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Example 2:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; nums = [-1,0,3,5,9,12], target = 2&lt;br &#x2F;&gt;
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; -1&lt;br &#x2F;&gt;
+&lt;strong&gt;Explanation:&lt;&#x2F;strong&gt; 2 does not exist in nums so return -1&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Constraints:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;1 &amp;lt;= nums.length &amp;lt;= 10&lt;sup&gt;4&lt;&#x2F;sup&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;-10&lt;sup&gt;4&lt;&#x2F;sup&gt; &amp;lt; nums[i], target &amp;lt; 10&lt;sup&gt;4&lt;&#x2F;sup&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;All the integers in nums are unique.&lt;&#x2F;li&gt;
+&lt;li&gt;nums is sorted in ascending order.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;&#x2F;h2&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;pub fn search(nums: Vec&amp;lt;i32&amp;gt;,target: i32) -&amp;gt; i32{
+    let mut left=0;
+    let mut right=nums.len()-1;
+    while left&amp;lt;right{
+        let med = (left+right)&amp;#x2F;2;
+        if nums[med]==target{
+            return med as i32;
+        }
+        else if nums[med]&amp;lt;target{
+            left=med+1;
+        }else{
+            right=med-1;
+        }
+    }
+    return -1;
+}
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>53. Maximum Subarray</title>
+        <published>2020-09-17T00:00:00+00:00</published>
+        <updated>2020-09-17T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://emptyfridge0900.github.io/leetcode/max-sub-array/" type="text/html"/>
+        <id>https://emptyfridge0900.github.io/leetcode/max-sub-array/</id>
+        
+        <content type="html">&lt;h2 id=&quot;problem&quot;&gt;Problem&lt;&#x2F;h2&gt;
+&lt;p&gt;Given an integer array nums, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Follow up&lt;&#x2F;strong&gt;: If you have figured out the O(n) solution, try coding another solution using the divide and conquer approach, which is more subtle.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Example 1:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; nums = [-2,1,-3,4,-1,2,1,-5,4]&lt;br &#x2F;&gt;
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; 6&lt;br &#x2F;&gt;
+&lt;strong&gt;Explanation:&lt;&#x2F;strong&gt; [4,-1,2,1] has the largest sum = 6.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Example 2:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; nums = [1]&lt;br &#x2F;&gt;
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; 1&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Example 3:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; nums = [0]&lt;br &#x2F;&gt;
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; 0&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Example 4:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; nums = [-1]&lt;br &#x2F;&gt;
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; -1&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Example 5:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; nums = [-2147483647]&lt;br &#x2F;&gt;
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; -2147483647&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Constraints:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;1 &amp;lt;= nums.length &amp;lt;= 2 * 10&lt;sup&gt;4&lt;&#x2F;sup&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;-10&lt;sup&gt;4&lt;&#x2F;sup&gt; &amp;lt;= nums[i] &amp;lt;= 10&lt;sup&gt;4&lt;&#x2F;sup&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;solution&quot;&gt;solution&lt;&#x2F;h2&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;impl Solution {
+    pub fn max_sub_array(nums: Vec&amp;lt;i32&amp;gt;) -&amp;gt; i32 {
+        if nums.len()==0{
+            return 0
+        }
+        let mut max:i32=nums[0];
+        for i in 0..nums.len(){
+            let mut sum:i32=0;
+            for j in i..nums.len(){
+                sum=sum+nums[j];
+                if sum&amp;gt;max{
+                    max=sum;
+                }
+            }
+        }
+        max
+        
+    }
+}
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Time complexity is &lt;strong&gt;O(n&lt;sup&gt;2&lt;&#x2F;sup&gt;)&lt;&#x2F;strong&gt;&lt;br &#x2F;&gt;
+&lt;br&#x2F;&gt;
+&lt;br&#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;other-solution&quot;&gt;Other solution&lt;&#x2F;h2&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;impl Solution {
+    pub fn max_sub_array(nums: Vec&amp;lt;i32&amp;gt;) -&amp;gt; i32 {
+        let mut sum: i32 = 0;
+        let mut maxSum: i32 = std::i32::MIN;
+        for (i, j) in nums.iter().enumerate(){
+            sum = sum + nums[i];
+            if sum &amp;gt; maxSum {
+                maxSum = sum
+            }
+            if sum &amp;lt; 0 {    
+                sum  = 0    
+            }              
+        }
+        
+        return maxSum;
+    }
+}
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Time complexity is &lt;strong&gt;O(n)&lt;&#x2F;strong&gt; &lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>

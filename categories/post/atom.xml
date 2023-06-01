@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title> - Post</title>
+    <link href="https://emptyfridge0900.github.io/categories/post/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://emptyfridge0900.github.io/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-05-29T00:00:00+00:00</updated>
+    <id>https://emptyfridge0900.github.io/categories/post/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Permutation</title>
+        <published>2023-05-29T00:00:00+00:00</published>
+        <updated>2023-05-29T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://emptyfridge0900.github.io/post/permutation/" type="text/html"/>
+        <id>https://emptyfridge0900.github.io/post/permutation/</id>
+        
+        <content type="html">&lt;p&gt;몇일전에 leetcode 연습문제 441. Arranging Coins을 풀면서 n개 숫자를 더하는 공식을 보았다.
+학교에서 1부터 100까지의 숫자를 더하는 문제를 배워본적이 있지 않은가? 가우스가 10살때 생각해냈다는 그 공식이다.
+1부터 n까지의 합은 n(n+1)&#x2F;2 라는 공식으로 풀수 있다. 풀이는 인터넷에 많이 있으니까 굳이 내가 할 필요는 없는거 갈다.
+근데 이 공식을 어디서 많이 본거 같다는 생각이 들었는데, 오늘 갑자기 n(n-1)&#x2F;2 라는 공식을 배운 기억이 떠올라서 구글링을 해보았다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;frac-n-n-1-n-ngga-jjunesse-ganeunghan-johab&quot;&gt;$\frac{n(n-1)}{n}$ n개 중에서 가능한 조합&lt;&#x2F;h2&gt;
+&lt;p&gt;구글링 해보니 Total number of subarry라고 나온다. 또는 the number of pairs you can form from an &lt;em&gt;n&lt;&#x2F;em&gt; element set 이라고 나온다. &lt;a href=&quot;https:&#x2F;&#x2F;math.stackexchange.com&#x2F;questions&#x2F;2214839&#x2F;exactly-how-does-the-equation-nn-1-2-determine-the-number-of-pairs-of-a-given&quot;&gt;링크&lt;&#x2F;a&gt;
+| | A | B | C | D | E   |
+| --- |---|---|---|---|---|
+| A |  | AB | AC | AD | AE | 
+| B | BA |  | BC | BD | BE |
+| C | CA | CB |  | CD | CE |
+| D | DA | DB | DC |  | DE |
+| E | EA | EB | EC | ED |  |
+handshake문제다. n명이 중복되지 않고 악수를 한다고 생각해보자. 
+1명이 악수해야 할 숫자는 n명에서 자기 자신을 제외한 n-1번이다.
+그럼 n명이 악수해야 할 숫자는 n(n-1)일까?
+n(n-1)에는 중복이 포함되있다. AB-BA, AC-CA, AD-DA, AE-EA...&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;permutation&quot;&gt;Permutation&lt;&#x2F;h1&gt;
+&lt;p&gt;조합문제를 공부하다 보니 수열도 다시 공부하게 되었다.
+예전에 문제풀이 하다가 순열에 대해서 배웠는데 지금은 다 까먹었다. 그래서 다시 공부해본다
+수열은 조합은 가끔 헷갈린다. &lt;&#x2F;p&gt;
+&lt;h2 id=&quot;n-r-nggajjunesse-rggareul-jjunbboganeung-ssussereul-goryeohaesse-goreunda&quot;&gt;$n^r$ n개중에서 r개를 중복가능, 순서를 고려해서 고른다.&lt;&#x2F;h2&gt;
+&lt;p&gt;ABC가 있는데 그중에서 중복 가능, 순서를 고려해서 3개를 고른다면,&lt;&#x2F;p&gt;
+&lt;p&gt;AAA, AAB, AAC
+ABA, ABB, ABC 
+ACA, ACB, ACC
+BAA, BAB, BAC
+BBA, BBB, BBC
+BCA, BCB, BCC
+CAA, CAB, CAC
+CBA, CBB, CBC
+CCA, CCB, CCC&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;frac-n-n-r-ngga-jjunesse-rggareul-jjunbbobulga-ssussereul-goryeohaesse-goreunda&quot;&gt;$\frac{n!}{(n-r)!}$ n개 중에서 r개를 중복불가, 순서를 고려해서 고른다.&lt;&#x2F;h2&gt;
+&lt;p&gt;중복불가이기 때문에 한번 고를 때마다 그 전 숫자에서 1을 뺀 만큼의 선택지가 있다.
+16개의 당구공 중에서 3개를 선택한다면, 첫번째는 16개 중에서 고르고, 그다음은 15개 중에서 고르고, 그 다음은 14개 중에서 고르게 된다. 16 x 15 x 14 = 3360 의 순열을 얻을 수 있다.
+16 x 15 x 14 을 일반화한 공식을 얻기 위해서 factorial을 사용한다.
+$\frac{16 * 15 * 14 * 13 * 12 * 11..3 * 2 * 1}{13 * 12 * 11 ... 3 * 2 * 1}$ =&amp;gt; $\frac{n!}{(n-r)!}$&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;combination&quot;&gt;Combination&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;frac-n-r-n-r-johab-ssuhyeoesse-ssussereul-bbajjahanda&quot;&gt;$\frac{n!}{r!(n-r)!}$ 조합, 순열에서 순서를 배재한다&lt;&#x2F;h2&gt;
+&lt;p&gt;ABC나 CBA나 BCA나 A,B,C로 이루어져있기는 매한가지다. 그래서 A,B,C가 들어가면 그냥 ABC 조합이라고 한다.
+위에서 $\frac{n!}{(n-r)!}$으로 중복불가하고 순서가 상관있는 순열을 얻었다. 여기서 순서에 상관없이 중복불가한 뽑기를 하면 바로 조합이 된다.
+다시 당구공 예제로 돌아가보자. 16 x 15 x 14 = 3360의 순열이있다. 배치 가능한 숫자만큼 나눠주면 조합이 된다.
+그렇다면 공3개는 몇가지로 배치가 가능한가? 3! 만큼 가능하다. 공 4개는 4! 만큼 가능하다. 그럼 r개는 r!.
+3360순열을 3! 로 나눠주면 560이 나온다.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>dyn and impl</title>
+        <published>2023-05-22T00:00:00+00:00</published>
+        <updated>2023-05-22T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://emptyfridge0900.github.io/rust/dyn-impl/" type="text/html"/>
+        <id>https://emptyfridge0900.github.io/rust/dyn-impl/</id>
+        
+        <content type="html">&lt;p&gt;dyn는 trait object를 표현하는 keyword다.
+가끔보면 dyn나 impl을 function parameter로 받거나 return하는 경우가 있다.
+뭐가 다른거지 하고 검색하다가 https:&#x2F;&#x2F;cotigao.medium.com&#x2F;dyn-impl-and-trait-objects-rust-fd7280521bea 에 간단하게 정리되있어서 가져와봤다.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;trait Animal {
+   fn talk(&amp;amp;self);
+}
+struct Cat {}
+struct Dog {}
+impl Animal for Cat {
+  fn talk(&amp;amp;self) {
+    println!(“meow”);
+  }
+}
+impl Animal for Dog {
+  fn talk(&amp;amp;self) {
+    println!(“bark”);
+  }
+}
+fn animal_talk(a: &amp;amp;dyn Animal) {
+  a.talk();
+}
+fn main() {
+  let d = Dog {};
+  let c = Cat {};
+  animal_talk(&amp;amp;d);
+  animal_talk(&amp;amp;c);
+}
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;animal_talk 함수를 보면 인자로 &amp;amp;dyn Animal 을 받는다.
+&amp;amp;을 제거하면 compile time에 size를 알수 없다고 컴파일러가 징징거린다.&lt;&#x2F;p&gt;
+&lt;p&gt;만일 &amp;amp;dyn 대신 impl를 쓰면 어떨까?
+똑같은 결과가 나온다. 
+대신 다른 점은 impl 쓰면 compile time에 타입이 결정되고 Dog를 받는 함수 하나, Cat을 받는 함수 하나를 만들어낸다.
+그럼 generic type을 쓰는 함수와 impl을 쓰는 함수는 뭐가 다를까?&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;fn animal_talk&amp;lt;T: Animal&amp;gt;(a: T) {
+  a.talk();
+}
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;똑같은 결과가 나온다. 다를게 없어보인다. 하지만 Animal 타입으로 리턴은 안된다.
+그러면 generic 타입을 리턴하려면 어떻게 할까?
+impl이나 Box&amp;lt; dyn Trait&amp;gt;를 사용해야한다.&lt;&#x2F;p&gt;
+&lt;p&gt;impl Trait를 return하는 함수를 만들어보자&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;fn animal () -&amp;gt; impl Animal {
+  if (is_dog_available()) {
+    return Dog {};
+  }
+  Cat {}
+}
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;fail한다. 왜냐면 impl은 타입을 comile time에 결정하기 때문에 Dog나 Cat 타입 둘중 하나만 리턴할수 있기 때문이다. &lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;fn animal() -&amp;gt; Box&amp;lt;dyn Animal&amp;gt; {
+  if (is_dog_available()) {
+    return Box::new(Dog {});
+  } 
+    
+  Box::new(Cat {})
+}
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;이렇게 하면 runtime에 타입이 결정되기 때문에 여러 타입을 리턴하고 싶으면 trait object을 사용하고 하나의 타입만 리턴한다면 impl을 쓰자.&lt;&#x2F;p&gt;
+&lt;p&gt;https:&#x2F;&#x2F;joshleeb.com&#x2F;posts&#x2F;rust-traits-and-trait-objects&#x2F; 이것도 참조해서 보자. 아직도 완전히 이해가 가지 않는다. 역시 C#이 편하다.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Mut and reference</title>
+        <published>2023-02-03T00:00:00+00:00</published>
+        <updated>2023-02-03T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://emptyfridge0900.github.io/rust/mut/" type="text/html"/>
+        <id>https://emptyfridge0900.github.io/rust/mut/</id>
+        
+        <content type="html">&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;let     a:     &amp;amp;T
+let mut a:     &amp;amp;T
+let     a: &amp;amp;mut T
+let mut a: &amp;amp;mut T
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;let a = &amp;quot;hello&amp;quot;.to_string();
+a = a.add(&amp;quot; world&amp;quot;);&amp;#x2F;&amp;#x2F; this will throw error, cannot assign twice to immutalbe variable
+let b = a;&amp;#x2F;&amp;#x2F;move
+let c = &amp;amp;a;&amp;#x2F;&amp;#x2F; a is moved above line, cannot be borrowed
+let d = &amp;amp;b;&amp;#x2F;&amp;#x2F;borrow
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;let mut a = &amp;quot;hello&amp;quot;.to_string();
+let b = &amp;amp;mut a; &amp;#x2F;&amp;#x2F;a is borrowed as MUTABLE, not moved
+b.push(&amp;#x27; &amp;#x27;);
+b.push_str(&amp;quot;world&amp;quot;);
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;let mut a = &amp;quot;hello&amp;quot;.to_string();
+let b = &amp;quot;world&amp;quot;.to_string();
+a=b; &amp;#x2F;&amp;#x2F; because a is mut can be assigned twice, b value is moved to a
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;let a = &amp;amp;mut &amp;quot;hello&amp;quot;.to_string();
+let b = &amp;quot;world&amp;quot;.to_string();
+*a = b;
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>String and str </title>
+        <published>2023-02-03T00:00:00+00:00</published>
+        <updated>2023-02-03T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://emptyfridge0900.github.io/rust/str/" type="text/html"/>
+        <id>https://emptyfridge0900.github.io/rust/str/</id>
+        
+        <content type="html">&lt;h3 id=&quot;stringwa-strcai&quot;&gt;&lt;code&gt;String&lt;&#x2F;code&gt;와 &lt;code&gt;str&lt;&#x2F;code&gt;차이&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;code&gt;String&lt;&#x2F;code&gt;은 &lt;code&gt;Vec&lt;T&gt;&lt;&#x2F;code&gt;이랑 비슷하다. C++의 String class와 비슷.
+&lt;code&gt;str&lt;&#x2F;code&gt;은 &lt;code&gt;char[]&lt;&#x2F;code&gt;랑 비슷하다. C++에서 char array를 사용할때 변수명을 통해 pointer를 사용하는 것과 같이, &amp;amp;를 str앞에 붙여서 레퍼런스로 사용한다.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;taibbbyeohwan&quot;&gt;타입변환&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;code&gt;String&lt;&#x2F;code&gt; 타입을 &lt;code&gt;&amp;amp;str&lt;&#x2F;code&gt;으로 변환하려면?
+&amp;amp;*을 String 앞에 붙인다. &lt;a href=&quot;https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;std&#x2F;string&#x2F;struct.String.html#deref&quot;&gt;Deref&lt;&#x2F;a&gt; 참조&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;let s = String::from(&amp;quot;hello world&amp;quot;)
+let ss = *s; &amp;#x2F;&amp;#x2F;str type, Deref coerce 
+let sss = &amp;amp;*s; &amp;#x2F;&amp;#x2F;&amp;amp;str
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;또는
+as_str()함수를 사용한다&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;let s = String::from(&amp;quot;hello world&amp;quot;)
+let ss = s.as_str; &amp;#x2F;&amp;#x2F;&amp;amp;str
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;&amp;amp;&#x27;static str&lt;&#x2F;code&gt; 타입(string static)을 &lt;coe&gt;String&lt;&#x2F;code&gt;으로 변환하려면?
+to_string()함수를 사용하면된다.
+&lt;code&gt;&amp;amp;str&lt;&#x2F;code&gt;을 &lt;code&gt;String&lt;&#x2F;code&gt;으로 변환하는 것은 메모리를 할당해야하기 때문에 될수 있으면 하지말자&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;let s = &amp;quot;hello world&amp;quot;;
+let ss = s.to_string();
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;byte-string-literal&quot;&gt;Byte String Literal&lt;&#x2F;h3&gt;
+&lt;p&gt;b&amp;quot;whatever&amp;quot;은 byte string literal이다. 타입은 buf:&amp;amp;[u8;8] 이다.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;let s = b&amp;quot;hello world&amp;quot;; &amp;#x2F;&amp;#x2F;buf:&amp;amp;[u8;11]
+let ss =  b&amp;quot;whatever&amp;quot;; &amp;#x2F;&amp;#x2F;buf:&amp;amp;[u8;8]
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>String in Rust</title>
+        <published>2021-02-03T00:00:00+00:00</published>
+        <updated>2021-02-03T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://emptyfridge0900.github.io/rust/string/" type="text/html"/>
+        <id>https://emptyfridge0900.github.io/rust/string/</id>
+        
+        <content type="html">&lt;h3 id=&quot;slice&quot;&gt;&lt;a href=&quot;https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;book&#x2F;ch04-03-slices.html&quot;&gt;Slice&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;스트링슬라이스 (string slice)는  String의 일부에 대한 참조자다&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;let s = String::from(&amp;quot;hello world&amp;quot;);
+
+let hello = &amp;amp;s[0..5];&amp;#x2F;&amp;#x2F;hello
+let world = &amp;amp;s[6..11];&amp;#x2F;&amp;#x2F;world
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;여기서 s는 불변 스트링 슬라이스&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;let s:&amp;amp;&amp;#x27;static str = &amp;quot;Hello, world!&amp;quot;;&amp;#x2F;&amp;#x2F;data type is &amp;amp;&amp;#x27;static str
+let my_string:String = s.to_string()&amp;#x2F;&amp;#x2F;data type is String
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;슬라이스 예제&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;let my_string = String::from(&amp;quot;hello world&amp;quot;);
+&amp;amp;my_string[..]&amp;#x2F;&amp;#x2F;string slice
+let my_string_literal = &amp;quot;hello world&amp;quot;;
+my_string_literal&amp;#x2F;&amp;#x2F;string slice
+my_string_literal[..]&amp;#x2F;&amp;#x2F;string slice
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;string&quot;&gt;&lt;a href=&quot;https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;book&#x2F;ch08-02-strings.html&quot;&gt;String&lt;&#x2F;a&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;rust의 core에서는 오직 하나의 string type을 지원하는데 그것이 바로 스트링슬라이스(str)다.
+보통은 &amp;amp;str의 형태로 자주본다 &lt;&#x2F;p&gt;
+&lt;p&gt;String타입은 Rust의 standard library가 제공하는 타입이다.
+Rust의 standard library에는 String타입 외에도 OsString, OsStr, CString, CStr등을 제공한다. &lt;&#x2F;p&gt;
+&lt;h3 id=&quot;ssaroun-string-manddeugi&quot;&gt;새로운 String 만들기&lt;&#x2F;h3&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;1.
+let data = &amp;quot;initial contents&amp;quot;;
+let s = data.to_string();
+
+2.
+let s = &amp;quot;initial contents&amp;quot;.to_string();
+
+3.
+let s = String::from(&amp;quot;initial contents&amp;quot;);
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;string-updatehagi&quot;&gt;String update하기&lt;&#x2F;h3&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;1.
+let mut s = String::from(&amp;quot;foo&amp;quot;);
+s.push_str(&amp;quot;bar&amp;quot;);
+
+2.
+let mut s1 = String::from(&amp;quot;foo&amp;quot;);
+let s2 = &amp;quot;bar&amp;quot;;
+s1.push_str(s2);
+
+3.
+let mut s = String::from(&amp;quot;lo&amp;quot;);
+s.push(&amp;#x27;l&amp;#x27;);
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;string-ieobbuigi&quot;&gt;String 이어붙이기&lt;&#x2F;h3&gt;
+&lt;p&gt;예제에서 s1은 더이상 사용불가하게 된다. 그리고 s3을 만들때 s2앞에 반드시 &amp;amp;를 붙여서 &amp;amp;String 타입으로 만들어 주어야 한다.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;let s1 = String::from(&amp;quot;Hello, &amp;quot;);
+let s2 = String::from(&amp;quot;world!&amp;quot;);
+let s3 = s1 + &amp;amp;s2; 
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;사실 + 는 add()라는 함수로 치환되는데&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;s1.add(s2)
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;의 모양을 하고 있다&lt;br &#x2F;&gt;
+잠깐 add()함수의 signature를 보고 가자&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;fn add(self, s: &amp;amp;str) -&amp;gt; String {
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;인자로 s:&amp;amp;str 타입을 받는데, &amp;amp;String을 &amp;amp;str로 강제 변환 해주기 때문에 신경쓰지 말고 넘어가자 &lt;&#x2F;p&gt;
+&lt;h3 id=&quot;indexing&quot;&gt;Indexing&lt;&#x2F;h3&gt;
+&lt;p&gt;아래의 코드는 에러가 난다. rust의 스트링은 index를 지원하지 않기 때문이다&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;let s1 = String::from(&amp;quot;hello&amp;quot;);
+let h = s1[0];
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;utf-8&quot;&gt;UTF-8&lt;&#x2F;h3&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;let hello = String::from(&amp;quot;Hola&amp;quot;);&amp;#x2F;&amp;#x2F; 4bytes
+let hello = String::from(&amp;quot;Здравствуйте&amp;quot;);&amp;#x2F;&amp;#x2F;12 characters but 24 bytes
+let hello = &amp;quot;Здравствуйте&amp;quot;;
+for n in hello.as_bytes(){
+    println!(&amp;quot;{}&amp;quot;,n);
+    
+}
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;6개의 chars 이 프린트 된다&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;for c in &amp;quot;नमस्ते&amp;quot;.chars() {
+    println!(&amp;quot;{}&amp;quot;, c);
+}
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;18개의 bytes 이 프린트 된다&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;for b in &amp;quot;नमस्ते&amp;quot;.bytes() {
+    println!(&amp;quot;{}&amp;quot;, b);
+}
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</content>
+        
+    </entry>
+</feed>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title> - Side Project</title>
+    <link href="https://emptyfridge0900.github.io/categories/side-project/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://emptyfridge0900.github.io/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2020-12-05T00:00:00+00:00</updated>
+    <id>https://emptyfridge0900.github.io/categories/side-project/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Pizza Shop</title>
+        <published>2020-12-05T00:00:00+00:00</published>
+        <updated>2020-12-05T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://emptyfridge0900.github.io/assignments/pizza/" type="text/html"/>
+        <id>https://emptyfridge0900.github.io/assignments/pizza/</id>
+        
+        <content type="html">&lt;h1 id=&quot;github-repository&quot;&gt;Github Repository&lt;&#x2F;h1&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;emptyfridge0900&#x2F;pizza&quot;&gt;Click here&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;project&quot;&gt;Project&lt;&#x2F;h1&gt;
+&lt;p&gt;Ordering pizza and side dishes at a fake pizza shop. These days, Oauth2 is used a lot here and there, so I tried using IdentityServer4 for the project. Of course, you won&#x27;t have to log in to buy pizza.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;motivation&quot;&gt;Motivation&lt;&#x2F;h1&gt;
+&lt;p&gt;I have studied backend, frontend, and sql so far, but I have not had any experience in releasing a product by integrating these. Through this project, although incomplete, I wanted to gain experience in making products.&lt;br &#x2F;&gt;
+And for this project, I used techs I haven&#x27;t used before. I learned a lot about Docker, Blazor,Bootstrap, and Postgresql from this project.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;gif&quot;&gt;GIF&lt;&#x2F;h1&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;login.gif&quot; alt=&quot;&quot; &#x2F;&gt;
+&lt;img src=&quot;&#x2F;images&#x2F;history.gif&quot; alt=&quot;&quot; &#x2F;&gt;
+&lt;img src=&quot;&#x2F;images&#x2F;add.gif&quot; alt=&quot;&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;tech-framework-used&quot;&gt;Tech&#x2F;framework used&lt;&#x2F;h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;docs.microsoft.com&#x2F;en-us&#x2F;aspnet&#x2F;core&#x2F;web-api&#x2F;?view=aspnetcore-5.0&quot;&gt;ASP .NET Core 5.0 Api&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;docs.microsoft.com&#x2F;en-us&#x2F;aspnet&#x2F;core&#x2F;blazor&#x2F;?view=aspnetcore-5.0&quot;&gt;ASP .NET Core 5.0 Blazor(server)&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;identityserver4.readthedocs.io&#x2F;en&#x2F;latest&#x2F;&quot;&gt;Identity Server 4&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;docs.microsoft.com&#x2F;en-us&#x2F;ef&#x2F;core&#x2F;&quot;&gt;Entity Framework Core&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.postgresql.org&#x2F;docs&#x2F;12&#x2F;index.html&quot;&gt;Postgres 12.5&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;getbootstrap.com&#x2F;&quot;&gt;Bootstrap 4&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;docs.docker.com&#x2F;get-started&#x2F;overview&#x2F;&quot;&gt;Docker&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;hosting-service&quot;&gt;Hosting service&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.heroku.com&#x2F;&quot;&gt;Heroku&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h1 id=&quot;features&quot;&gt;Features&lt;&#x2F;h1&gt;
+&lt;p&gt;API&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Retrive Pizza list&lt;&#x2F;li&gt;
+&lt;li&gt;Retrive Side dishes list&lt;&#x2F;li&gt;
+&lt;li&gt;Create order&lt;&#x2F;li&gt;
+&lt;li&gt;Look up order history&lt;&#x2F;li&gt;
+&lt;li&gt;Track order&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;CLIENT&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Display Pizza info&lt;&#x2F;li&gt;
+&lt;li&gt;Display Side dish info&lt;&#x2F;li&gt;
+&lt;li&gt;Add items to cart&lt;&#x2F;li&gt;
+&lt;li&gt;Calculate tax and amount paid&lt;&#x2F;li&gt;
+&lt;li&gt;Checkout&lt;&#x2F;li&gt;
+&lt;li&gt;Login&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h1 id=&quot;api-reference&quot;&gt;Api Reference&lt;&#x2F;h1&gt;
+&lt;h2 id=&quot;get-methods&quot;&gt;Get methods&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;api-pizza-type&quot;&gt;&lt;strong&gt;api&#x2F;pizza&#x2F;type&lt;&#x2F;strong&gt;&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;get pizza type&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;api-pizza-size&quot;&gt;&lt;strong&gt;api&#x2F;pizza&#x2F;size&lt;&#x2F;strong&gt;&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;get pizza size&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;api-pizaz-topping&quot;&gt;&lt;strong&gt;api&#x2F;pizaz&#x2F;topping&lt;&#x2F;strong&gt;&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;get pizza toppings&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;api-pizza-sides&quot;&gt;&lt;strong&gt;api&#x2F;pizza&#x2F;sides&lt;&#x2F;strong&gt;&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;get side dishes&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;api-pizza-customers-id-orders&quot;&gt;&lt;strong&gt;api&#x2F;Pizza&#x2F;Customers&#x2F;{id}&#x2F;Orders&lt;&#x2F;strong&gt;&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;get order history by customer id&lt;br &#x2F;&gt;
+&lt;code&gt;parameter: Guid&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;api-pizza-orders-orderid&quot;&gt;&lt;strong&gt;api&#x2F;Pizza&#x2F;Orders&#x2F;{orderId}&lt;&#x2F;strong&gt;&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;get order detail by orderId&lt;br &#x2F;&gt;
+&lt;code&gt;parameter: Guid&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;post-method&quot;&gt;Post method&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;api-pizza&quot;&gt;&lt;strong&gt;api&#x2F;Pizza&lt;&#x2F;strong&gt;&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;create an order&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;body&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;pre&gt;&lt;code&gt;{
+    &amp;quot;Customer&amp;quot;:{
+        &amp;quot;CustomerId&amp;quot;:&amp;quot;7d9ecead-eca1-48b2-8366-784fb1c17c16&amp;quot;,
+        &amp;quot;FirstName&amp;quot;:&amp;quot;Bob&amp;quot;,
+        &amp;quot;LastName&amp;quot;:&amp;quot;Smith&amp;quot;,
+        &amp;quot;Email&amp;quot;:&amp;quot;BobSmith@email.com&amp;quot;,
+        &amp;quot;PhoneNumber&amp;quot;:&amp;quot;519-666-7777&amp;quot;
+    },
+    &amp;quot;Pizzas&amp;quot;:[
+        {
+            &amp;quot;Qty&amp;quot;:2,
+            &amp;quot;TypeId&amp;quot;:1,
+            &amp;quot;SizeId&amp;quot;:1,
+            &amp;quot;Toppings&amp;quot;:[1,2,3]
+
+        }
+    ],
+    &amp;quot;Sides&amp;quot;:[
+        {
+            &amp;quot;Qty&amp;quot;:2,
+            &amp;quot;SideId&amp;quot;:1
+
+        }
+    ]
+}
+&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Movie Nomination</title>
+        <published>2020-10-14T00:00:00+00:00</published>
+        <updated>2020-10-14T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://emptyfridge0900.github.io/assignments/movie/" type="text/html"/>
+        <id>https://emptyfridge0900.github.io/assignments/movie/</id>
+        
+        <content type="html">&lt;h1 id=&quot;github-repository&quot;&gt;Github Repository&lt;&#x2F;h1&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;bds0900&#x2F;shoppie-front&quot;&gt;Click here&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;test-application&quot;&gt;Test Application&lt;&#x2F;h1&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;bds0900.github.io&#x2F;shoppie-front&#x2F;&quot;&gt;Click here&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;project&quot;&gt;Project&lt;&#x2F;h1&gt;
+&lt;p&gt;Shopify Web Developer Intern Challenge&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;gif&quot;&gt;GIF&lt;&#x2F;h1&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;reactapp.gif&quot; alt=&quot;&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;tech-framework-used&quot;&gt;Tech.framework used&lt;&#x2F;h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;reactjs.org&#x2F;&quot;&gt;React&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.typescriptlang.org&#x2F;&quot;&gt;Typescript&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;hosting-service&quot;&gt;Hosting service&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;pages.github.com&#x2F;&quot;&gt;Github Page&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h1 id=&quot;features&quot;&gt;Features&lt;&#x2F;h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Search OMDB and display the results (movies only)&lt;&#x2F;li&gt;
+&lt;li&gt;Add a movie from the search results to our nomination list&lt;&#x2F;li&gt;
+&lt;li&gt;View the list of films already nominated&lt;&#x2F;li&gt;
+&lt;li&gt;Remove a nominee from the nomination list&lt;&#x2F;li&gt;
+&lt;li&gt;Save nomination lists if the user leaves the page&lt;&#x2F;li&gt;
+&lt;li&gt;Create shareable links&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+        
+    </entry>
+</feed>
