@@ -15,6 +15,7 @@ tags = ["math"]
 
 ## $\frac{n(n-1)}{n}$ n개 중에서 가능한 조합
 구글링 해보니 Total number of subarry라고 나온다. 또는 the number of pairs you can form from an *n* element set 이라고 나온다. [링크](https://math.stackexchange.com/questions/2214839/exactly-how-does-the-equation-nn-1-2-determine-the-number-of-pairs-of-a-given)
+
 | | A | B | C | D | E   |
 | --- |---|---|---|---|---|
 | A |  | AB | AC | AD | AE | 
@@ -22,6 +23,7 @@ tags = ["math"]
 | C | CA | CB |  | CD | CE |
 | D | DA | DB | DC |  | DE |
 | E | EA | EB | EC | ED |  |
+
 handshake문제다. n명이 중복되지 않고 악수를 한다고 생각해보자. 
 1명이 악수해야 할 숫자는 n명에서 자기 자신을 제외한 n-1번이다.
 그럼 n명이 악수해야 할 숫자는 n(n-1)일까?
