@@ -43,6 +43,8 @@ include_content = true
 
 [extra]
 # Put all your custom variables here
+katex.enabled = true
+katex.auto_render = true
 galleria.enabled = true
 navbar_items = [
 	{code = "en",nav_items =[
