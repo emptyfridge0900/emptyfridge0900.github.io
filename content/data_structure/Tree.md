@@ -10,7 +10,7 @@ tags = ["Breadth-First Search","BFS"]
 Tree는 Graph의 일종, Acyclic graph
 
 ![tree](/images/DS/Tree/Treedatastructure.png)
-source: https://www.geeksforgeeks.org/introduction-to-tree-data-structure-and-algorithm-tutorials/
+source: <https://www.geeksforgeeks.org/introduction-to-tree-data-structure-and-algorithm-tutorials/>
 ## 트리 종류
 [Binary Tree](https://en.wikipedia.org/wiki/Binary_tree) -> [Binary Search Tree](https://en.wikipedia.org/wiki/Binary_search_tree) -> [Self-balancing binary search tree](https://en.wikipedia.org/wiki/Self-balancing_binary_search_tree) (AVL tree,B-tree,Red–black tree etc.)
             
@@ -34,7 +34,7 @@ root가 마지막에 와서 후위 순회
 D-H-I-E-B-F-G-C-A
 
 외우는 순서는 간단하다. 무조건 Left -> Right. 전위면 Root를 앞에, 후위면 뒤에, 중위면 가운데
-##### DFC 구현방법
+##### DFS 구현방법
 stack을 주로 사용, 또는 recursive
 
 
@@ -124,4 +124,4 @@ fn main() {
 
 }
 ```
-참조: https://www.geeksforgeeks.org/binary-tree-array-implementation/
+참조: <https://www.geeksforgeeks.org/binary-tree-array-implementation/>
