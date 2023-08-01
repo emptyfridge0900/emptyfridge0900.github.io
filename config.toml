@@ -41,6 +41,12 @@ include_content = true
 # become too big to load on the site. Defaults to not being set.
 # truncate_content_length = 100
 
+[markdown]
+highlight_code = true
+extra_syntaxes_and_themes = []
+highlight_theme = "ayu-mirage"
+render_emoji = true
+
 [extra]
 # Put all your custom variables here
 katex.enabled = true
