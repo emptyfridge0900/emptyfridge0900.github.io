@@ -60,6 +60,7 @@ navbar_items = [
 	{ url = "$BASE_URL/rust", name = "Rust" },
     { url = "$BASE_URL/assignments", name = "Assignments" },
 	{ url = "$BASE_URL/commands", name = "Commands" },
+	{ url = "$BASE_URL/rabbitmq", name = "RabbitMQ" },
 	{ url = "$BASE_URL/tags", name = "Tags" },
 	{ url = "$BASE_URL/categories", name = "Categories" },
 	]}
