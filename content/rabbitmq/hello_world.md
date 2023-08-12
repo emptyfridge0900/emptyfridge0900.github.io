@@ -29,11 +29,13 @@ rabbitmq:3-management
 
 
 ## 2. Sedning client
-
+```ps1
 dotnet new console --name Send
 mv Send/Program.cs Send/Send.cs
 cd Send
 dotnet add package RabbitMQ.Client
+```
+
 ```cs
 using System.Text;
 using RabbitMQ.Client;
@@ -64,11 +66,13 @@ Console.ReadLine();
 
 
 ## 3. Receving client
-
+```ps1
 dotnet new console --name Receive
 mv Receive/Program.cs Receive/Receive.cs
 cd Receive
 dotnet add package RabbitMQ.Client
+```
+
 ```cs
 using System.Text;
 using RabbitMQ.Client;
