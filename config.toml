@@ -44,7 +44,7 @@ include_content = true
 [markdown]
 highlight_code = true
 extra_syntaxes_and_themes = []
-highlight_theme = "ayu-mirage"
+highlight_theme = "kronuz"
 render_emoji = true
 
 [extra]
