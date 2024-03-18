@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title> - Assignment</title>
+    <link href="https://emptyfridge0900.github.io/categories/assignment/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://emptyfridge0900.github.io/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2020-04-20T00:00:00+00:00</updated>
+    <id>https://emptyfridge0900.github.io/categories/assignment/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Attendance Tracker</title>
+        <published>2020-04-20T00:00:00+00:00</published>
+        <updated>2020-04-20T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://emptyfridge0900.github.io/assignments/tracker/" type="text/html"/>
+        <id>https://emptyfridge0900.github.io/assignments/tracker/</id>
+        
+        <content type="html">&lt;h1 id=&quot;github-repository&quot;&gt;Github Repository&lt;&#x2F;h1&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;emptyfridge0900&#x2F;HereCheck&quot;&gt;Click here&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;project&quot;&gt;Project&lt;&#x2F;h1&gt;
+&lt;p&gt;This is part of capstone project called HereCheck. HereCheck is a fully automate attendance recording system. Taking the advantage of updating face recognition technology, our solution helps taking students&#x2F;employees attendance with ease. HereCheck consist of three programs that includes Server, Face Recognition, and Web-App UI. This program is Web-App UI for instructors&#x2F;employers to view and manage all the records. &lt;&#x2F;p&gt;
+&lt;h1 id=&quot;features&quot;&gt;Features&lt;&#x2F;h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Display attendence records in real time &lt;&#x2F;li&gt;
+&lt;li&gt;Display login page, faculty page and admin page&lt;&#x2F;li&gt;
+&lt;li&gt;Select program&#x2F;courses and attendance sheet page &lt;&#x2F;li&gt;
+&lt;li&gt;Create programs, create courses, create user accounts, update and delete them.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h1 id=&quot;screenshot&quot;&gt;Screenshot&lt;&#x2F;h1&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;tracker&#x2F;1.png&quot; alt=&quot;&quot; &#x2F;&gt;
+&lt;img src=&quot;&#x2F;images&#x2F;tracker&#x2F;2.png&quot; alt=&quot;&quot; &#x2F;&gt;
+&lt;img src=&quot;&#x2F;images&#x2F;tracker&#x2F;3.png&quot; alt=&quot;&quot; &#x2F;&gt;
+&lt;img src=&quot;&#x2F;images&#x2F;tracker&#x2F;4.png&quot; alt=&quot;&quot; &#x2F;&gt;
+&lt;img src=&quot;&#x2F;images&#x2F;tracker&#x2F;5.png&quot; alt=&quot;&quot; &#x2F;&gt;
+&lt;img src=&quot;&#x2F;images&#x2F;tracker&#x2F;6.png&quot; alt=&quot;&quot; &#x2F;&gt;
+&lt;img src=&quot;&#x2F;images&#x2F;tracker&#x2F;7.png&quot; alt=&quot;&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;tech-framework-used&quot;&gt;Tech.framework used&lt;&#x2F;h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;reactjs.org&#x2F;&quot;&gt;React&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.typescriptlang.org&#x2F;&quot;&gt;Typescript&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;graphql.org&#x2F;&quot;&gt;GraphQL&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.apollographql.com&#x2F;apollo-client&quot;&gt;Apollo Client&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;hosting-service&quot;&gt;Hosting service&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;pages.github.com&#x2F;&quot;&gt;Github Page&lt;&#x2F;a&gt;d&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Kanban</title>
+        <published>2018-04-20T00:00:00+00:00</published>
+        <updated>2018-04-20T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://emptyfridge0900.github.io/assignments/kanban/" type="text/html"/>
+        <id>https://emptyfridge0900.github.io/assignments/kanban/</id>
+        
+        <content type="html">&lt;h1 id=&quot;project&quot;&gt;Project&lt;&#x2F;h1&gt;
+&lt;p&gt;&lt;strong&gt;Advanced SQL Project Assignment&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;This is a SQL-based simulation that use &lt;code&gt;triggers&lt;&#x2F;code&gt;, &lt;code&gt;stored procedures&lt;&#x2F;code&gt;, &lt;code&gt;stored functions&lt;&#x2F;code&gt; and &lt;code&gt;views&lt;&#x2F;code&gt; to model business&#x2F;production line workflow.
+This project consists of 5 small programs, which are&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Configuration Tool&lt;&#x2F;li&gt;
+&lt;li&gt;Workstation Andon&lt;&#x2F;li&gt;
+&lt;li&gt;Workstation Simulation&lt;&#x2F;li&gt;
+&lt;li&gt;Assembly Line Kanban&lt;&#x2F;li&gt;
+&lt;li&gt;Working Simulation (Runner)&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;1-configuration-tool&quot;&gt;1. Configuration Tool&lt;&#x2F;h3&gt;
+&lt;p&gt;Configuration tool can config order amount,running interval of runner, and number of stations
+&lt;img src=&quot;&#x2F;images&#x2F;screenshot&#x2F;configuration.png&quot; alt=&quot;configuration&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;2-workstation-simulation&quot;&gt;2. Workstation Simulation&lt;&#x2F;h3&gt;
+&lt;p&gt;Where to assemble parts&lt;&#x2F;p&gt;
+&lt;h5 id=&quot;assemble-a-completed-fog-lamp&quot;&gt;Assemble a completed fog lamp&lt;&#x2F;h5&gt;
+&lt;ul&gt;
+&lt;li&gt;Experienced worker : 60 seconds, +&#x2F;- 10%.&lt;&#x2F;li&gt;
+&lt;li&gt;New employees : 50% longer than experienced worker.&lt;&#x2F;li&gt;
+&lt;li&gt;Very experienced (super) workers : 15% less than experienced worker.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h5 id=&quot;average-defect-rates-for-lamps-based-on-the-workers-skill-levels&quot;&gt;Average defect rates for lamps based on the workers’ skill levels&lt;&#x2F;h5&gt;
+&lt;ul&gt;
+&lt;li&gt;New&#x2F;Rookie 0.85%&lt;&#x2F;li&gt;
+&lt;li&gt;Experienced&#x2F;Normal 0.5%&lt;&#x2F;li&gt;
+&lt;li&gt;Experienced&#x2F;Super 0.15%&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;screenshot&#x2F;simulation.png&quot; alt=&quot;simulation&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;3-workstation&quot;&gt;3. Workstation&lt;&#x2F;h3&gt;
+&lt;p&gt;Graphic representation of the part counts and status of a single workstationn
+&lt;img src=&quot;&#x2F;images&#x2F;screenshot&#x2F;andon.png&quot; alt=&quot;andon&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;4-assembly-line-kanban&quot;&gt;4. Assembly Line Kanban&lt;&#x2F;h3&gt;
+&lt;p&gt;To display the status of the entire assembly line. This displays:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Order amount&lt;&#x2F;li&gt;
+&lt;li&gt;Passed amount&lt;&#x2F;li&gt;
+&lt;li&gt;In process amount&lt;&#x2F;li&gt;
+&lt;li&gt;Number produced &lt;&#x2F;li&gt;
+&lt;li&gt;Yield&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;screenshot&#x2F;kanban.png&quot; alt=&quot;kanban&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;5-working-simulation-runner&quot;&gt;5. Working Simulation (Runner)&lt;&#x2F;h3&gt;
+&lt;p&gt;Simulation of a runner. A runner picks up all cards from the tray every 5 minutes. Runner goes to the stock room, picks up a new bin of the specific part and location on the card, and then goes to the station and replaces it with the old one.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;screenshot&#x2F;runner.png&quot; alt=&quot;runner&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;getting-started&quot;&gt;Getting Started&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;prerequisites&quot;&gt;Prerequisites&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;.Net core&lt;&#x2F;li&gt;
+&lt;li&gt;Sql Server&lt;&#x2F;li&gt;
+&lt;li&gt;Visual studio&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;how-to-use&quot;&gt;How to use&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Execute the queries in &lt;strong&gt;Schema.sql&lt;&#x2F;strong&gt; file to create tables&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Execute the queries in &lt;strong&gt;Functions.sql&lt;&#x2F;strong&gt; file to create stored procedures and functions&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Execute &lt;strong&gt;Assembly Line&lt;&#x2F;strong&gt; to let the workers to assemble the parts&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Execute the &lt;strong&gt;Runner&lt;&#x2F;strong&gt;. If the runner program is not running, the empty bin cannot be replaced&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Execute the &lt;strong&gt;Workstation simulation&lt;&#x2F;strong&gt; to check how many parts are left in the bins of each station&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;Execute the &lt;strong&gt;Workstation Andon&lt;&#x2F;strong&gt; to monitor production status&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h1 id=&quot;tech-framework-used&quot;&gt;Tech&#x2F;framework used&lt;&#x2F;h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;docs.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;&quot;&gt;.NET&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.microsoft.com&#x2F;en-us&#x2F;sql-server&#x2F;sql-server-2019&quot;&gt;Sql Server&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;docs.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;desktop&#x2F;winforms&#x2F;?view=netframeworkdesktop-4.8&quot;&gt;WinForm&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Patient Management</title>
+        <published>2018-04-20T00:00:00+00:00</published>
+        <updated>2018-04-20T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://emptyfridge0900.github.io/assignments/patient/" type="text/html"/>
+        <id>https://emptyfridge0900.github.io/assignments/patient/</id>
+        
+        <content type="html">&lt;h1 id=&quot;github-repository&quot;&gt;Github Repository&lt;&#x2F;h1&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;emptyfridge0900&#x2F;EMS2&quot;&gt;Click here&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;project&quot;&gt;Project&lt;&#x2F;h1&gt;
+&lt;p&gt;Manage patient that includes &lt;code&gt;create patient&lt;&#x2F;code&gt;, &lt;code&gt;search patient&lt;&#x2F;code&gt;, &lt;code&gt;make an appointment&lt;&#x2F;code&gt;, and &lt;code&gt;search appointment&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;screenshot&quot;&gt;Screenshot&lt;&#x2F;h1&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;ems&#x2F;appointment_result.png&quot; alt=&quot;&quot; &#x2F;&gt;
+&lt;img src=&quot;&#x2F;images&#x2F;ems&#x2F;create_appointment.png&quot; alt=&quot;&quot; &#x2F;&gt;
+&lt;img src=&quot;&#x2F;images&#x2F;ems&#x2F;register_patient.png&quot; alt=&quot;&quot; &#x2F;&gt;
+&lt;img src=&quot;&#x2F;images&#x2F;ems&#x2F;search_patient.png&quot; alt=&quot;&quot; &#x2F;&gt;
+&lt;img src=&quot;&#x2F;images&#x2F;ems&#x2F;search_patient2.png&quot; alt=&quot;&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;features&quot;&gt;Features&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;demographic&quot;&gt;Demographic&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled=&quot;&quot; type=&quot;checkbox&quot; checked=&quot;&quot;&#x2F;&gt;
+Register Patient&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;input disabled=&quot;&quot; type=&quot;checkbox&quot; checked=&quot;&quot;&#x2F;&gt;
+Search Patient by ID&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;input disabled=&quot;&quot; type=&quot;checkbox&quot; checked=&quot;&quot;&#x2F;&gt;
+Search Patient by Name&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;input disabled=&quot;&quot; type=&quot;checkbox&quot; checked=&quot;&quot;&#x2F;&gt;
+Update Patient Info&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;input disabled=&quot;&quot; type=&quot;checkbox&quot; checked=&quot;&quot;&#x2F;&gt;
+Input validation&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;input disabled=&quot;&quot; type=&quot;checkbox&quot;&#x2F;&gt;
+Delete Patient&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;appointment&quot;&gt;Appointment&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled=&quot;&quot; type=&quot;checkbox&quot; checked=&quot;&quot;&#x2F;&gt;
+Sechdule an appointment&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled=&quot;&quot; type=&quot;checkbox&quot; checked=&quot;&quot;&#x2F;&gt;
+Patients may be booked individually, or within groups of 2 &lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;input disabled=&quot;&quot; type=&quot;checkbox&quot; checked=&quot;&quot;&#x2F;&gt;
+Search an appointment&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h1 id=&quot;tech-framework-used&quot;&gt;Tech&#x2F;framework used&lt;&#x2F;h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;docs.microsoft.com&#x2F;en-us&#x2F;aspnet&#x2F;core&#x2F;tutorials&#x2F;first-mvc-app&#x2F;?view=aspnetcore-3.1&quot;&gt;ASP.NET MVC&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.microsoft.com&#x2F;en-us&#x2F;sql-server&#x2F;sql-server-2019&quot;&gt;Sql Server&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+        
+    </entry>
+</feed>
