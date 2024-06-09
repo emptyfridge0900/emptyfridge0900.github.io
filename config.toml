@@ -56,7 +56,6 @@ navbar_items = [
 	{code = "en",nav_items =[
 	{ url = "$BASE_URL/", name = "Home" },
 	{ url = "$BASE_URL/data_structure", name = "Data Structure" },
-	{ url = "$BASE_URL/leetcode", name = "Leet code" },
 	{ url = "$BASE_URL/rust", name = "Rust" },
     { url = "$BASE_URL/projects", name = "Side Projects" },
 	{ url = "$BASE_URL/commands", name = "Commands" },
