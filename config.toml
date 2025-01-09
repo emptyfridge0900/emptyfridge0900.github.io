@@ -2,7 +2,7 @@
 theme = "DeepThought"
 
 # The URL the site will be built for
-base_url = "https://emptyfridge0900.dev/"
+base_url = "https://emptyfridge.dev/"
 
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = true
