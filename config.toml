@@ -54,10 +54,11 @@ katex.auto_render = true
 galleria.enabled = true
 navbar_items = [
 	{code = "en",nav_items =[
-	{ url = "$BASE_URL/", name = "Home" },
-	{ url = "$BASE_URL/data_structure", name = "Data Structure" },
+	{ url = "$BASE_URL", name = "Home" },
+	{ url = "$BASE_URL/data_structure", name = "DS" },
+	{ url = "$BASE_URL/algorithm", name = "Algo" },
 	{ url = "$BASE_URL/rust", name = "Rust" },
-    { url = "$BASE_URL/projects", name = "Side Projects" },
+    { url = "$BASE_URL/projects", name = "Toy Projects" },
 	{ url = "$BASE_URL/commands", name = "Commands" },
 	{ url = "$BASE_URL/rabbitmq", name = "RabbitMQ" },
 	{ url = "$BASE_URL/tags", name = "Tags" },
