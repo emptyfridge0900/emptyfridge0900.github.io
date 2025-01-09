@@ -21,7 +21,7 @@ I depend a lot [wasm-pack doc](https://rustwasm.github.io/docs/wasm-pack/) while
 [Click here](https://github.com/emptyfridge0900/game-of-life)
 
 ### Github Page Publishing
-[Click here](https://emptyfridge0900.dev/game-of-life)
+[Click here](https://emptyfridge.dev/game-of-life)
 ### References how to publish results on a GitHub page
 #### Github Action
 https://www.daleseo.com/?tag=GitHubActions

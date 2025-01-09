@@ -8,7 +8,7 @@ tags = ["project", "rust"]
 +++
 
 
-[Monkey programming lanuage](https://github.com/emptyfridge0900/interpreter)  [👉Try it out](https://emptyfridge0900.dev/interpreter)
+[Monkey programming lanuage](https://github.com/emptyfridge0900/interpreter)  [👉Try it out](https://emptyfridge.dev/interpreter)
 
 About a month ago watched this [video](https://youtu.be/yeatOU5vVsA?t=631), and I wanted to learn about interpreter.
 
