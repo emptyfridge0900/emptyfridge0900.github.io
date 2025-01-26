@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title> - Algorithm</title>
+    <link rel="self" type="application/atom+xml" href="https://emptyfridge.dev/categories/algorithm/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://emptyfridge.dev/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2025-01-09T00:00:00+00:00</updated>
+    <id>https://emptyfridge.dev/categories/algorithm/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Euclidean Algorithm (유클리드 호제법)</title>
+        <published>2025-01-09T00:00:00+00:00</published>
+        <updated>2025-01-09T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/algorithm/euclidean/"/>
+        <id>https://emptyfridge.dev/algorithm/euclidean/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/algorithm/euclidean/">&lt;p&gt;Leet code문제를 풀다 Greatest Common Divisor of Strings이라는 문제를 만났다. 처음에는 아무생각 없이 문자열 두개를 포인터를 써서 비교해가는 방법으로 풀었는데 곧 이 방법은 틀렸다는 것을 알았다. 역시 풀기전에 문제를 잘 읽고 분석을...&lt;&#x2F;p&gt;
+&lt;p&gt;핵심은 공통된 최대의 문자열을 찾는 것. 최대 공약 문자열 찾는 방법을 문자열의 길이로 바꾸면? 그렇다, 그냥 최대공약수 찾기 문제인것이다.&lt;&#x2F;p&gt;
+&lt;p&gt;최대공약수 찾기를 구현해본적이 없어서 혼자 이리저리 생각해 보았는데 결국은 다른 사람의 도움을 받기로 했다. 그리고 정말 깔끔한 코들를 발견했다&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;C#&quot; style=&quot;background-color:#383838;color:#e6e1dc;&quot; class=&quot;language-C# &quot;&gt;&lt;code class=&quot;language-C#&quot; data-lang=&quot;C#&quot;&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;public &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;int &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ffc66d;&quot;&gt;gcd&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;int &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#fd971f;&quot;&gt;a&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;int &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#fd971f;&quot;&gt;b&lt;&#x2F;span&gt;&lt;span&gt;) {
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;b &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;== &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;? &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;a &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span&gt;gcd(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;b&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;a &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;% &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;b&lt;&#x2F;span&gt;&lt;span&gt;);
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;그리고 이게 그 유명한 유클리드 호제법이라는 것을 알게 되었다.&lt;&#x2F;p&gt;
+&lt;p&gt;내가 알던 공약수 구하는 방법은 두 수의 약수들을 구하고 그 약수들을 곱하는 식이였다
+예를 들어 252와 105의 공약수를 구하려면 252&#x2F;3=84, 105&#x2F;3=35 그리고 다시 84&#x2F;7=12, 35&#x2F;7=5, 12와 5는 공약수가 없기 때문에 3과 7이 252와 105의 공약수이고 3*7=21이 최대 공약수인 것이다.&lt;&#x2F;p&gt;
+&lt;p&gt;참고 &lt;br &#x2F;&gt;
+&lt;a href=&quot;https:&#x2F;&#x2F;www.khanacademy.org&#x2F;computing&#x2F;computer-science&#x2F;cryptography&#x2F;modarithmetic&#x2F;a&#x2F;the-euclidean-algorithm&quot;&gt;https:&#x2F;&#x2F;www.khanacademy.org&#x2F;computing&#x2F;computer-science&#x2F;cryptography&#x2F;modarithmetic&#x2F;a&#x2F;the-euclidean-algorithm&lt;&#x2F;a&gt;
+&lt;a href=&quot;https:&#x2F;&#x2F;seunghyum.github.io&#x2F;algorithm&#x2F;Euclidean-algorithm&quot;&gt;https:&#x2F;&#x2F;seunghyum.github.io&#x2F;algorithm&#x2F;Euclidean-algorithm&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>
