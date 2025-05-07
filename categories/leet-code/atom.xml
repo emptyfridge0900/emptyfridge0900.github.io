@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title> - Leet code</title>
+    <link rel="self" type="application/atom+xml" href="https://emptyfridge.dev/categories/leet-code/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://emptyfridge.dev/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-05-27T00:00:00+00:00</updated>
+    <id>https://emptyfridge.dev/categories/leet-code/atom.xml</id>
+    <entry xml:lang="en">
+        <title>1539. Kth Missing Positive Number</title>
+        <published>2023-05-27T00:00:00+00:00</published>
+        <updated>2023-05-27T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/leetcode/1539/"/>
+        <id>https://emptyfridge.dev/leetcode/1539/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/leetcode/1539/">&lt;h2 id=&quot;problem&quot;&gt;Problem&lt;&#x2F;h2&gt;
+&lt;p&gt;Given an array &lt;em&gt;arr&lt;&#x2F;em&gt; of positive integers sorted in a strictly increasing order, and an integer &lt;em&gt;k&lt;&#x2F;em&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;Return the &lt;em&gt;k&lt;sup&gt;th&lt;sup&gt;&lt;&#x2F;em&gt; positive integer that is missing from this array.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;example-1&quot;&gt;Example 1.&lt;&#x2F;h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; arr = [2,3,4,7,11], k = 5&lt;br &#x2F;&gt;
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; 9&lt;br &#x2F;&gt;
+&lt;strong&gt;Explanation:&lt;&#x2F;strong&gt; The missing positive integers are [1,5,6,8,9,10,12,13,...]. The &lt;em&gt;5&lt;sup&gt;th&lt;sup&#x2F;&gt;&lt;&#x2F;em&gt; missing positive integer is 9.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h3 id=&quot;example-2&quot;&gt;Example 2.&lt;&#x2F;h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; arr = [1,2,3,4], k = 2&lt;br &#x2F;&gt;
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; 6&lt;br &#x2F;&gt;
+&lt;strong&gt;Explanation:&lt;&#x2F;strong&gt; The missing positive integers are [5,6,7,...]. The &lt;em&gt;2&lt;sup&gt;nd&lt;&#x2F;sup&gt;&lt;&#x2F;em&gt; missing positive integer is 6.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Constraints:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;1 &amp;lt;= arr.length &amp;lt;= 1000&lt;&#x2F;li&gt;
+&lt;li&gt;1 &amp;lt;= arr[i] &amp;lt;= 1000&lt;&#x2F;li&gt;
+&lt;li&gt;1 &amp;lt;= k &amp;lt;= 1000&lt;&#x2F;li&gt;
+&lt;li&gt;arr[i] &amp;lt; arr[j] for 1 &amp;lt;= i &amp;lt; j &amp;lt;= arr.length&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;개인적으로 난이도가 medium정도 되는거 같았다&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;&#x2F;h2&gt;
+&lt;pre data-lang=&quot;rust&quot; style=&quot;background-color:#383838;color:#e6e1dc;&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;impl &lt;&#x2F;span&gt;&lt;span&gt;Solution{
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;pub &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;fn &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ffc66d;&quot;&gt;find_kth_positive&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#fd971f;&quot;&gt;arr&lt;&#x2F;span&gt;&lt;span&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;Vec&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#fd971f;&quot;&gt;k&lt;&#x2F;span&gt;&lt;span&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span&gt;)-&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;let &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;mut&lt;&#x2F;span&gt;&lt;span&gt; l:&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32 &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;let &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;mut&lt;&#x2F;span&gt;&lt;span&gt; h:&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32 &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;(arr.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#da4939;&quot;&gt;len&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;as &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;while &lt;&#x2F;span&gt;&lt;span&gt;l&amp;lt;=h&lt;&#x2F;span&gt;&lt;span style=&quot;background-color:#b90622;color:#f8f8f0;&quot;&gt;{&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; m &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;(l&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;+&lt;&#x2F;span&gt;&lt;span&gt;(h&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt;l)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;&#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;as &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;usize&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; r &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span&gt; arr[m];
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#95815e;&quot;&gt;&#x2F;&#x2F;(m+1) 은 m번째 index에 있는 값을 나타낸다. 값이 strictly increasing order로 되어있기 때문
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#95815e;&quot;&gt;&#x2F;&#x2F;r-(m+1) = r-m-1;
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; diff &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span&gt; r&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt;(m &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;as &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#95815e;&quot;&gt;&#x2F;&#x2F; diff가 목표로 하는 순번(k)에 가까워지려고 노력하자
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;if&lt;&#x2F;span&gt;&lt;span&gt; diff &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span&gt; k {
+&lt;&#x2F;span&gt;&lt;span&gt;                l &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;(m &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;as &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;+ &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;            } &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;else &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;                h &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;(m &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;as &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;- &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;            }
+&lt;&#x2F;span&gt;&lt;span&gt;        다
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#95815e;&quot;&gt;&#x2F;&#x2F;l이 있는 위치는 숫자 k번 만큼 빠져있는 인덱스다. 그래서 k를 더해주면 빠진 k번째 값을 얻을수 있다. 
+&lt;&#x2F;span&gt;&lt;span&gt;        l&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;+&lt;&#x2F;span&gt;&lt;span&gt;k;
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>441. Arranging Coins</title>
+        <published>2023-05-25T00:00:00+00:00</published>
+        <updated>2023-05-25T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/leetcode/441/"/>
+        <id>https://emptyfridge.dev/leetcode/441/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/leetcode/441/">&lt;h2 id=&quot;problem&quot;&gt;Problem&lt;&#x2F;h2&gt;
+&lt;p&gt;You have n coins and you want to build a staircase with these coins. The staircase consists of &lt;em&gt;k&lt;&#x2F;em&gt; rows where the &lt;em&gt;i&lt;sup&gt;th&lt;sup&gt;&lt;&#x2F;em&gt; row has exactly &lt;em&gt;i&lt;&#x2F;em&gt; coins. The last row of the staircase &lt;strong&gt;may be&lt;&#x2F;strong&gt; incomplete.&lt;&#x2F;p&gt;
+&lt;p&gt;Given the integer &lt;em&gt;n&lt;&#x2F;em&gt;, return the number of &lt;strong&gt;complete rows&lt;&#x2F;strong&gt; of the staircase you will build.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;example-1&quot;&gt;Example 1.&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;leetcode&#x2F;arrangecoins1-grid.jpg&quot; alt=&quot;1&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; n = 5&lt;br &#x2F;&gt;
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; 2&lt;br &#x2F;&gt;
+&lt;strong&gt;Explanation:&lt;&#x2F;strong&gt; Because the &lt;em&gt;3&lt;sup&gt;rd&lt;sup&gt;&lt;&#x2F;em&gt; row is incomplete, we return 2.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h3 id=&quot;example-2&quot;&gt;Example 2.&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;leetcode&#x2F;arrangecoins2-grid.jpg&quot; alt=&quot;2&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; n = 8&lt;br &#x2F;&gt;
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; 3&lt;br &#x2F;&gt;
+&lt;strong&gt;Explanation:&lt;&#x2F;strong&gt; Because the &lt;em&gt;4&lt;sup&gt;rd&lt;sup&gt;&lt;&#x2F;em&gt; row is incomplete, we return 3.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;&#x2F;h2&gt;
+&lt;pre data-lang=&quot;rust&quot; style=&quot;background-color:#383838;color:#e6e1dc;&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;impl &lt;&#x2F;span&gt;&lt;span&gt;Solution{
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;pub &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;fn &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ffc66d;&quot;&gt;arrange_coins&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#fd971f;&quot;&gt;n&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span&gt;) -&amp;gt; &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;let &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;mut&lt;&#x2F;span&gt;&lt;span&gt; l:&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i64 &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;let &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;mut&lt;&#x2F;span&gt;&lt;span&gt; h:&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i64 &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span&gt; n &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;as &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i64&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;while &lt;&#x2F;span&gt;&lt;span&gt;l&amp;lt;=h&lt;&#x2F;span&gt;&lt;span style=&quot;background-color:#b90622;color:#f8f8f0;&quot;&gt;{&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; m:&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i64 &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span&gt; l&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;+&lt;&#x2F;span&gt;&lt;span&gt;(h&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span&gt;l)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;&#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;let &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;mut&lt;&#x2F;span&gt;&lt;span&gt; p:&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i64 &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span&gt; m&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span&gt;(m&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;&#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#95815e;&quot;&gt;&#x2F;&#x2F; p 를 i32로 변환하면 이상하게도 엄청 큰 수가 나옴 그래서 n을 i64로
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;if&lt;&#x2F;span&gt;&lt;span&gt; p &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;==&lt;&#x2F;span&gt;&lt;span&gt; n &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;as &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i64&lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;                &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;return&lt;&#x2F;span&gt;&lt;span&gt; m &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;as &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;            }
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;if&lt;&#x2F;span&gt;&lt;span&gt; p &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt; n &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;as &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i64&lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;                h &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span&gt; m&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;            } &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;else &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;                l &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span&gt; m&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;            }
+&lt;&#x2F;span&gt;&lt;span&gt;        }
+&lt;&#x2F;span&gt;&lt;span&gt;        (l&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;as &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>35. Search Insert Position</title>
+        <published>2023-05-22T00:00:00+00:00</published>
+        <updated>2023-05-22T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/leetcode/35/"/>
+        <id>https://emptyfridge.dev/leetcode/35/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/leetcode/35/">&lt;h2 id=&quot;problem&quot;&gt;Problem&lt;&#x2F;h2&gt;
+&lt;p&gt;Given a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.&lt;&#x2F;p&gt;
+&lt;p&gt;You must write an algorithm with O(log n) runtime complexity.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Example 1:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; nums = [1,3,5,6], target = 5
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; 2&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Example 2:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; nums = [1,3,5,6], target = 2
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; 1&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Example 3:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; nums = [1,3,5,6], target = 7
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; 4&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;&#x2F;h2&gt;
+&lt;pre data-lang=&quot;C#&quot; style=&quot;background-color:#383838;color:#e6e1dc;&quot; class=&quot;language-C# &quot;&gt;&lt;code class=&quot;language-C#&quot; data-lang=&quot;C#&quot;&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;public &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;class &lt;&#x2F;span&gt;&lt;span style=&quot;text-decoration:underline;color:#ffc66d;&quot;&gt;Solution&lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;public &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;int &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ffc66d;&quot;&gt;SearchInsert&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;int&lt;&#x2F;span&gt;&lt;span&gt;[] &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#fd971f;&quot;&gt;nums&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;int &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#fd971f;&quot;&gt;target&lt;&#x2F;span&gt;&lt;span&gt;){
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;var &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;low &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;var &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;high &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;nums&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;Length&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;while&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;low&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;&amp;lt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;high&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;        {
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;var &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;med &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;low&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;high&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;&#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;if&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;nums&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;med&lt;&#x2F;span&gt;&lt;span&gt;]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;target&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;            {
+&lt;&#x2F;span&gt;&lt;span&gt;                &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;med&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;            }
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;if&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;nums&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;med&lt;&#x2F;span&gt;&lt;span&gt;]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;target&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;            {
+&lt;&#x2F;span&gt;&lt;span&gt;                &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;high&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;med&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;            }
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;else
+&lt;&#x2F;span&gt;&lt;span&gt;            {
+&lt;&#x2F;span&gt;&lt;span&gt;                &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;low&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;med &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;            }
+&lt;&#x2F;span&gt;&lt;span&gt;        }
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;low&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>374. Guess Number Higher or Lower</title>
+        <published>2023-05-22T00:00:00+00:00</published>
+        <updated>2023-05-22T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/leetcode/374/"/>
+        <id>https://emptyfridge.dev/leetcode/374/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/leetcode/374/">&lt;h2 id=&quot;problem&quot;&gt;Problem&lt;&#x2F;h2&gt;
+&lt;p&gt;We are playing the Guess Game. The game is as follows:&lt;&#x2F;p&gt;
+&lt;p&gt;I pick a number from 1 to n. You have to guess which number I picked.&lt;&#x2F;p&gt;
+&lt;p&gt;Every time you guess wrong, I will tell you whether the number I picked is higher or lower than your guess.&lt;&#x2F;p&gt;
+&lt;p&gt;You call a pre-defined API int guess(int num), which returns three possible results:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;-1: Your guess is higher than the number I picked (i.e. num &amp;gt; pick).&lt;&#x2F;li&gt;
+&lt;li&gt;1: Your guess is lower than the number I picked (i.e. num &amp;lt; pick).&lt;&#x2F;li&gt;
+&lt;li&gt;0: your guess is equal to the number I picked (i.e. num == pick).
+Return the number that I picked.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;strong&gt;Example 1:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; n = 10, pick = 6
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; 6&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Example 2:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; n = 1, pick = 1&lt;br &#x2F;&gt;
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; 1&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Example 3:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; n = 2, pick = 1
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; 1&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;&#x2F;h2&gt;
+&lt;pre data-lang=&quot;C#&quot; style=&quot;background-color:#383838;color:#e6e1dc;&quot; class=&quot;language-C# &quot;&gt;&lt;code class=&quot;language-C#&quot; data-lang=&quot;C#&quot;&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;public &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;class &lt;&#x2F;span&gt;&lt;span style=&quot;text-decoration:underline;color:#ffc66d;&quot;&gt;Solution &lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;text-decoration:underline;font-style:italic;color:#ffc66d;&quot;&gt;GuessGame&lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;public &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;int &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ffc66d;&quot;&gt;GuessNumber&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;int &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#fd971f;&quot;&gt;n&lt;&#x2F;span&gt;&lt;span&gt;){
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;var &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;low &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;var &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;high &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;n&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;var &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;ret &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;while&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;low&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;&amp;lt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;high&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;        {
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;var &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;g &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;low&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;+&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;high&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;low&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;&#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;if&lt;&#x2F;span&gt;&lt;span&gt;(guess(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;g&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;==&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;            {
+&lt;&#x2F;span&gt;&lt;span&gt;                &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;ret&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;g&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;                &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;break&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;            }
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;if&lt;&#x2F;span&gt;&lt;span&gt;(guess(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;g&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;==-&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;                &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;high&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;g&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;else
+&lt;&#x2F;span&gt;&lt;span&gt;                &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;log&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;g&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;        }
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;ret&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>704. Binary Search</title>
+        <published>2023-05-05T00:00:00+00:00</published>
+        <updated>2023-05-05T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/leetcode/binary-searcg/"/>
+        <id>https://emptyfridge.dev/leetcode/binary-searcg/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/leetcode/binary-searcg/">&lt;h2 id=&quot;problem&quot;&gt;Problem&lt;&#x2F;h2&gt;
+&lt;p&gt;Given an array of integers nums which is sorted in ascending order, and an integer target, write a function to search target in nums. If target exists, then return its index. Otherwise, return -1.&lt;&#x2F;p&gt;
+&lt;p&gt;You must write an algorithm with O(log n) runtime complexity.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Example 1:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; nums = [-1,0,3,5,9,12], target = 9&lt;br &#x2F;&gt;
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; 4&lt;br &#x2F;&gt;
+&lt;strong&gt;Explanation:&lt;&#x2F;strong&gt; 9 exists in nums and its index is 4&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Example 2:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; nums = [-1,0,3,5,9,12], target = 2&lt;br &#x2F;&gt;
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; -1&lt;br &#x2F;&gt;
+&lt;strong&gt;Explanation:&lt;&#x2F;strong&gt; 2 does not exist in nums so return -1&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Constraints:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;1 &amp;lt;= nums.length &amp;lt;= 10&lt;sup&gt;4&lt;&#x2F;sup&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;-10&lt;sup&gt;4&lt;&#x2F;sup&gt; &amp;lt; nums[i], target &amp;lt; 10&lt;sup&gt;4&lt;&#x2F;sup&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;All the integers in nums are unique.&lt;&#x2F;li&gt;
+&lt;li&gt;nums is sorted in ascending order.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;&#x2F;h2&gt;
+&lt;pre data-lang=&quot;rust&quot; style=&quot;background-color:#383838;color:#e6e1dc;&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;pub &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;fn &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ffc66d;&quot;&gt;search&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#fd971f;&quot;&gt;nums&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;Vec&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#fd971f;&quot;&gt;target&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span&gt;) -&amp;gt; &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;let &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;mut&lt;&#x2F;span&gt;&lt;span&gt; left&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;let &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;mut&lt;&#x2F;span&gt;&lt;span&gt; right&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span&gt;nums.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#da4939;&quot;&gt;len&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;while &lt;&#x2F;span&gt;&lt;span&gt;left&amp;lt;right&lt;&#x2F;span&gt;&lt;span style=&quot;background-color:#b90622;color:#f8f8f0;&quot;&gt;{&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; med &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;(left&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;+&lt;&#x2F;span&gt;&lt;span&gt;right)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;&#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;if&lt;&#x2F;span&gt;&lt;span&gt; nums[med]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;==&lt;&#x2F;span&gt;&lt;span&gt;target{
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;return&lt;&#x2F;span&gt;&lt;span&gt; med &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;as &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;        }
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;else if&lt;&#x2F;span&gt;&lt;span&gt; nums[med]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span&gt;target{
+&lt;&#x2F;span&gt;&lt;span&gt;            left&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span&gt;med&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;        }&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;else&lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;            right&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span&gt;med&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;-&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;        }
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;return -&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>53. Maximum Subarray</title>
+        <published>2020-09-17T00:00:00+00:00</published>
+        <updated>2020-09-17T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/leetcode/max-sub-array/"/>
+        <id>https://emptyfridge.dev/leetcode/max-sub-array/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/leetcode/max-sub-array/">&lt;h2 id=&quot;problem&quot;&gt;Problem&lt;&#x2F;h2&gt;
+&lt;p&gt;Given an integer array nums, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Follow up&lt;&#x2F;strong&gt;: If you have figured out the O(n) solution, try coding another solution using the divide and conquer approach, which is more subtle.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Example 1:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; nums = [-2,1,-3,4,-1,2,1,-5,4]&lt;br &#x2F;&gt;
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; 6&lt;br &#x2F;&gt;
+&lt;strong&gt;Explanation:&lt;&#x2F;strong&gt; [4,-1,2,1] has the largest sum = 6.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Example 2:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; nums = [1]&lt;br &#x2F;&gt;
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; 1&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Example 3:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; nums = [0]&lt;br &#x2F;&gt;
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; 0&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Example 4:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; nums = [-1]&lt;br &#x2F;&gt;
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; -1&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Example 5:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Input:&lt;&#x2F;strong&gt; nums = [-2147483647]&lt;br &#x2F;&gt;
+&lt;strong&gt;Output:&lt;&#x2F;strong&gt; -2147483647&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Constraints:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;1 &amp;lt;= nums.length &amp;lt;= 2 * 10&lt;sup&gt;4&lt;&#x2F;sup&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;-10&lt;sup&gt;4&lt;&#x2F;sup&gt; &amp;lt;= nums[i] &amp;lt;= 10&lt;sup&gt;4&lt;&#x2F;sup&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;solution&quot;&gt;solution&lt;&#x2F;h2&gt;
+&lt;pre data-lang=&quot;rust&quot; style=&quot;background-color:#383838;color:#e6e1dc;&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;impl &lt;&#x2F;span&gt;&lt;span&gt;Solution {
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;pub &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;fn &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ffc66d;&quot;&gt;max_sub_array&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#fd971f;&quot;&gt;nums&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;Vec&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;) -&amp;gt; &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32 &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;if&lt;&#x2F;span&gt;&lt;span&gt; nums.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#da4939;&quot;&gt;len&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;==&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;0
+&lt;&#x2F;span&gt;&lt;span&gt;        }
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;let &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;mut&lt;&#x2F;span&gt;&lt;span&gt; max:&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span&gt;nums[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;];
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;for&lt;&#x2F;span&gt;&lt;span&gt; i &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;in &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;..&lt;&#x2F;span&gt;&lt;span&gt;nums.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#da4939;&quot;&gt;len&lt;&#x2F;span&gt;&lt;span&gt;(){
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;let &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;mut&lt;&#x2F;span&gt;&lt;span&gt; sum:&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;for&lt;&#x2F;span&gt;&lt;span&gt; j &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;in&lt;&#x2F;span&gt;&lt;span&gt; i&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;..&lt;&#x2F;span&gt;&lt;span&gt;nums.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#da4939;&quot;&gt;len&lt;&#x2F;span&gt;&lt;span&gt;(){
+&lt;&#x2F;span&gt;&lt;span&gt;                sum&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span&gt;sum&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;+&lt;&#x2F;span&gt;&lt;span&gt;nums[j];
+&lt;&#x2F;span&gt;&lt;span&gt;                &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;if&lt;&#x2F;span&gt;&lt;span&gt; sum&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt;max{
+&lt;&#x2F;span&gt;&lt;span&gt;                    max&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span&gt;sum;
+&lt;&#x2F;span&gt;&lt;span&gt;                }
+&lt;&#x2F;span&gt;&lt;span&gt;            }
+&lt;&#x2F;span&gt;&lt;span&gt;        }
+&lt;&#x2F;span&gt;&lt;span&gt;        max
+&lt;&#x2F;span&gt;&lt;span&gt;        
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Time complexity is &lt;strong&gt;O(n&lt;sup&gt;2&lt;&#x2F;sup&gt;)&lt;&#x2F;strong&gt;&lt;br &#x2F;&gt;
+&lt;br&#x2F;&gt;
+&lt;br&#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;other-solution&quot;&gt;Other solution&lt;&#x2F;h2&gt;
+&lt;pre data-lang=&quot;rust&quot; style=&quot;background-color:#383838;color:#e6e1dc;&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;impl &lt;&#x2F;span&gt;&lt;span&gt;Solution {
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;pub &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;fn &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ffc66d;&quot;&gt;max_sub_array&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#fd971f;&quot;&gt;nums&lt;&#x2F;span&gt;&lt;span&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;Vec&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;) -&amp;gt; &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32 &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;let &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;mut&lt;&#x2F;span&gt;&lt;span&gt; sum: &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32 &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;let &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;mut&lt;&#x2F;span&gt;&lt;span&gt; maxSum: &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32 &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;std::i32::&lt;&#x2F;span&gt;&lt;span style=&quot;color:#6d9cbe;&quot;&gt;MIN&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;for &lt;&#x2F;span&gt;&lt;span&gt;(i, j) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;in&lt;&#x2F;span&gt;&lt;span&gt; nums.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#da4939;&quot;&gt;iter&lt;&#x2F;span&gt;&lt;span&gt;().&lt;&#x2F;span&gt;&lt;span style=&quot;color:#da4939;&quot;&gt;enumerate&lt;&#x2F;span&gt;&lt;span&gt;(){
+&lt;&#x2F;span&gt;&lt;span&gt;            sum &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span&gt; sum &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;+&lt;&#x2F;span&gt;&lt;span&gt; nums[i];
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;if&lt;&#x2F;span&gt;&lt;span&gt; sum &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt; maxSum {
+&lt;&#x2F;span&gt;&lt;span&gt;                maxSum &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span&gt; sum
+&lt;&#x2F;span&gt;&lt;span&gt;            }
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;if&lt;&#x2F;span&gt;&lt;span&gt; sum &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;&amp;lt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;0 &lt;&#x2F;span&gt;&lt;span&gt;{    
+&lt;&#x2F;span&gt;&lt;span&gt;                sum  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;0    
+&lt;&#x2F;span&gt;&lt;span&gt;            }              
+&lt;&#x2F;span&gt;&lt;span&gt;        }
+&lt;&#x2F;span&gt;&lt;span&gt;        
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;return&lt;&#x2F;span&gt;&lt;span&gt; maxSum;
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Time complexity is &lt;strong&gt;O(n)&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>
