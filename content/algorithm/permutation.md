@@ -3,7 +3,7 @@ title="Permutation"
 date=2023-05-29
 
 [taxonomies]
-categories = ["post"]
+categories = ["Algorithm"]
 tags = ["math"]
 +++
 
