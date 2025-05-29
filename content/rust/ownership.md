@@ -39,7 +39,7 @@ println!("{r3}");
 ```
 
 ### Copy
-When I read [the book](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html) and its examples, I feel like I understood it. But when I started coding, I got confused between copy and move. Recently, while coding in C#, I realized why I was confusing copy and move.
+When I read [the book](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html) and its examples, I feel like I understood it. But when I started coding, I got confused between copy, borrow, and move. Recently, while coding in C#, I realized why I was confusing copy, borrow, and move.
 
 The example below is similar to a problem I encountered a few days ago while coding. 
 
@@ -79,7 +79,7 @@ public static void Main(string[] args)
     Console.WriteLine(result.Total);
 }
 ```
-This prints 35 in the console. I had unconsciously assumed that assignment operator (=) meant a copy operation. My intention was to copy the value of __apple__ to __result__ when doing **result = apple;**, but this caused unintended modification because it only copies the reference, and not the object's data. In Rust terminology, this is called a mutable borrow. If you want a copy of an object, you need to implement [ICloneable](https://learn.microsoft.com/en-us/dotnet/api/system.icloneable?view=net-9.0).
+This prints 35 in the console. I had unconsciously assumed that assignment operator (=) meant a copy operation. My intention was to copy the value of __apple__ to __result__ when doing **result = apple;**, but this caused unintended modification because it only copies the reference, and not the object's data. In Rust terminology, this is called a mutable borrow. If you want a copy of an object in C#, you need to implement [ICloneable](https://learn.microsoft.com/en-us/dotnet/api/system.icloneable?view=net-9.0).
 
 
 
@@ -106,4 +106,4 @@ In the C# code above, one piece of data was referenced by two variables. This co
 *All the images above are from [Rust programming language book](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html#ownership-rules)
 
 ### Lesson I learned
-From now on, whenever I encounter the assignment operator (=), I should consider whether it performs a copy or a reference, whether in C#, JavaScript, or Rust.
+Whenever I encounter the assignment operator (=), I should consider whether it performs a copy or just copy a reference, whether in C#, JavaScript, or Rust.
