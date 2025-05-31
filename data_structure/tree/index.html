@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" integrity="sha384-oGm59HWAkwO32h2w8u0B98wKBZJwd6MbWtAJwQKCTffZjOXHXrnyv9Syjovgc+UV" crossorigin="anonymous">
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+ | Tree
+
+  </title>
+
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;"></a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;data_structure">
+            DS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;algorithm">
+            Algo
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;leetcode">
+            Coding Practice
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;projects">
+            Toy Projects
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;commands">
+            Commands
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Tree
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2023-05-05">May 05, 2023</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>2 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>213 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/data-structure/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Data Structure</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/breadth-first-search/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Breadth-First Search</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/bfs/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>BFS</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>Tree는 Graph의 일종, Acyclic graph</p>
+<p><img src="/images/DS/Tree/Treedatastructure.png" alt="tree" />
+source: <a href="https://www.geeksforgeeks.org/introduction-to-tree-data-structure-and-algorithm-tutorials/">https://www.geeksforgeeks.org/introduction-to-tree-data-structure-and-algorithm-tutorials/</a></p>
+<h2 id="teuri-jongryu">트리 종류</h2>
+<p><a href="https://en.wikipedia.org/wiki/Binary_tree">Binary Tree</a> -&gt; <a href="https://en.wikipedia.org/wiki/Binary_search_tree">Binary Search Tree</a> -&gt; <a href="https://en.wikipedia.org/wiki/Self-balancing_binary_search_tree">Self-balancing binary search tree</a> (AVL tree,B-tree,Red–black tree etc.)</p>
+<p>Full Binary Tree (완전이진)-&gt; Complete Binary Tree (전이진)-&gt; Perfect Binary Tree(포화이진)</p>
+<h2 id="tamsaegbangbeob">탐색방법</h2>
+<h4 id="1-dfs-depth-first-search">1.DFS Depth-First Search</h4>
+<p>Root부터 leaf까지 모든 루트를 하나씩 탐색하는 방법
+모든 경로를 한번씩 거치기 때문에 경로의 특이점을 저장해둘수 있다
+미로찾기 문제로 많이 나온다
+<img src="/images/DS/Tree/full_binary_tree.png" alt="Tree" /></p>
+<h5 id="preorder-traversal-jeonwi-sunhoe-root-left-right">Preorder Traversal, 전위 순회 (<em>Root</em> -&gt; Left -&gt; Right)</h5>
+<p>root가 첫번째로 와서 전위순회
+A-B-D-E-H-I-C-F-G</p>
+<h5 id="inorder-traversal-jungwi-sunhoe-left-root-right">Inorder Traversal, 중위 순회 (Left -&gt; <em>Root</em> -&gt; Right)</h5>
+<p>root가 중간에 와서 중위 순회
+D-B-H-E-I-A-F-C-G</p>
+<h5 id="postorder-traversal-huwi-sunhoe-left-right-root">Postorder Traversal, 후위 순회 (Left -&gt; Right -&gt; <em>Root</em>)</h5>
+<p>root가 마지막에 와서 후위 순회
+D-H-I-E-B-F-G-C-A</p>
+<p>외우는 순서는 간단하다. 무조건 Left -&gt; Right. 전위면 Root를 앞에, 후위면 뒤에, 중위면 가운데</p>
+<h5 id="dfs-guhyeonbangbeob">DFS 구현방법</h5>
+<p>stack을 주로 사용, 또는 recursive</p>
+<h4 id="2-bfs-breath-first-search">2.BFS Breath-First Search</h4>
+<p>한 레벨씩 훑어가는 방법
+최단거리 구하기 문제에 자주 사용된다
+<img src="/static/images/DS/Tree/binary_tree_level_order.png" alt="Tree" /></p>
+<h4 id="guhyeonbangbeob">구현방법</h4>
+<p>Queue를 이용해 구현</p>
+<h2 id="pyohyeonbangbeob">표현방법</h2>
+<h4 id="list">List</h4>
+<pre data-lang="rust" style="background-color:#383838;color:#e6e1dc;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#cc7833;">use </span><span>std::{rc::Rc, cell::RefCell};
+</span><span>
+</span><span>#[derive(Debug)]
+</span><span style="color:#cc7833;">pub </span><span style="font-style:italic;color:#6e9cbe;">struct </span><span>TreeNode{
+</span><span>    </span><span style="color:#cc7833;">pub </span><span style="color:#d0d0ff;">val</span><span>:</span><span style="font-style:italic;color:#6e9cbe;">i32</span><span>,
+</span><span>    </span><span style="color:#cc7833;">pub </span><span style="color:#d0d0ff;">left</span><span>:</span><span style="font-style:italic;color:#6e9cbe;">Option</span><span>&lt;Rc&lt;RefCell&lt;TreeNode&gt;&gt;&gt;,
+</span><span>    </span><span style="color:#cc7833;">pub </span><span style="color:#d0d0ff;">right</span><span>:</span><span style="font-style:italic;color:#6e9cbe;">Option</span><span>&lt;Rc&lt;RefCell&lt;TreeNode&gt;&gt;&gt;
+</span><span>}
+</span><span style="font-style:italic;color:#6e9cbe;">impl </span><span>TreeNode{
+</span><span>    </span><span style="color:#cc7833;">pub </span><span style="font-style:italic;color:#6e9cbe;">fn </span><span style="color:#ffc66d;">new</span><span>(</span><span style="font-style:italic;color:#fd971f;">val</span><span>:</span><span style="font-style:italic;color:#6e9cbe;">i32</span><span>) -&gt; </span><span style="font-style:italic;color:#6e9cbe;">Self</span><span>{
+</span><span>        TreeNode { val, left:</span><span style="font-style:italic;color:#6e9cbe;">None</span><span>, right:</span><span style="font-style:italic;color:#6e9cbe;">None </span><span>}
+</span><span>    }
+</span><span>}
+</span><span style="font-style:italic;color:#6e9cbe;">fn </span><span style="color:#ffc66d;">main</span><span>() {
+</span><span>    </span><span style="font-style:italic;color:#6e9cbe;">let</span><span> root</span><span style="color:#cc7833;">= </span><span style="font-style:italic;color:#6e9cbe;">Some</span><span>(
+</span><span>        Rc::new(
+</span><span>            RefCell::new(
+</span><span>                TreeNode::new(</span><span style="color:#a5c261;">1</span><span>)
+</span><span>            )
+</span><span>        )
+</span><span>    );
+</span><span>    </span><span style="font-style:italic;color:#6e9cbe;">let</span><span> left</span><span style="color:#cc7833;">= </span><span style="font-style:italic;color:#6e9cbe;">Some</span><span>(
+</span><span>        Rc::new(
+</span><span>            RefCell::new(
+</span><span>                TreeNode::new(</span><span style="color:#a5c261;">2</span><span>)
+</span><span>            )
+</span><span>        )
+</span><span>    );
+</span><span>    </span><span style="font-style:italic;color:#6e9cbe;">let</span><span> right</span><span style="color:#cc7833;">= </span><span style="font-style:italic;color:#6e9cbe;">Some</span><span>(
+</span><span>        Rc::new(
+</span><span>            RefCell::new(
+</span><span>                TreeNode::new(</span><span style="color:#a5c261;">3</span><span>)
+</span><span>            )
+</span><span>        )
+</span><span>    );
+</span><span>    </span><span style="font-style:italic;color:#6e9cbe;">let</span><span> r </span><span style="color:#cc7833;">=</span><span> root.</span><span style="color:#da4939;">unwrap</span><span>();
+</span><span>    r.</span><span style="color:#da4939;">borrow_mut</span><span>().left</span><span style="color:#cc7833;">=</span><span>left;
+</span><span>    r.</span><span style="color:#da4939;">borrow_mut</span><span>().right</span><span style="color:#cc7833;">=</span><span>right;
+</span><span>}
+</span></code></pre>
+<h4 id="array">Array</h4>
+<pre data-lang="rust" style="background-color:#383838;color:#e6e1dc;" class="language-rust "><code class="language-rust" data-lang="rust"><span>#[derive(Debug)]
+</span><span style="color:#cc7833;">pub </span><span style="font-style:italic;color:#6e9cbe;">struct </span><span>Array{
+</span><span>    </span><span style="color:#cc7833;">pub </span><span style="color:#d0d0ff;">root</span><span>:</span><span style="font-style:italic;color:#6e9cbe;">i32</span><span>,
+</span><span>    </span><span style="color:#cc7833;">pub </span><span style="color:#d0d0ff;">nodes</span><span>:[</span><span style="font-style:italic;color:#6e9cbe;">Option</span><span>&lt;</span><span style="font-style:italic;color:#6e9cbe;">i32</span><span>&gt;;100],
+</span><span>}
+</span><span style="font-style:italic;color:#6e9cbe;">impl </span><span>Array{
+</span><span>    </span><span style="color:#cc7833;">pub </span><span style="font-style:italic;color:#6e9cbe;">fn </span><span style="color:#ffc66d;">new</span><span>(</span><span style="font-style:italic;color:#fd971f;">val</span><span>:</span><span style="font-style:italic;color:#6e9cbe;">i32</span><span>) -&gt; </span><span style="font-style:italic;color:#6e9cbe;">Self</span><span>{
+</span><span>        Array { 
+</span><span>            root:val,
+</span><span>            nodes:[</span><span style="font-style:italic;color:#6e9cbe;">None</span><span>; </span><span style="color:#a5c261;">100</span><span>]
+</span><span>        }
+</span><span>    }
+</span><span>    </span><span style="color:#cc7833;">pub </span><span style="font-style:italic;color:#6e9cbe;">fn </span><span style="color:#ffc66d;">left</span><span>(</span><span style="color:#cc7833;">&amp;mut </span><span style="font-style:italic;color:#fd971f;">self</span><span>,</span><span style="font-style:italic;color:#fd971f;">val</span><span>:</span><span style="font-style:italic;color:#6e9cbe;">i32</span><span>,</span><span style="font-style:italic;color:#fd971f;">parent</span><span>:</span><span style="font-style:italic;color:#6e9cbe;">usize</span><span>){
+</span><span>        </span><span style="font-style:italic;color:#6e9cbe;">let</span><span> t </span><span style="color:#cc7833;">= </span><span>(parent </span><span style="color:#cc7833;">* </span><span style="color:#a5c261;">2</span><span>) </span><span style="color:#cc7833;">+ </span><span style="color:#a5c261;">1</span><span>;
+</span><span>        </span><span style="color:#d0d0ff;">self</span><span>.nodes[t]</span><span style="color:#cc7833;">=</span><span style="font-style:italic;color:#6e9cbe;">Some</span><span>(val);
+</span><span>    }
+</span><span>    </span><span style="color:#cc7833;">pub </span><span style="font-style:italic;color:#6e9cbe;">fn </span><span style="color:#ffc66d;">right</span><span>(</span><span style="color:#cc7833;">&amp;mut </span><span style="font-style:italic;color:#fd971f;">self</span><span>,</span><span style="font-style:italic;color:#fd971f;">val</span><span>:</span><span style="font-style:italic;color:#6e9cbe;">i32</span><span>,</span><span style="font-style:italic;color:#fd971f;">parent</span><span>:</span><span style="font-style:italic;color:#6e9cbe;">usize</span><span>){
+</span><span>        </span><span style="font-style:italic;color:#6e9cbe;">let</span><span> t </span><span style="color:#cc7833;">= </span><span>(parent </span><span style="color:#cc7833;">* </span><span style="color:#a5c261;">2</span><span>) </span><span style="color:#cc7833;">+ </span><span style="color:#a5c261;">2</span><span>;
+</span><span>        </span><span style="color:#d0d0ff;">self</span><span>.nodes[t]</span><span style="color:#cc7833;">=</span><span style="font-style:italic;color:#6e9cbe;">Some</span><span>(val);
+</span><span>    }
+</span><span>}
+</span><span style="font-style:italic;color:#6e9cbe;">fn </span><span style="color:#ffc66d;">main</span><span>() {
+</span><span>    </span><span style="font-style:italic;color:#6e9cbe;">let </span><span style="color:#cc7833;">mut</span><span> arr </span><span style="color:#cc7833;">= </span><span>Array::new(</span><span style="color:#a5c261;">0</span><span>);
+</span><span>    arr.</span><span style="color:#da4939;">left</span><span>(</span><span style="color:#a5c261;">1</span><span>,</span><span style="color:#a5c261;">0</span><span>);
+</span><span>    arr.</span><span style="color:#da4939;">right</span><span>(</span><span style="color:#a5c261;">2</span><span>,</span><span style="color:#a5c261;">0</span><span>);
+</span><span>    arr.</span><span style="color:#da4939;">left</span><span>(</span><span style="color:#a5c261;">3</span><span>,</span><span style="color:#a5c261;">1</span><span>);
+</span><span>    arr.</span><span style="color:#da4939;">right</span><span>(</span><span style="color:#a5c261;">4</span><span>,</span><span style="color:#a5c261;">1</span><span>);
+</span><span>    arr.</span><span style="color:#da4939;">left</span><span>(</span><span style="color:#a5c261;">5</span><span>,</span><span style="color:#a5c261;">2</span><span>);
+</span><span>    arr.</span><span style="color:#da4939;">right</span><span>(</span><span style="color:#a5c261;">6</span><span>,</span><span style="color:#a5c261;">2</span><span>);
+</span><span>
+</span><span>}
+</span></code></pre>
+<p>참조: <a href="https://www.geeksforgeeks.org/binary-tree-array-implementation/">https://www.geeksforgeeks.org/binary-tree-array-implementation/</a></p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;data_structure&#x2F;graph&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Graph
+            </a>
+          </div>
+           
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js" integrity="sha384-Pulw7+h73841BQIK0LzJCydKRPChJUF9w8h8W0o3h+cLtoyNPJS847bQauLWOTwg" crossorigin="anonymous"></script>
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.en.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>

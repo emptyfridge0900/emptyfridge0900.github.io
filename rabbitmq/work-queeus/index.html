@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" integrity="sha384-oGm59HWAkwO32h2w8u0B98wKBZJwd6MbWtAJwQKCTffZjOXHXrnyv9Syjovgc+UV" crossorigin="anonymous">
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+ | Work Queues
+
+  </title>
+
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;"></a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;data_structure">
+            DS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;algorithm">
+            Algo
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;leetcode">
+            Coding Practice
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;projects">
+            Toy Projects
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;commands">
+            Commands
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Work Queues
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2023-08-12">August 12, 2023</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>2 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>293 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/rabbitmq/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>RabbitMQ</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/event-bus/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Event bus</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p><a href="https://www.rabbitmq.com/tutorials/tutorial-two-dotnet.html">https://www.rabbitmq.com/tutorials/tutorial-two-dotnet.html</a></p>
+<h3 id="1-preparation">1. Preparation</h3>
+<p>shell</p>
+<pre data-lang="ps1" style="background-color:#383838;color:#e6e1dc;" class="language-ps1 "><code class="language-ps1" data-lang="ps1"><span>dotnet new console </span><span style="color:#cc7833;">--</span><span>name NewTask
+</span><span>mv NewTask</span><span style="color:#cc7833;">/</span><span>Program.cs NewTask</span><span style="color:#cc7833;">/</span><span>NewTask.cs
+</span><span>cd NewTask
+</span><span>dotnet add package RabbitMQ.Client
+</span></code></pre>
+<p>NewTask.cs</p>
+<pre data-lang="cs" style="background-color:#383838;color:#e6e1dc;" class="language-cs "><code class="language-cs" data-lang="cs"><span style="color:#cc7833;">using </span><span>System.Text;
+</span><span style="color:#cc7833;">using </span><span>RabbitMQ.Client;
+</span><span>
+</span><span style="font-style:italic;color:#6e9cbe;">var </span><span style="color:#d0d0ff;">factory </span><span style="color:#cc7833;">= new </span><span style="font-style:italic;color:#6e9cbe;">ConnectionFactory </span><span>{ </span><span style="color:#d0d0ff;">HostName </span><span style="color:#cc7833;">= </span><span style="color:#c1be91;">&quot;localhost&quot;</span><span>, </span><span style="color:#d0d0ff;">UserName</span><span style="color:#cc7833;">=</span><span style="color:#c1be91;">&quot;test&quot;</span><span>, </span><span style="color:#d0d0ff;">Password </span><span style="color:#cc7833;">=</span><span style="color:#c1be91;">&quot;test123&quot;</span><span>,</span><span style="color:#d0d0ff;">Port</span><span style="color:#cc7833;">=</span><span style="color:#a5c261;">7777  </span><span>};
+</span><span style="color:#cc7833;">using </span><span>var connection </span><span style="color:#cc7833;">= </span><span>factory.CreateConnection</span><span style="background-color:#b90622;color:#f8f8f0;">()</span><span>;
+</span><span style="color:#cc7833;">using </span><span>var channel </span><span style="color:#cc7833;">= </span><span>connection.CreateModel</span><span style="background-color:#b90622;color:#f8f8f0;">()</span><span>;
+</span><span>
+</span><span style="color:#d0d0ff;">channel</span><span>.QueueDeclare(</span><span style="font-style:italic;color:#fd971f;">queue</span><span>: </span><span style="color:#c1be91;">&quot;hello&quot;</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">durable</span><span>: </span><span style="color:#6e9cbe;">false</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">exclusive</span><span>: </span><span style="color:#6e9cbe;">false</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">autoDelete</span><span>: </span><span style="color:#6e9cbe;">false</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">arguments</span><span>: </span><span style="color:#6e9cbe;">null</span><span>);
+</span><span>
+</span><mark style="background-color:#60606080;"><span style="font-style:italic;color:#6e9cbe;">var </span><span style="color:#d0d0ff;">message </span><span style="color:#cc7833;">= </span><span>GetMessage(</span><span style="color:#d0d0ff;">args</span><span>);
+</span></mark><span style="font-style:italic;color:#6e9cbe;">var </span><span style="color:#d0d0ff;">body </span><span style="color:#cc7833;">= </span><span style="color:#d0d0ff;">Encoding</span><span>.</span><span style="color:#d0d0ff;">UTF8</span><span>.GetBytes(</span><span style="color:#d0d0ff;">message</span><span>);
+</span><span>
+</span><span style="color:#d0d0ff;">channel</span><span>.BasicPublish(</span><span style="font-style:italic;color:#fd971f;">exchange</span><span>: </span><span style="font-style:italic;color:#6e9cbe;">string</span><span>.</span><span style="color:#d0d0ff;">Empty</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">routingKey</span><span>: </span><span style="color:#c1be91;">&quot;hello&quot;</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">basicProperties</span><span>: </span><span style="color:#6e9cbe;">null</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">body</span><span>: </span><span style="color:#d0d0ff;">body</span><span>);
+</span><span style="color:#d0d0ff;">Console</span><span>.WriteLine(</span><span style="color:#c1be91;">$&quot; [x] Sent </span><span>{</span><span style="color:#d0d0ff;">message</span><span>}</span><span style="color:#c1be91;">&quot;</span><span>);
+</span><span>
+</span><span style="color:#d0d0ff;">Console</span><span>.WriteLine(</span><span style="color:#c1be91;">&quot; Press [enter] to exit.&quot;</span><span>);
+</span><span style="color:#d0d0ff;">Console</span><span>.ReadLine();
+</span><span>
+</span><mark style="background-color:#60606080;"><span style="color:#cc7833;">static </span><span style="font-style:italic;color:#6e9cbe;">string </span><span style="color:#ffc66d;">GetMessage</span><span>(</span><span style="font-style:italic;color:#6e9cbe;">string</span><span>[] </span><span style="font-style:italic;color:#fd971f;">args</span><span>)
+</span></mark><mark style="background-color:#60606080;"><span>{
+</span></mark><mark style="background-color:#60606080;"><span>    </span><span style="color:#cc7833;">return </span><span>((</span><span style="color:#d0d0ff;">args</span><span>.</span><span style="color:#d0d0ff;">Length </span><span style="color:#cc7833;">&gt; </span><span style="color:#a5c261;">0</span><span>) </span><span style="color:#cc7833;">? </span><span style="font-style:italic;color:#6e9cbe;">string</span><span>.Join(</span><span style="color:#c1be91;">&quot; &quot;</span><span>, </span><span style="color:#d0d0ff;">args</span><span>) </span><span style="color:#cc7833;">: </span><span style="color:#c1be91;">&quot;Hello World!&quot;</span><span>);
+</span></mark><mark style="background-color:#60606080;"><span>}
+</span></mark></code></pre>
+<p>shell</p>
+<pre data-lang="ps1" style="background-color:#383838;color:#e6e1dc;" class="language-ps1 "><code class="language-ps1" data-lang="ps1"><span>dotnet new console </span><span style="color:#cc7833;">--</span><span>name Worker
+</span><span>mv Worker</span><span style="color:#cc7833;">/</span><span>Program.cs Worker</span><span style="color:#cc7833;">/</span><span>Worker.cs
+</span><span>cd Worker
+</span><span>dotnet add package RabbitMQ.Client
+</span></code></pre>
+<p>Worker.cs</p>
+<pre data-lang="cs" style="background-color:#383838;color:#e6e1dc;" class="language-cs "><code class="language-cs" data-lang="cs"><span style="color:#cc7833;">using </span><span>System.Text;
+</span><span style="color:#cc7833;">using </span><span>RabbitMQ.Client;
+</span><span style="color:#cc7833;">using </span><span>RabbitMQ.Client.Events;
+</span><span>
+</span><span style="font-style:italic;color:#6e9cbe;">var </span><span style="color:#d0d0ff;">factory </span><span style="color:#cc7833;">= new </span><span style="font-style:italic;color:#6e9cbe;">ConnectionFactory </span><span>{ </span><span style="color:#d0d0ff;">HostName </span><span style="color:#cc7833;">= </span><span style="color:#c1be91;">&quot;localhost&quot;</span><span>, </span><span style="color:#d0d0ff;">UserName</span><span style="color:#cc7833;">=</span><span style="color:#c1be91;">&quot;test&quot;</span><span>, </span><span style="color:#d0d0ff;">Password </span><span style="color:#cc7833;">=</span><span style="color:#c1be91;">&quot;test123&quot;</span><span>,</span><span style="color:#d0d0ff;">Port</span><span style="color:#cc7833;">=</span><span style="color:#a5c261;">7777  </span><span>};
+</span><span style="color:#cc7833;">using </span><span>var connection </span><span style="color:#cc7833;">= </span><span>factory.CreateConnection</span><span style="background-color:#b90622;color:#f8f8f0;">()</span><span>;
+</span><span style="color:#cc7833;">using </span><span>var channel </span><span style="color:#cc7833;">= </span><span>connection.CreateModel</span><span style="background-color:#b90622;color:#f8f8f0;">()</span><span>;
+</span><span>
+</span><span style="color:#d0d0ff;">channel</span><span>.QueueDeclare(</span><span style="font-style:italic;color:#fd971f;">queue</span><span>: </span><span style="color:#c1be91;">&quot;hello&quot;</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">durable</span><span>: </span><span style="color:#6e9cbe;">false</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">exclusive</span><span>: </span><span style="color:#6e9cbe;">false</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">autoDelete</span><span>: </span><span style="color:#6e9cbe;">false</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">arguments</span><span>: </span><span style="color:#6e9cbe;">null</span><span>);
+</span><span>
+</span><span style="color:#d0d0ff;">Console</span><span>.WriteLine(</span><span style="color:#c1be91;">&quot; [*] Waiting for messages.&quot;</span><span>);
+</span><span>
+</span><span style="font-style:italic;color:#6e9cbe;">var </span><span style="color:#d0d0ff;">consumer </span><span style="color:#cc7833;">= new </span><span style="font-style:italic;color:#6e9cbe;">EventingBasicConsumer</span><span>(</span><span style="color:#d0d0ff;">channel</span><span>);
+</span><span style="color:#d0d0ff;">consumer</span><span>.</span><span style="color:#d0d0ff;">Received </span><span style="color:#cc7833;">+= </span><span>(</span><span style="font-style:italic;color:#fd971f;">model</span><span>, </span><span style="font-style:italic;color:#fd971f;">ea</span><span>) </span><span style="font-style:italic;color:#6e9cbe;">=&gt;
+</span><span>{
+</span><span>    </span><span style="font-style:italic;color:#6e9cbe;">var </span><span style="color:#d0d0ff;">body </span><span style="color:#cc7833;">= </span><span style="color:#d0d0ff;">ea</span><span>.</span><span style="color:#d0d0ff;">Body</span><span>.ToArray();
+</span><span>    </span><span style="font-style:italic;color:#6e9cbe;">var </span><span style="color:#d0d0ff;">message </span><span style="color:#cc7833;">= </span><span style="color:#d0d0ff;">Encoding</span><span>.</span><span style="color:#d0d0ff;">UTF8</span><span>.GetString(</span><span style="color:#d0d0ff;">body</span><span>);
+</span><span>    </span><span style="color:#d0d0ff;">Console</span><span>.WriteLine(</span><span style="color:#c1be91;">$&quot; [x] Received </span><span>{</span><span style="color:#d0d0ff;">message</span><span>}</span><span style="color:#c1be91;">&quot;</span><span>);
+</span><span>
+</span><mark style="background-color:#60606080;"><span>    </span><span style="font-style:italic;color:#6e9cbe;">int </span><span style="color:#d0d0ff;">dots </span><span style="color:#cc7833;">= </span><span style="color:#d0d0ff;">message</span><span>.Split(</span><span style="color:#6d9cbe;">&#39;.&#39;</span><span>).</span><span style="color:#d0d0ff;">Length </span><span style="color:#cc7833;">- </span><span style="color:#a5c261;">1</span><span>;
+</span></mark><mark style="background-color:#60606080;"><span>    </span><span style="color:#d0d0ff;">Thread</span><span>.Sleep(</span><span style="color:#d0d0ff;">dots </span><span style="color:#cc7833;">* </span><span style="color:#a5c261;">1000</span><span>);
+</span></mark><mark style="background-color:#60606080;"><span>
+</span></mark><mark style="background-color:#60606080;"><span>    </span><span style="color:#d0d0ff;">Console</span><span>.WriteLine(</span><span style="color:#c1be91;">&quot; [x] Done&quot;</span><span>);
+</span></mark><span>};
+</span><span style="color:#d0d0ff;">channel</span><span>.BasicConsume(</span><span style="font-style:italic;color:#fd971f;">queue</span><span>: </span><span style="color:#c1be91;">&quot;hello&quot;</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">autoAck</span><span>: </span><span style="color:#6e9cbe;">true</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">consumer</span><span>: </span><span style="color:#d0d0ff;">consumer</span><span>);
+</span><span>
+</span><span style="color:#d0d0ff;">Console</span><span>.WriteLine(</span><span style="color:#c1be91;">&quot; Press [enter] to exit.&quot;</span><span>);
+</span><span style="color:#d0d0ff;">Console</span><span>.ReadLine();
+</span></code></pre>
+<h3 id="2-round-robin-dispatching">2. Round-robin dispatching</h3>
+<p>One of the advantages of using a Task Queue is the ability to easily parallelise work. If we are building up a backlog of work, we can just add more workers and that way, scale easily.
+Task Queue의 장점은 병렬작업을 할수 있다는 것. 처리해야할 주문을 담당하는 일을 구축하려면 그냥 작업자를 추가하면 쉽게 확장가능
+NewTask 객체 하나와 Worker 객체를 두개 만들어서 돌려보자. 둘다 queue로부터 메세지를 받게 된다</p>
+<p>NewTask</p>
+<pre data-lang="ps1" style="background-color:#383838;color:#e6e1dc;" class="language-ps1 "><code class="language-ps1" data-lang="ps1"><span>dotnet run </span><span style="color:#c1be91;">&quot;First message.&quot;
+</span><span>dotnet run </span><span style="color:#c1be91;">&quot;Second message..&quot;
+</span><span>dotnet run </span><span style="color:#c1be91;">&quot;Third message...&quot;
+</span><span>dotnet run </span><span style="color:#c1be91;">&quot;Fourth message....&quot;
+</span><span>dotnet run </span><span style="color:#c1be91;">&quot;Fifth message.....&quot;
+</span></code></pre>
+<p>Worker</p>
+<pre data-lang="ps1" style="background-color:#383838;color:#e6e1dc;" class="language-ps1 "><code class="language-ps1" data-lang="ps1"><span>dotnet run
+</span></code></pre>
+<p>Worker</p>
+<pre data-lang="ps1" style="background-color:#383838;color:#e6e1dc;" class="language-ps1 "><code class="language-ps1" data-lang="ps1"><span>dotnet run
+</span></code></pre>
+<p>결과</p>
+<pre data-lang="ps1" style="background-color:#383838;color:#e6e1dc;" class="language-ps1 "><code class="language-ps1" data-lang="ps1"><span>Press [</span><span style="font-style:italic;color:#6e9cbe;">enter</span><span>] to </span><span style="color:#cc7833;">exit</span><span>.
+</span><span>[</span><span style="font-style:italic;color:#6e9cbe;">x</span><span>] Received First message.
+</span><span>[</span><span style="font-style:italic;color:#6e9cbe;">x</span><span>] Done
+</span><span>[</span><span style="font-style:italic;color:#6e9cbe;">x</span><span>] Received Third message...
+</span><span>[</span><span style="font-style:italic;color:#6e9cbe;">x</span><span>] Done
+</span><span>[</span><span style="font-style:italic;color:#6e9cbe;">x</span><span>] Received Fifth message.....
+</span><span>[</span><span style="font-style:italic;color:#6e9cbe;">x</span><span>] Done
+</span></code></pre>
+<pre data-lang="ps1" style="background-color:#383838;color:#e6e1dc;" class="language-ps1 "><code class="language-ps1" data-lang="ps1"><span>Press [</span><span style="font-style:italic;color:#6e9cbe;">enter</span><span>] to </span><span style="color:#cc7833;">exit</span><span>.
+</span><span>[</span><span style="font-style:italic;color:#6e9cbe;">x</span><span>] Received Second message..
+</span><span>[</span><span style="font-style:italic;color:#6e9cbe;">x</span><span>] Done
+</span><span>[</span><span style="font-style:italic;color:#6e9cbe;">x</span><span>] Received Fourth message....
+</span><span>[</span><span style="font-style:italic;color:#6e9cbe;">x</span><span>] Done
+</span></code></pre>
+<p>RabbitMQ는 다음 consumer에게 메세지를 차례대로 전달한다. 모든 consumer가 균등한 양의 메세지를 받게된다.
+이런방식을 Round robin이라고 한다</p>
+<h3 id="3-message-acknowledgment">3. Message acknowledgment</h3>
+<p>만약 어떤 consumer가 작업을 하다가 작업을 마치지 못하고 죽어버린다면? RabbitMQ는 기본적으로 consumer에게 메시지를 보내고 나면 메세지를 지워버린다.
+이런경우 consumer가 작업하다 죽어버리면 우리는 메세지를 잃어버리게된다.
+메세지를 잃지 않기 위해 RabbitMQ는 message acknowlegement를 지원한다. Mesaage acknowlegement는 consumer가 RabittMQ에게 메세지를 받았다는 신호를 보내는 것이다.
+메세지 수신 신호를 받으면 RabbitMQ는 메세지를 삭제하게된다.
+Consumer가 ack를 보내지 않고 죽어버리게 된다면 RabbitMQ는 메세지가 처리되지 않은것으로 간주해 다시 queue에 메세지를 쌓는다. 이때 다른 consumer가 있다면 queue에 있는 메세지를 꺼내볼것이다.</p>
+<p>Acknowledgement timeout 기본값은 30분</p>
+<p>Manual message acknowledgments이 기본으로 켜져있다. 앞선 예제에서는 autoAck에 true값을 주어서 명시적으로 켰다.
+이번에는 끄고 수동으로 ack신호를 보내보자.</p>
+<p>Worker.cs</p>
+<p>BasicAck를 추가하고 autoAck:false로 만들자</p>
+<pre data-lang="cs" style="background-color:#383838;color:#e6e1dc;" class="language-cs "><code class="language-cs" data-lang="cs"><span style="color:#cc7833;">using </span><span>System.Text;
+</span><span style="color:#cc7833;">using </span><span>RabbitMQ.Client;
+</span><span style="color:#cc7833;">using </span><span>RabbitMQ.Client.Events;
+</span><span>
+</span><span style="font-style:italic;color:#6e9cbe;">var </span><span style="color:#d0d0ff;">factory </span><span style="color:#cc7833;">= new </span><span style="font-style:italic;color:#6e9cbe;">ConnectionFactory </span><span>{ </span><span style="color:#d0d0ff;">HostName </span><span style="color:#cc7833;">= </span><span style="color:#c1be91;">&quot;localhost&quot;</span><span>, </span><span style="color:#d0d0ff;">UserName</span><span style="color:#cc7833;">=</span><span style="color:#c1be91;">&quot;test&quot;</span><span>, </span><span style="color:#d0d0ff;">Password </span><span style="color:#cc7833;">=</span><span style="color:#c1be91;">&quot;test123&quot;</span><span>,</span><span style="color:#d0d0ff;">Port</span><span style="color:#cc7833;">=</span><span style="color:#a5c261;">7777  </span><span>};
+</span><span style="color:#cc7833;">using </span><span>var connection </span><span style="color:#cc7833;">= </span><span>factory.CreateConnection</span><span style="background-color:#b90622;color:#f8f8f0;">()</span><span>;
+</span><span style="color:#cc7833;">using </span><span>var channel </span><span style="color:#cc7833;">= </span><span>connection.CreateModel</span><span style="background-color:#b90622;color:#f8f8f0;">()</span><span>;
+</span><span>
+</span><span style="color:#d0d0ff;">channel</span><span>.QueueDeclare(</span><span style="font-style:italic;color:#fd971f;">queue</span><span>: </span><span style="color:#c1be91;">&quot;hello&quot;</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">durable</span><span>: </span><span style="color:#6e9cbe;">false</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">exclusive</span><span>: </span><span style="color:#6e9cbe;">false</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">autoDelete</span><span>: </span><span style="color:#6e9cbe;">false</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">arguments</span><span>: </span><span style="color:#6e9cbe;">null</span><span>);
+</span><span>
+</span><span style="color:#d0d0ff;">Console</span><span>.WriteLine(</span><span style="color:#c1be91;">&quot; [*] Waiting for messages.&quot;</span><span>);
+</span><span>
+</span><span style="font-style:italic;color:#6e9cbe;">var </span><span style="color:#d0d0ff;">consumer </span><span style="color:#cc7833;">= new </span><span style="font-style:italic;color:#6e9cbe;">EventingBasicConsumer</span><span>(</span><span style="color:#d0d0ff;">channel</span><span>);
+</span><span style="color:#d0d0ff;">consumer</span><span>.</span><span style="color:#d0d0ff;">Received </span><span style="color:#cc7833;">+= </span><span>(</span><span style="font-style:italic;color:#fd971f;">model</span><span>, </span><span style="font-style:italic;color:#fd971f;">ea</span><span>) </span><span style="font-style:italic;color:#6e9cbe;">=&gt;
+</span><span>{
+</span><span>    </span><span style="font-style:italic;color:#6e9cbe;">var </span><span style="color:#d0d0ff;">body </span><span style="color:#cc7833;">= </span><span style="color:#d0d0ff;">ea</span><span>.</span><span style="color:#d0d0ff;">Body</span><span>.ToArray();
+</span><span>    </span><span style="font-style:italic;color:#6e9cbe;">var </span><span style="color:#d0d0ff;">message </span><span style="color:#cc7833;">= </span><span style="color:#d0d0ff;">Encoding</span><span>.</span><span style="color:#d0d0ff;">UTF8</span><span>.GetString(</span><span style="color:#d0d0ff;">body</span><span>);
+</span><span>    </span><span style="color:#d0d0ff;">Console</span><span>.WriteLine(</span><span style="color:#c1be91;">$&quot; [x] Received </span><span>{</span><span style="color:#d0d0ff;">message</span><span>}</span><span style="color:#c1be91;">&quot;</span><span>);
+</span><span>    </span><span style="font-style:italic;color:#6e9cbe;">int </span><span style="color:#d0d0ff;">dots </span><span style="color:#cc7833;">= </span><span style="color:#d0d0ff;">message</span><span>.Split(</span><span style="color:#6d9cbe;">&#39;.&#39;</span><span>).</span><span style="color:#d0d0ff;">Length </span><span style="color:#cc7833;">- </span><span style="color:#a5c261;">1</span><span>;
+</span><span>    </span><span style="color:#d0d0ff;">Thread</span><span>.Sleep(</span><span style="color:#d0d0ff;">dots </span><span style="color:#cc7833;">* </span><span style="color:#a5c261;">1000</span><span>);
+</span><span>
+</span><span>    </span><span style="color:#d0d0ff;">Console</span><span>.WriteLine(</span><span style="color:#c1be91;">&quot; [x] Done&quot;</span><span>);
+</span><span>
+</span><mark style="background-color:#60606080;"><span>    </span><span style="color:#95815e;">// here channel could also be accessed as ((EventingBasicConsumer)sender).Model
+</span></mark><mark style="background-color:#60606080;"><span>    </span><span style="color:#d0d0ff;">channel</span><span>.BasicAck(</span><span style="font-style:italic;color:#fd971f;">deliveryTag</span><span>: </span><span style="color:#d0d0ff;">ea</span><span>.</span><span style="color:#d0d0ff;">DeliveryTag</span><span>, </span><span style="font-style:italic;color:#fd971f;">multiple</span><span>: </span><span style="color:#6e9cbe;">false</span><span>);
+</span></mark><span>};
+</span><span style="color:#d0d0ff;">channel</span><span>.BasicConsume(</span><span style="font-style:italic;color:#fd971f;">queue</span><span>: </span><span style="color:#c1be91;">&quot;hello&quot;</span><span>,
+</span><mark style="background-color:#60606080;"><span>                     </span><span style="font-style:italic;color:#fd971f;">autoAck</span><span>: </span><span style="color:#6e9cbe;">false</span><span>,
+</span></mark><span>                     </span><span style="font-style:italic;color:#fd971f;">consumer</span><span>: </span><span style="color:#d0d0ff;">consumer</span><span>);
+</span><span>
+</span><span style="color:#d0d0ff;">Console</span><span>.WriteLine(</span><span style="color:#c1be91;">&quot; Press [enter] to exit.&quot;</span><span>);
+</span><span style="color:#d0d0ff;">Console</span><span>.ReadLine();
+</span></code></pre>
+<p>Acknowledgement는 반드시 같은 channel로 보내져야한다.</p>
+<h3 id="4-message-durability">4. Message durability</h3>
+<p>consumer가 멈추면 다른 worker가 메세지를 받아줄수 있다는걸 배웠다. 그런데 rabbitMQ가 멈춰버리면 작업하던거 날아간다.
+메세지와 queue에 durable이라는 플레그를 주면 rabbitMQ가 멈춰도 하던작업을 기억한다.</p>
+<p>NewTask.cs</p>
+<pre data-lang="cs" style="background-color:#383838;color:#e6e1dc;" class="language-cs "><code class="language-cs" data-lang="cs"><span style="color:#cc7833;">using </span><span>System.Text;
+</span><span style="color:#cc7833;">using </span><span>RabbitMQ.Client;
+</span><span>
+</span><span style="font-style:italic;color:#6e9cbe;">var </span><span style="color:#d0d0ff;">factory </span><span style="color:#cc7833;">= new </span><span style="font-style:italic;color:#6e9cbe;">ConnectionFactory </span><span>{ </span><span style="color:#d0d0ff;">HostName </span><span style="color:#cc7833;">= </span><span style="color:#c1be91;">&quot;localhost&quot;</span><span>, </span><span style="color:#d0d0ff;">UserName</span><span style="color:#cc7833;">=</span><span style="color:#c1be91;">&quot;test&quot;</span><span>, </span><span style="color:#d0d0ff;">Password </span><span style="color:#cc7833;">=</span><span style="color:#c1be91;">&quot;test123&quot;</span><span>,</span><span style="color:#d0d0ff;">Port</span><span style="color:#cc7833;">=</span><span style="color:#a5c261;">7777  </span><span>};
+</span><span style="color:#cc7833;">using </span><span>var connection </span><span style="color:#cc7833;">= </span><span>factory.CreateConnection</span><span style="background-color:#b90622;color:#f8f8f0;">()</span><span>;
+</span><span style="color:#cc7833;">using </span><span>var channel </span><span style="color:#cc7833;">= </span><span>connection.CreateModel</span><span style="background-color:#b90622;color:#f8f8f0;">()</span><span>;
+</span><span>
+</span><mark style="background-color:#60606080;"><span style="color:#d0d0ff;">channel</span><span>.QueueDeclare(</span><span style="font-style:italic;color:#fd971f;">queue</span><span>: </span><span style="color:#c1be91;">&quot;task_queue&quot;</span><span>,
+</span></mark><mark style="background-color:#60606080;"><span>                     </span><span style="font-style:italic;color:#fd971f;">durable</span><span>: </span><span style="color:#6e9cbe;">true</span><span>,
+</span></mark><span>                     </span><span style="font-style:italic;color:#fd971f;">exclusive</span><span>: </span><span style="color:#6e9cbe;">false</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">autoDelete</span><span>: </span><span style="color:#6e9cbe;">false</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">arguments</span><span>: </span><span style="color:#6e9cbe;">null</span><span>);
+</span><span>
+</span><span style="font-style:italic;color:#6e9cbe;">var </span><span style="color:#d0d0ff;">message </span><span style="color:#cc7833;">= </span><span>GetMessage(</span><span style="color:#d0d0ff;">args</span><span>);
+</span><span style="font-style:italic;color:#6e9cbe;">var </span><span style="color:#d0d0ff;">body </span><span style="color:#cc7833;">= </span><span style="color:#d0d0ff;">Encoding</span><span>.</span><span style="color:#d0d0ff;">UTF8</span><span>.GetBytes(</span><span style="color:#d0d0ff;">message</span><span>);
+</span><span>
+</span><mark style="background-color:#60606080;"><span style="font-style:italic;color:#6e9cbe;">var </span><span style="color:#d0d0ff;">properties </span><span style="color:#cc7833;">= </span><span style="color:#d0d0ff;">channel</span><span>.CreateBasicProperties();
+</span></mark><mark style="background-color:#60606080;"><span style="color:#d0d0ff;">properties</span><span>.</span><span style="color:#d0d0ff;">Persistent </span><span style="color:#cc7833;">= </span><span style="color:#6e9cbe;">true</span><span>;
+</span></mark><span>
+</span><span style="color:#d0d0ff;">channel</span><span>.BasicPublish(</span><span style="font-style:italic;color:#fd971f;">exchange</span><span>: </span><span style="font-style:italic;color:#6e9cbe;">string</span><span>.</span><span style="color:#d0d0ff;">Empty</span><span>,
+</span><mark style="background-color:#60606080;"><span>                     </span><span style="font-style:italic;color:#fd971f;">routingKey</span><span>: </span><span style="color:#c1be91;">&quot;task_queue&quot;</span><span>,
+</span></mark><mark style="background-color:#60606080;"><span>                     </span><span style="font-style:italic;color:#fd971f;">basicProperties</span><span>: </span><span style="color:#d0d0ff;">properties</span><span>,
+</span></mark><span>                     </span><span style="font-style:italic;color:#fd971f;">body</span><span>: </span><span style="color:#d0d0ff;">body</span><span>);
+</span><span style="color:#d0d0ff;">Console</span><span>.WriteLine(</span><span style="color:#c1be91;">$&quot; [x] Sent </span><span>{</span><span style="color:#d0d0ff;">message</span><span>}</span><span style="color:#c1be91;">&quot;</span><span>);
+</span><span>
+</span><span style="color:#d0d0ff;">Console</span><span>.WriteLine(</span><span style="color:#c1be91;">&quot; Press [enter] to exit.&quot;</span><span>);
+</span><span style="color:#d0d0ff;">Console</span><span>.ReadLine();
+</span><span>
+</span><span style="color:#cc7833;">static </span><span style="font-style:italic;color:#6e9cbe;">string </span><span style="color:#ffc66d;">GetMessage</span><span>(</span><span style="font-style:italic;color:#6e9cbe;">string</span><span>[] </span><span style="font-style:italic;color:#fd971f;">args</span><span>)
+</span><span>{
+</span><span>    </span><span style="color:#cc7833;">return </span><span>((</span><span style="color:#d0d0ff;">args</span><span>.</span><span style="color:#d0d0ff;">Length </span><span style="color:#cc7833;">&gt; </span><span style="color:#a5c261;">0</span><span>) </span><span style="color:#cc7833;">? </span><span style="font-style:italic;color:#6e9cbe;">string</span><span>.Join(</span><span style="color:#c1be91;">&quot; &quot;</span><span>, </span><span style="color:#d0d0ff;">args</span><span>) </span><span style="color:#cc7833;">: </span><span style="color:#c1be91;">&quot;Hello World!&quot;</span><span>);
+</span><span>}
+</span></code></pre>
+<p>Worker.cs</p>
+<pre data-lang="cs" style="background-color:#383838;color:#e6e1dc;" class="language-cs "><code class="language-cs" data-lang="cs"><span style="color:#cc7833;">using </span><span>System.Text;
+</span><span style="color:#cc7833;">using </span><span>RabbitMQ.Client;
+</span><span style="color:#cc7833;">using </span><span>RabbitMQ.Client.Events;
+</span><span>
+</span><span style="font-style:italic;color:#6e9cbe;">var </span><span style="color:#d0d0ff;">factory </span><span style="color:#cc7833;">= new </span><span style="font-style:italic;color:#6e9cbe;">ConnectionFactory </span><span>{ </span><span style="color:#d0d0ff;">HostName </span><span style="color:#cc7833;">= </span><span style="color:#c1be91;">&quot;localhost&quot;</span><span>, </span><span style="color:#d0d0ff;">UserName</span><span style="color:#cc7833;">=</span><span style="color:#c1be91;">&quot;test&quot;</span><span>, </span><span style="color:#d0d0ff;">Password </span><span style="color:#cc7833;">=</span><span style="color:#c1be91;">&quot;test123&quot;</span><span>,</span><span style="color:#d0d0ff;">Port</span><span style="color:#cc7833;">=</span><span style="color:#a5c261;">7777  </span><span>};
+</span><span style="color:#cc7833;">using </span><span>var connection </span><span style="color:#cc7833;">= </span><span>factory.CreateConnection</span><span style="background-color:#b90622;color:#f8f8f0;">()</span><span>;
+</span><span style="color:#cc7833;">using </span><span>var channel </span><span style="color:#cc7833;">= </span><span>connection.CreateModel</span><span style="background-color:#b90622;color:#f8f8f0;">()</span><span>;
+</span><span>
+</span><mark style="background-color:#60606080;"><span style="color:#d0d0ff;">channel</span><span>.QueueDeclare(</span><span style="font-style:italic;color:#fd971f;">queue</span><span>: </span><span style="color:#c1be91;">&quot;task_queue&quot;</span><span>,
+</span></mark><mark style="background-color:#60606080;"><span>                     </span><span style="font-style:italic;color:#fd971f;">durable</span><span>: </span><span style="color:#6e9cbe;">true</span><span>,
+</span></mark><span>                     </span><span style="font-style:italic;color:#fd971f;">exclusive</span><span>: </span><span style="color:#6e9cbe;">false</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">autoDelete</span><span>: </span><span style="color:#6e9cbe;">false</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">arguments</span><span>: </span><span style="color:#6e9cbe;">null</span><span>);
+</span><span>
+</span><span style="color:#d0d0ff;">Console</span><span>.WriteLine(</span><span style="color:#c1be91;">&quot; [*] Waiting for messages.&quot;</span><span>);
+</span><span>
+</span><span style="font-style:italic;color:#6e9cbe;">var </span><span style="color:#d0d0ff;">consumer </span><span style="color:#cc7833;">= new </span><span style="font-style:italic;color:#6e9cbe;">EventingBasicConsumer</span><span>(</span><span style="color:#d0d0ff;">channel</span><span>);
+</span><span style="color:#d0d0ff;">consumer</span><span>.</span><span style="color:#d0d0ff;">Received </span><span style="color:#cc7833;">+= </span><span>(</span><span style="font-style:italic;color:#fd971f;">model</span><span>, </span><span style="font-style:italic;color:#fd971f;">ea</span><span>) </span><span style="font-style:italic;color:#6e9cbe;">=&gt;
+</span><span>{
+</span><span>    </span><span style="font-style:italic;color:#6e9cbe;">var </span><span style="color:#d0d0ff;">body </span><span style="color:#cc7833;">= </span><span style="color:#d0d0ff;">ea</span><span>.</span><span style="color:#d0d0ff;">Body</span><span>.ToArray();
+</span><span>    </span><span style="font-style:italic;color:#6e9cbe;">var </span><span style="color:#d0d0ff;">message </span><span style="color:#cc7833;">= </span><span style="color:#d0d0ff;">Encoding</span><span>.</span><span style="color:#d0d0ff;">UTF8</span><span>.GetString(</span><span style="color:#d0d0ff;">body</span><span>);
+</span><span>    </span><span style="color:#d0d0ff;">Console</span><span>.WriteLine(</span><span style="color:#c1be91;">$&quot; [x] Received </span><span>{</span><span style="color:#d0d0ff;">message</span><span>}</span><span style="color:#c1be91;">&quot;</span><span>);
+</span><span>    </span><span style="font-style:italic;color:#6e9cbe;">int </span><span style="color:#d0d0ff;">dots </span><span style="color:#cc7833;">= </span><span style="color:#d0d0ff;">message</span><span>.Split(</span><span style="color:#6d9cbe;">&#39;.&#39;</span><span>).</span><span style="color:#d0d0ff;">Length </span><span style="color:#cc7833;">- </span><span style="color:#a5c261;">1</span><span>;
+</span><span>    </span><span style="color:#d0d0ff;">Thread</span><span>.Sleep(</span><span style="color:#d0d0ff;">dots </span><span style="color:#cc7833;">* </span><span style="color:#a5c261;">1000</span><span>);
+</span><span>
+</span><span>    </span><span style="color:#d0d0ff;">Console</span><span>.WriteLine(</span><span style="color:#c1be91;">&quot; [x] Done&quot;</span><span>);
+</span><span>
+</span><span>    </span><span style="color:#95815e;">// here channel could also be accessed as ((EventingBasicConsumer)sender).Model
+</span><span>    </span><span style="color:#d0d0ff;">channel</span><span>.BasicAck(</span><span style="font-style:italic;color:#fd971f;">deliveryTag</span><span>: </span><span style="color:#d0d0ff;">ea</span><span>.</span><span style="color:#d0d0ff;">DeliveryTag</span><span>, </span><span style="font-style:italic;color:#fd971f;">multiple</span><span>: </span><span style="color:#6e9cbe;">false</span><span>);
+</span><span>};
+</span><mark style="background-color:#60606080;"><span style="color:#d0d0ff;">channel</span><span>.BasicConsume(</span><span style="font-style:italic;color:#fd971f;">queue</span><span>: </span><span style="color:#c1be91;">&quot;task_queue&quot;</span><span>,
+</span></mark><span>                     </span><span style="font-style:italic;color:#fd971f;">autoAck</span><span>: </span><span style="color:#6e9cbe;">false</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">consumer</span><span>: </span><span style="color:#d0d0ff;">consumer</span><span>);
+</span><span>
+</span><span style="color:#d0d0ff;">Console</span><span>.WriteLine(</span><span style="color:#c1be91;">&quot; Press [enter] to exit.&quot;</span><span>);
+</span><span style="color:#d0d0ff;">Console</span><span>.ReadLine();
+</span></code></pre>
+<p>이미 hello라는 이름의 queue가 있으니까 task_queue이름으로 만들어주자. 기존에 있던 queue의 파라미터를 재정의 하는것은 불가하다자.</p>
+<h3 id="5-fair-dispatch">5. Fair Dispatch</h3>
+<p>한쪽에만 무거운 작업이 분배되고 다른 한쪽은 가벼운 작업이 분배될 때가 있다. 하지만 RabbitMQ는 그런거 상관 안하고 똑같은 갯수의 메세지를 준다.</p>
+<p>이런 행위를 바꾸려면 BasicQos 메소드에 prefetchCount=1 값을 설정하면 된다. 이것은 RabbitMQ한테 작업자에게 한 번에 둘 이상의 메시지를 제공하지 않도록 지시한다.
+Worker.cs</p>
+<pre data-lang="cs" style="background-color:#383838;color:#e6e1dc;" class="language-cs "><code class="language-cs" data-lang="cs"><span style="color:#cc7833;">using </span><span>System.Text;
+</span><span style="color:#cc7833;">using </span><span>RabbitMQ.Client;
+</span><span style="color:#cc7833;">using </span><span>RabbitMQ.Client.Events;
+</span><span>
+</span><span style="font-style:italic;color:#6e9cbe;">var </span><span style="color:#d0d0ff;">factory </span><span style="color:#cc7833;">= new </span><span style="font-style:italic;color:#6e9cbe;">ConnectionFactory </span><span>{ </span><span style="color:#d0d0ff;">HostName </span><span style="color:#cc7833;">= </span><span style="color:#c1be91;">&quot;localhost&quot;</span><span>, </span><span style="color:#d0d0ff;">UserName</span><span style="color:#cc7833;">=</span><span style="color:#c1be91;">&quot;test&quot;</span><span>, </span><span style="color:#d0d0ff;">Password </span><span style="color:#cc7833;">=</span><span style="color:#c1be91;">&quot;test123&quot;</span><span>,</span><span style="color:#d0d0ff;">Port</span><span style="color:#cc7833;">=</span><span style="color:#a5c261;">7777  </span><span>};
+</span><span style="color:#cc7833;">using </span><span>var connection </span><span style="color:#cc7833;">= </span><span>factory.CreateConnection</span><span style="background-color:#b90622;color:#f8f8f0;">()</span><span>;
+</span><span style="color:#cc7833;">using </span><span>var channel </span><span style="color:#cc7833;">= </span><span>connection.CreateModel</span><span style="background-color:#b90622;color:#f8f8f0;">()</span><span>;
+</span><span>
+</span><span style="color:#d0d0ff;">channel</span><span>.QueueDeclare(</span><span style="font-style:italic;color:#fd971f;">queue</span><span>: </span><span style="color:#c1be91;">&quot;task_queue&quot;</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">durable</span><span>: </span><span style="color:#6e9cbe;">true</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">exclusive</span><span>: </span><span style="color:#6e9cbe;">false</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">autoDelete</span><span>: </span><span style="color:#6e9cbe;">false</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">arguments</span><span>: </span><span style="color:#6e9cbe;">null</span><span>);
+</span><span>
+</span><mark style="background-color:#60606080;"><span style="color:#d0d0ff;">channel</span><span>.BasicQos(</span><span style="font-style:italic;color:#fd971f;">prefetchSize</span><span>: </span><span style="color:#a5c261;">0</span><span>, </span><span style="font-style:italic;color:#fd971f;">prefetchCount</span><span>: </span><span style="color:#a5c261;">1</span><span>, </span><span style="font-style:italic;color:#fd971f;">global</span><span>: </span><span style="color:#6e9cbe;">false</span><span>);
+</span></mark><span>
+</span><span style="color:#d0d0ff;">Console</span><span>.WriteLine(</span><span style="color:#c1be91;">&quot; [*] Waiting for messages.&quot;</span><span>);
+</span><span>
+</span><span style="font-style:italic;color:#6e9cbe;">var </span><span style="color:#d0d0ff;">consumer </span><span style="color:#cc7833;">= new </span><span style="font-style:italic;color:#6e9cbe;">EventingBasicConsumer</span><span>(</span><span style="color:#d0d0ff;">channel</span><span>);
+</span><span style="color:#d0d0ff;">consumer</span><span>.</span><span style="color:#d0d0ff;">Received </span><span style="color:#cc7833;">+= </span><span>(</span><span style="font-style:italic;color:#fd971f;">model</span><span>, </span><span style="font-style:italic;color:#fd971f;">ea</span><span>) </span><span style="font-style:italic;color:#6e9cbe;">=&gt;
+</span><span>{
+</span><span>    </span><span style="font-style:italic;color:#6e9cbe;">var </span><span style="color:#d0d0ff;">body </span><span style="color:#cc7833;">= </span><span style="color:#d0d0ff;">ea</span><span>.</span><span style="color:#d0d0ff;">Body</span><span>.ToArray();
+</span><span>    </span><span style="font-style:italic;color:#6e9cbe;">var </span><span style="color:#d0d0ff;">message </span><span style="color:#cc7833;">= </span><span style="color:#d0d0ff;">Encoding</span><span>.</span><span style="color:#d0d0ff;">UTF8</span><span>.GetString(</span><span style="color:#d0d0ff;">body</span><span>);
+</span><span>    </span><span style="color:#d0d0ff;">Console</span><span>.WriteLine(</span><span style="color:#c1be91;">$&quot; [x] Received </span><span>{</span><span style="color:#d0d0ff;">message</span><span>}</span><span style="color:#c1be91;">&quot;</span><span>);
+</span><span>    </span><span style="font-style:italic;color:#6e9cbe;">int </span><span style="color:#d0d0ff;">dots </span><span style="color:#cc7833;">= </span><span style="color:#d0d0ff;">message</span><span>.Split(</span><span style="color:#6d9cbe;">&#39;.&#39;</span><span>).</span><span style="color:#d0d0ff;">Length </span><span style="color:#cc7833;">- </span><span style="color:#a5c261;">1</span><span>;
+</span><span>    </span><span style="color:#d0d0ff;">Thread</span><span>.Sleep(</span><span style="color:#d0d0ff;">dots </span><span style="color:#cc7833;">* </span><span style="color:#a5c261;">1000</span><span>);
+</span><span>
+</span><span>    </span><span style="color:#d0d0ff;">Console</span><span>.WriteLine(</span><span style="color:#c1be91;">&quot; [x] Done&quot;</span><span>);
+</span><span>
+</span><span>    </span><span style="color:#95815e;">// here channel could also be accessed as ((EventingBasicConsumer)sender).Model
+</span><span>    </span><span style="color:#d0d0ff;">channel</span><span>.BasicAck(</span><span style="font-style:italic;color:#fd971f;">deliveryTag</span><span>: </span><span style="color:#d0d0ff;">ea</span><span>.</span><span style="color:#d0d0ff;">DeliveryTag</span><span>, </span><span style="font-style:italic;color:#fd971f;">multiple</span><span>: </span><span style="color:#6e9cbe;">false</span><span>);
+</span><span>};
+</span><span style="color:#d0d0ff;">channel</span><span>.BasicConsume(</span><span style="font-style:italic;color:#fd971f;">queue</span><span>: </span><span style="color:#c1be91;">&quot;task_queue&quot;</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">autoAck</span><span>: </span><span style="color:#6e9cbe;">false</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">consumer</span><span>: </span><span style="color:#d0d0ff;">consumer</span><span>);
+</span><span>
+</span><span style="color:#d0d0ff;">Console</span><span>.WriteLine(</span><span style="color:#c1be91;">&quot; Press [enter] to exit.&quot;</span><span>);
+</span><span style="color:#d0d0ff;">Console</span><span>.ReadLine();
+</span></code></pre>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rabbitmq&#x2F;hello-world&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Hello World
+            </a>
+          </div>
+           
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js" integrity="sha384-Pulw7+h73841BQIK0LzJCydKRPChJUF9w8h8W0o3h+cLtoyNPJS847bQauLWOTwg" crossorigin="anonymous"></script>
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.en.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>
