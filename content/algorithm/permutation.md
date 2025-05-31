@@ -13,7 +13,7 @@ tags = ["math"]
 1부터 n까지의 합은 n(n+1)/2 라는 공식으로 풀수 있다. 풀이는 인터넷에 많이 있으니까 굳이 내가 할 필요는 없는거 갈다.
 근데 이 공식을 어디서 많이 본거 같다는 생각이 들었는데, 오늘 갑자기 n(n-1)/2 라는 공식을 배운 기억이 떠올라서 구글링을 해보았다.
 
-## $\frac{n(n-1)}{n}$ n개 중에서 가능한 조합
+## $\frac{n(n-1)}{2}$ n개 중에서 가능한 조합
 구글링 해보니 Total number of subarry라고 나온다. 또는 the number of pairs you can form from an *n* element set 이라고 나온다. [링크](https://math.stackexchange.com/questions/2214839/exactly-how-does-the-equation-nn-1-2-determine-the-number-of-pairs-of-a-given)
 
 | | A | B | C | D | E   |
@@ -41,15 +41,15 @@ n(n-1)에는 중복이 포함되있다. AB-BA, AC-CA, AD-DA, AE-EA...
 ## $n^r$ n개중에서 r개를 중복가능, 순서를 고려해서 고른다.
 ABC가 있는데 그중에서 중복 가능, 순서를 고려해서 3개를 고른다면,
 
-AAA, AAB, AAC
-ABA, ABB, ABC 
-ACA, ACB, ACC
-BAA, BAB, BAC
-BBA, BBB, BBC
-BCA, BCB, BCC
-CAA, CAB, CAC
-CBA, CBB, CBC
-CCA, CCB, CCC
+AAA, AAB, AAC  
+ABA, ABB, ABC  
+ACA, ACB, ACC  
+BAA, BAB, BAC  
+BBA, BBB, BBC  
+BCA, BCB, BCC  
+CAA, CAB, CAC  
+CBA, CBB, CBC  
+CCA, CCB, CCC  
 
 
 
