@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title> - Data Structure</title>
+    <link rel="self" type="application/atom+xml" href="https://emptyfridge.dev/categories/data-structure/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://emptyfridge.dev/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-05-05T00:00:00+00:00</updated>
+    <id>https://emptyfridge.dev/categories/data-structure/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Tree</title>
+        <published>2023-05-05T00:00:00+00:00</published>
+        <updated>2023-05-05T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/data_structure/tree/"/>
+        <id>https://emptyfridge.dev/data_structure/tree/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/data_structure/tree/">&lt;p&gt;Tree는 Graph의 일종, Acyclic graph&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;DS&#x2F;Tree&#x2F;Treedatastructure.png&quot; alt=&quot;tree&quot; &#x2F;&gt;
+source: &lt;a href=&quot;https:&#x2F;&#x2F;www.geeksforgeeks.org&#x2F;introduction-to-tree-data-structure-and-algorithm-tutorials&#x2F;&quot;&gt;https:&#x2F;&#x2F;www.geeksforgeeks.org&#x2F;introduction-to-tree-data-structure-and-algorithm-tutorials&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;teuri-jongryu&quot;&gt;트리 종류&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Binary_tree&quot;&gt;Binary Tree&lt;&#x2F;a&gt; -&amp;gt; &lt;a href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Binary_search_tree&quot;&gt;Binary Search Tree&lt;&#x2F;a&gt; -&amp;gt; &lt;a href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Self-balancing_binary_search_tree&quot;&gt;Self-balancing binary search tree&lt;&#x2F;a&gt; (AVL tree,B-tree,Red–black tree etc.)&lt;&#x2F;p&gt;
+&lt;p&gt;Full Binary Tree (완전이진)-&amp;gt; Complete Binary Tree (전이진)-&amp;gt; Perfect Binary Tree(포화이진)&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;tamsaegbangbeob&quot;&gt;탐색방법&lt;&#x2F;h2&gt;
+&lt;h4 id=&quot;1-dfs-depth-first-search&quot;&gt;1.DFS Depth-First Search&lt;&#x2F;h4&gt;
+&lt;p&gt;Root부터 leaf까지 모든 루트를 하나씩 탐색하는 방법
+모든 경로를 한번씩 거치기 때문에 경로의 특이점을 저장해둘수 있다
+미로찾기 문제로 많이 나온다
+&lt;img src=&quot;&#x2F;images&#x2F;DS&#x2F;Tree&#x2F;full_binary_tree.png&quot; alt=&quot;Tree&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h5 id=&quot;preorder-traversal-jeonwi-sunhoe-root-left-right&quot;&gt;Preorder Traversal, 전위 순회 (&lt;em&gt;Root&lt;&#x2F;em&gt; -&amp;gt; Left -&amp;gt; Right)&lt;&#x2F;h5&gt;
+&lt;p&gt;root가 첫번째로 와서 전위순회
+A-B-D-E-H-I-C-F-G&lt;&#x2F;p&gt;
+&lt;h5 id=&quot;inorder-traversal-jungwi-sunhoe-left-root-right&quot;&gt;Inorder Traversal, 중위 순회 (Left -&amp;gt; &lt;em&gt;Root&lt;&#x2F;em&gt; -&amp;gt; Right)&lt;&#x2F;h5&gt;
+&lt;p&gt;root가 중간에 와서 중위 순회
+D-B-H-E-I-A-F-C-G&lt;&#x2F;p&gt;
+&lt;h5 id=&quot;postorder-traversal-huwi-sunhoe-left-right-root&quot;&gt;Postorder Traversal, 후위 순회 (Left -&amp;gt; Right -&amp;gt; &lt;em&gt;Root&lt;&#x2F;em&gt;)&lt;&#x2F;h5&gt;
+&lt;p&gt;root가 마지막에 와서 후위 순회
+D-H-I-E-B-F-G-C-A&lt;&#x2F;p&gt;
+&lt;p&gt;외우는 순서는 간단하다. 무조건 Left -&amp;gt; Right. 전위면 Root를 앞에, 후위면 뒤에, 중위면 가운데&lt;&#x2F;p&gt;
+&lt;h5 id=&quot;dfs-guhyeonbangbeob&quot;&gt;DFS 구현방법&lt;&#x2F;h5&gt;
+&lt;p&gt;stack을 주로 사용, 또는 recursive&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;2-bfs-breath-first-search&quot;&gt;2.BFS Breath-First Search&lt;&#x2F;h4&gt;
+&lt;p&gt;한 레벨씩 훑어가는 방법
+최단거리 구하기 문제에 자주 사용된다
+&lt;img src=&quot;&#x2F;static&#x2F;images&#x2F;DS&#x2F;Tree&#x2F;binary_tree_level_order.png&quot; alt=&quot;Tree&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h4 id=&quot;guhyeonbangbeob&quot;&gt;구현방법&lt;&#x2F;h4&gt;
+&lt;p&gt;Queue를 이용해 구현&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;pyohyeonbangbeob&quot;&gt;표현방법&lt;&#x2F;h2&gt;
+&lt;h4 id=&quot;list&quot;&gt;List&lt;&#x2F;h4&gt;
+&lt;pre data-lang=&quot;rust&quot; style=&quot;background-color:#383838;color:#e6e1dc;&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;use &lt;&#x2F;span&gt;&lt;span&gt;std::{rc::Rc, cell::RefCell};
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;#[derive(Debug)]
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;pub &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;struct &lt;&#x2F;span&gt;&lt;span&gt;TreeNode{
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;pub &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;val&lt;&#x2F;span&gt;&lt;span&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;pub &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;left&lt;&#x2F;span&gt;&lt;span&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;Option&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;Rc&amp;lt;RefCell&amp;lt;TreeNode&amp;gt;&amp;gt;&amp;gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;pub &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;right&lt;&#x2F;span&gt;&lt;span&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;Option&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;Rc&amp;lt;RefCell&amp;lt;TreeNode&amp;gt;&amp;gt;&amp;gt;
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;impl &lt;&#x2F;span&gt;&lt;span&gt;TreeNode{
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;pub &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;fn &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ffc66d;&quot;&gt;new&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#fd971f;&quot;&gt;val&lt;&#x2F;span&gt;&lt;span&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span&gt;) -&amp;gt; &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;Self&lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;        TreeNode { val, left:&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;None&lt;&#x2F;span&gt;&lt;span&gt;, right:&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;None &lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;fn &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ffc66d;&quot;&gt;main&lt;&#x2F;span&gt;&lt;span&gt;() {
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; root&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;Some&lt;&#x2F;span&gt;&lt;span&gt;(
+&lt;&#x2F;span&gt;&lt;span&gt;        Rc::new(
+&lt;&#x2F;span&gt;&lt;span&gt;            RefCell::new(
+&lt;&#x2F;span&gt;&lt;span&gt;                TreeNode::new(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;            )
+&lt;&#x2F;span&gt;&lt;span&gt;        )
+&lt;&#x2F;span&gt;&lt;span&gt;    );
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; left&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;Some&lt;&#x2F;span&gt;&lt;span&gt;(
+&lt;&#x2F;span&gt;&lt;span&gt;        Rc::new(
+&lt;&#x2F;span&gt;&lt;span&gt;            RefCell::new(
+&lt;&#x2F;span&gt;&lt;span&gt;                TreeNode::new(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;            )
+&lt;&#x2F;span&gt;&lt;span&gt;        )
+&lt;&#x2F;span&gt;&lt;span&gt;    );
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; right&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;Some&lt;&#x2F;span&gt;&lt;span&gt;(
+&lt;&#x2F;span&gt;&lt;span&gt;        Rc::new(
+&lt;&#x2F;span&gt;&lt;span&gt;            RefCell::new(
+&lt;&#x2F;span&gt;&lt;span&gt;                TreeNode::new(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;3&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;            )
+&lt;&#x2F;span&gt;&lt;span&gt;        )
+&lt;&#x2F;span&gt;&lt;span&gt;    );
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; r &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span&gt; root.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#da4939;&quot;&gt;unwrap&lt;&#x2F;span&gt;&lt;span&gt;();
+&lt;&#x2F;span&gt;&lt;span&gt;    r.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#da4939;&quot;&gt;borrow_mut&lt;&#x2F;span&gt;&lt;span&gt;().left&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span&gt;left;
+&lt;&#x2F;span&gt;&lt;span&gt;    r.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#da4939;&quot;&gt;borrow_mut&lt;&#x2F;span&gt;&lt;span&gt;().right&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span&gt;right;
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h4 id=&quot;array&quot;&gt;Array&lt;&#x2F;h4&gt;
+&lt;pre data-lang=&quot;rust&quot; style=&quot;background-color:#383838;color:#e6e1dc;&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;&lt;span&gt;#[derive(Debug)]
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;pub &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;struct &lt;&#x2F;span&gt;&lt;span&gt;Array{
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;pub &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;root&lt;&#x2F;span&gt;&lt;span&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;pub &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;nodes&lt;&#x2F;span&gt;&lt;span&gt;:[&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;Option&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;;100],
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;impl &lt;&#x2F;span&gt;&lt;span&gt;Array{
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;pub &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;fn &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ffc66d;&quot;&gt;new&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#fd971f;&quot;&gt;val&lt;&#x2F;span&gt;&lt;span&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span&gt;) -&amp;gt; &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;Self&lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;        Array { 
+&lt;&#x2F;span&gt;&lt;span&gt;            root:val,
+&lt;&#x2F;span&gt;&lt;span&gt;            nodes:[&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;None&lt;&#x2F;span&gt;&lt;span&gt;; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;100&lt;&#x2F;span&gt;&lt;span&gt;]
+&lt;&#x2F;span&gt;&lt;span&gt;        }
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;pub &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;fn &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ffc66d;&quot;&gt;left&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;&amp;amp;mut &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#fd971f;&quot;&gt;self&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#fd971f;&quot;&gt;val&lt;&#x2F;span&gt;&lt;span&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#fd971f;&quot;&gt;parent&lt;&#x2F;span&gt;&lt;span&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;usize&lt;&#x2F;span&gt;&lt;span&gt;){
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; t &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;(parent &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;* &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;+ &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;self&lt;&#x2F;span&gt;&lt;span&gt;.nodes[t]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;Some&lt;&#x2F;span&gt;&lt;span&gt;(val);
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;pub &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;fn &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ffc66d;&quot;&gt;right&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;&amp;amp;mut &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#fd971f;&quot;&gt;self&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#fd971f;&quot;&gt;val&lt;&#x2F;span&gt;&lt;span&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#fd971f;&quot;&gt;parent&lt;&#x2F;span&gt;&lt;span&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;usize&lt;&#x2F;span&gt;&lt;span&gt;){
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; t &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;(parent &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;* &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;+ &lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span&gt;;
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d0d0ff;&quot;&gt;self&lt;&#x2F;span&gt;&lt;span&gt;.nodes[t]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;Some&lt;&#x2F;span&gt;&lt;span&gt;(val);
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;fn &lt;&#x2F;span&gt;&lt;span style=&quot;color:#ffc66d;&quot;&gt;main&lt;&#x2F;span&gt;&lt;span&gt;() {
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;font-style:italic;color:#6e9cbe;&quot;&gt;let &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;mut&lt;&#x2F;span&gt;&lt;span&gt; arr &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cc7833;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span&gt;Array::new(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;);
+&lt;&#x2F;span&gt;&lt;span&gt;    arr.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#da4939;&quot;&gt;left&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;);
+&lt;&#x2F;span&gt;&lt;span&gt;    arr.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#da4939;&quot;&gt;right&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;);
+&lt;&#x2F;span&gt;&lt;span&gt;    arr.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#da4939;&quot;&gt;left&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;3&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;);
+&lt;&#x2F;span&gt;&lt;span&gt;    arr.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#da4939;&quot;&gt;right&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;4&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;);
+&lt;&#x2F;span&gt;&lt;span&gt;    arr.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#da4939;&quot;&gt;left&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;5&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span&gt;);
+&lt;&#x2F;span&gt;&lt;span&gt;    arr.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#da4939;&quot;&gt;right&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;6&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a5c261;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span&gt;);
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;참조: &lt;a href=&quot;https:&#x2F;&#x2F;www.geeksforgeeks.org&#x2F;binary-tree-array-implementation&#x2F;&quot;&gt;https:&#x2F;&#x2F;www.geeksforgeeks.org&#x2F;binary-tree-array-implementation&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Graph</title>
+        <published>2021-01-18T00:00:00+00:00</published>
+        <updated>2021-01-18T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/data_structure/graph/"/>
+        <id>https://emptyfridge.dev/data_structure/graph/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/data_structure/graph/">&lt;p&gt;an entity that hold data is called &lt;strong&gt;node&lt;&#x2F;strong&gt; and a line connect two nodes is called &lt;strong&gt;edge&lt;&#x2F;strong&gt;.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;category&quot;&gt;Category&lt;&#x2F;h3&gt;
+&lt;h5 id=&quot;undirected-graph-no-directions&quot;&gt;Undirected Graph: no directions&lt;&#x2F;h5&gt;
+&lt;blockquote&gt;
+&lt;p&gt;example: facebook, linkedin&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h5 id=&quot;directed-graph-asymmetric-relationship&quot;&gt;Directed Graph: asymmetric relationship&lt;&#x2F;h5&gt;
+&lt;blockquote&gt;
+&lt;p&gt;example: teacher and student, employer and employee&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h5 id=&quot;weighted-graph-edges-represent-values&quot;&gt;Weighted Graph: edges represent values&lt;&#x2F;h5&gt;
+&lt;blockquote&gt;
+&lt;p&gt;example: distance, cost, similarity&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h3 id=&quot;representing-graph&quot;&gt;Representing Graph&lt;&#x2F;h3&gt;
+&lt;h5 id=&quot;adjacency-matrix&quot;&gt;Adjacency matrix:&lt;&#x2F;h5&gt;
+&lt;pre style=&quot;background-color:#383838;color:#e6e1dc;&quot;&gt;&lt;code&gt;&lt;span&gt;implementation: multi-dimension array
+&lt;&#x2F;span&gt;&lt;span&gt;pros: easy to implement
+&lt;&#x2F;span&gt;&lt;span&gt;cons: take long time to check all the edges that conect two node.
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h5 id=&quot;adjacency-list&quot;&gt;Adjacency list:&lt;&#x2F;h5&gt;
+&lt;pre style=&quot;background-color:#383838;color:#e6e1dc;&quot;&gt;&lt;code&gt;&lt;span&gt;implementation: list of vector&#x2F;liked list 
+&lt;&#x2F;span&gt;&lt;span&gt;pros: it only stores the value of connected nodes. number of elements of a vector are equal to number of edges
+&lt;&#x2F;span&gt;&lt;span&gt;cons: while adjacency matrix takes O(1) time complexity to check wheather two node has relationship, adjacency list takes O(n) time complexity. n is number of elements a vector has.
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Reference&lt;br &#x2F;&gt;
+https:&#x2F;&#x2F;sarah950716.tistory.com&#x2F;12&lt;br &#x2F;&gt;
+https:&#x2F;&#x2F;www.mygreatlearning.com&#x2F;blog&#x2F;representing-graphs-in-data-structures&#x2F;&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>

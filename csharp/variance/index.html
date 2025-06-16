@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" integrity="sha384-oGm59HWAkwO32h2w8u0B98wKBZJwd6MbWtAJwQKCTffZjOXHXrnyv9Syjovgc+UV" crossorigin="anonymous">
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+ | Variance
+
+  </title>
+
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;"></a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;data_structure">
+            DS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;algorithm">
+            Algo
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;leetcode">
+            Coding Practice
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;projects">
+            Toy Projects
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;commands">
+            Commands
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Variance
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2025-01-25">January 25, 2025</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>1 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>123 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/c/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>C#</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>In C#, covariance and contravariance enable implicit reference conversion for <strong>array types</strong>, <strong>delegate types</strong>, and <strong>generic type arguments</strong></p>
+<p>Covariance는 한국어로 공변성이라고 하고 자식(파생,하위) 타입이 부모 타입의 변수로 할당되는 형변환<br />
+Contravariance는 한국어로 반공변성이라고 하고 부모 타입이 자식 타입 변수로 할당되는 형변환</p>
+<h2 id="covariance-for-arrays">Covariance for arrays</h2>
+<p>이것은 우리가 흔히 아는 개념이다. 자식객체가 부모객체에 할당</p>
+<pre data-lang="cs" style="background-color:#383838;color:#e6e1dc;" class="language-cs "><code class="language-cs" data-lang="cs"><span style="font-style:italic;color:#6e9cbe;">object</span><span>[] </span><span style="color:#d0d0ff;">array </span><span style="color:#cc7833;">= new </span><span style="font-style:italic;color:#6e9cbe;">String</span><span>[</span><span style="color:#a5c261;">10</span><span>];  
+</span></code></pre>
+<h2 id="variance-in-generic-interfaces"><a href="https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/covariance-contravariance/variance-in-generic-interfaces">Variance in Generic Interfaces</a></h2>
+<pre data-lang="cs" style="background-color:#383838;color:#e6e1dc;" class="language-cs "><code class="language-cs" data-lang="cs"><span style="color:#cc7833;">public </span><span style="font-style:italic;color:#6e9cbe;">class </span><span style="text-decoration:underline;color:#ffc66d;">Animal</span><span>{
+</span><span>	</span><span style="color:#cc7833;">public </span><span style="font-style:italic;color:#6e9cbe;">string </span><span style="color:#d0d0ff;">Name</span><span>{</span><span style="font-style:italic;color:#6e9cbe;">get</span><span>;</span><span style="font-style:italic;color:#6e9cbe;">set</span><span>;}
+</span><span>}
+</span><span>
+</span><span style="color:#cc7833;">public </span><span style="font-style:italic;color:#6e9cbe;">class </span><span style="text-decoration:underline;color:#ffc66d;">Cat</span><span>:</span><span style="text-decoration:underline;font-style:italic;color:#ffc66d;">Animal</span><span>{
+</span><span>	
+</span><span>}
+</span><span style="color:#cc7833;">public </span><span style="font-style:italic;color:#6e9cbe;">class </span><span style="text-decoration:underline;color:#ffc66d;">Dog</span><span>:</span><span style="text-decoration:underline;font-style:italic;color:#ffc66d;">Animal</span><span>{
+</span><span>	
+</span><span>}
+</span><span style="color:#cc7833;">public </span><span style="font-style:italic;color:#6e9cbe;">class </span><span style="text-decoration:underline;color:#ffc66d;">Schnauzer</span><span>:</span><span style="text-decoration:underline;font-style:italic;color:#ffc66d;">Dog</span><span>{
+</span><span>	
+</span><span>}
+</span><span style="color:#cc7833;">public </span><span style="font-style:italic;color:#6e9cbe;">class </span><span style="text-decoration:underline;color:#ffc66d;">GermanShepherd </span><span>: </span><span style="text-decoration:underline;font-style:italic;color:#ffc66d;">Dog</span><span>{
+</span><span>	
+</span><span>}
+</span></code></pre>
+<p>Covariance</p>
+<pre data-lang="cs" style="background-color:#383838;color:#e6e1dc;" class="language-cs "><code class="language-cs" data-lang="cs"><span style="font-style:italic;color:#6e9cbe;">IEnumerable</span><span>&lt;</span><span style="font-style:italic;color:#6e9cbe;">GermanShepherd</span><span>&gt; </span><span style="color:#d0d0ff;">germanShepherds </span><span style="color:#cc7833;">= new </span><span style="font-style:italic;color:#6e9cbe;">List</span><span>&lt;</span><span style="font-style:italic;color:#6e9cbe;">GermanShepherd</span><span>&gt;();
+</span><span style="font-style:italic;color:#6e9cbe;">IEnumerable</span><span>&lt;</span><span style="font-style:italic;color:#6e9cbe;">Dog</span><span>&gt; </span><span style="color:#d0d0ff;">dogs </span><span style="color:#cc7833;">= </span><span style="color:#d0d0ff;">germanShepherds</span><span>;
+</span><span style="color:#d0d0ff;">dogs </span><span style="color:#cc7833;">= new </span><span style="font-style:italic;color:#6e9cbe;">List</span><span>&lt;</span><span style="font-style:italic;color:#6e9cbe;">Schnauzer</span><span>&gt;();
+</span></code></pre>
+<p>It is also important to remember that classes that implement variant interfaces are still invariant.</p>
+<pre data-lang="cs" style="background-color:#383838;color:#e6e1dc;" class="language-cs "><code class="language-cs" data-lang="cs"><span style="color:#95815e;">//this generates a compiler error
+</span><span style="font-style:italic;color:#6e9cbe;">List</span><span>&lt;</span><span style="font-style:italic;color:#6e9cbe;">Dog</span><span>&gt; </span><span style="color:#cc7833;">= new </span><span style="font-style:italic;color:#6e9cbe;">List</span><span>&lt;</span><span style="font-style:italic;color:#6e9cbe;">GermanShepherd</span><span>&gt;();
+</span><span style="color:#95815e;">//this compiles
+</span><span style="font-style:italic;color:#6e9cbe;">IEnumerable</span><span>&lt;</span><span style="font-style:italic;color:#6e9cbe;">Dog</span><span>&gt; </span><span style="color:#cc7833;">= new </span><span style="font-style:italic;color:#6e9cbe;">List</span><span>&lt;</span><span style="font-style:italic;color:#6e9cbe;">GermanShepherd</span><span>&gt;();
+</span></code></pre>
+<p>Contravariance</p>
+<pre data-lang="cs" style="background-color:#383838;color:#e6e1dc;" class="language-cs "><code class="language-cs" data-lang="cs"><span style="font-style:italic;color:#6e9cbe;">class </span><span style="text-decoration:underline;color:#ffc66d;">BaseComparer </span><span>: </span><span style="text-decoration:underline;font-style:italic;color:#ffc66d;">IEqualityComparer</span><span>&lt;</span><span style="font-style:italic;color:#6e9cbe;">Dog</span><span>&gt;
+</span><span>{
+</span><span>    </span><span style="color:#cc7833;">public </span><span style="font-style:italic;color:#6e9cbe;">int </span><span style="color:#ffc66d;">GetHashCode</span><span>(</span><span style="font-style:italic;color:#6e9cbe;">Dog </span><span style="font-style:italic;color:#fd971f;">baseInstance</span><span>)
+</span><span>    {
+</span><span>        </span><span style="color:#cc7833;">return </span><span style="color:#d0d0ff;">baseInstance</span><span>.GetHashCode();
+</span><span>    }
+</span><span>    </span><span style="color:#cc7833;">public </span><span style="font-style:italic;color:#6e9cbe;">bool </span><span style="color:#ffc66d;">Equals</span><span>(</span><span style="font-style:italic;color:#6e9cbe;">Dog </span><span style="font-style:italic;color:#fd971f;">x</span><span>,</span><span style="font-style:italic;color:#6e9cbe;">Dog </span><span style="font-style:italic;color:#fd971f;">y</span><span>)
+</span><span>    {
+</span><span>        </span><span style="color:#cc7833;">return </span><span style="color:#d0d0ff;">x </span><span style="color:#cc7833;">== </span><span style="color:#d0d0ff;">y</span><span>;
+</span><span>    }
+</span><span>}
+</span><span style="color:#95815e;">//less derived class instance assigned to more derived class instance. so it&#39;s contravariance
+</span><span style="font-style:italic;color:#6e9cbe;">IEqualityComparer</span><span>&lt;</span><span style="font-style:italic;color:#6e9cbe;">GermanShepherd</span><span>&gt; </span><span style="color:#d0d0ff;">comparer </span><span style="color:#cc7833;">= new </span><span style="font-style:italic;color:#6e9cbe;">BaseComparer</span><span>();
+</span><span style="color:#95815e;">//compile fail
+</span><span style="font-style:italic;color:#6e9cbe;">IEqualityComparer</span><span>&lt;</span><span style="font-style:italic;color:#6e9cbe;">Animal</span><span>&gt; </span><span style="color:#d0d0ff;">comparer </span><span style="color:#cc7833;">= new </span><span style="font-style:italic;color:#6e9cbe;">BaseComparer</span><span>();
+</span></code></pre>
+<h2 id="creating-variant-generic-interfaces"><a href="https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/covariance-contravariance/creating-variant-generic-interfaces">Creating Variant Generic Interfaces</a></h2>
+<p>A generic interface that has covariant or contravariant generic type parameters is called <strong>variant</strong>.</p>
+<pre data-lang="cs" style="background-color:#383838;color:#e6e1dc;" class="language-cs "><code class="language-cs" data-lang="cs"><span style="font-style:italic;color:#6e9cbe;">interface </span><span>IDogHospital&lt;</span><span style="color:#cc7833;">in </span><span style="font-style:italic;color:#6e9cbe;">T</span><span>,</span><span style="color:#cc7833;">out </span><span style="font-style:italic;color:#6e9cbe;">R</span><span>&gt;
+</span><span>{
+</span><span>    </span><span style="font-style:italic;color:#6e9cbe;">R </span><span style="color:#ffc66d;">DoSomething</span><span>(</span><span style="font-style:italic;color:#6e9cbe;">T </span><span style="font-style:italic;color:#fd971f;">t</span><span>);
+</span><span>	
+</span><span>	</span><span style="color:#95815e;">//compile error, type with out keyword cannot be an argument of a method
+</span><span>	</span><span style="color:#95815e;">//void DoSomething(R r);
+</span><span>	
+</span><span>	</span><span style="color:#95815e;">// compile error, type with in keyword cannot be a return type
+</span><span>	</span><span style="color:#95815e;">//T DoSomething();
+</span><span>	
+</span><span>	</span><span style="font-style:italic;color:#6e9cbe;">void </span><span style="color:#ffc66d;">DoSomething</span><span>(</span><span style="font-style:italic;color:#6e9cbe;">Action</span><span>&lt;</span><span style="font-style:italic;color:#6e9cbe;">R</span><span>&gt; </span><span style="font-style:italic;color:#fd971f;">callback</span><span>);
+</span><span>	</span><span style="font-style:italic;color:#6e9cbe;">R </span><span style="color:#ffc66d;">DoSomethingElse</span><span>&lt;</span><span style="font-style:italic;color:#6e9cbe;">TT</span><span>&gt;() </span><span style="color:#cc7833;">where </span><span style="font-style:italic;color:#6e9cbe;">TT</span><span>:</span><span style="text-decoration:underline;font-style:italic;color:#ffc66d;">T</span><span>;
+</span><span>	</span><span style="color:#95815e;">//compile error
+</span><span>	</span><span style="color:#95815e;">//R DoSomethingElse&lt;TT&gt;() where TT:R;
+</span><span>}
+</span></code></pre>
+<p>Implementation</p>
+<pre data-lang="cs" style="background-color:#383838;color:#e6e1dc;" class="language-cs "><code class="language-cs" data-lang="cs"><span style="color:#cc7833;">public </span><span style="font-style:italic;color:#6e9cbe;">class </span><span style="text-decoration:underline;color:#ffc66d;">DogHospital</span><span>&lt;</span><span style="font-style:italic;color:#6e9cbe;">T</span><span>,</span><span style="font-style:italic;color:#6e9cbe;">R</span><span>&gt; : </span><span style="text-decoration:underline;font-style:italic;color:#ffc66d;">IDogHospital</span><span>&lt;</span><span style="font-style:italic;color:#6e9cbe;">T</span><span>, </span><span style="font-style:italic;color:#6e9cbe;">R</span><span>&gt;
+</span><span>{
+</span><span>    </span><span style="color:#cc7833;">public </span><span style="font-style:italic;color:#6e9cbe;">R </span><span style="color:#ffc66d;">DoSomething</span><span>(</span><span style="font-style:italic;color:#6e9cbe;">T </span><span style="font-style:italic;color:#fd971f;">s</span><span>)
+</span><span>    {
+</span><span>        </span><span style="color:#cc7833;">throw new </span><span style="font-style:italic;color:#6e9cbe;">NotImplementedException</span><span>();
+</span><span>    }
+</span><span>
+</span><span>    </span><span style="color:#cc7833;">public </span><span style="font-style:italic;color:#6e9cbe;">void </span><span style="color:#ffc66d;">DoSomething</span><span>(</span><span style="font-style:italic;color:#6e9cbe;">Action</span><span>&lt;</span><span style="font-style:italic;color:#6e9cbe;">R</span><span>&gt; </span><span style="font-style:italic;color:#fd971f;">callback</span><span>)
+</span><span>    {
+</span><span>        </span><span style="color:#cc7833;">throw new </span><span style="font-style:italic;color:#6e9cbe;">NotImplementedException</span><span>();
+</span><span>    }
+</span><span>
+</span><span>    </span><span style="color:#cc7833;">public </span><span style="font-style:italic;color:#6e9cbe;">R </span><span style="color:#ffc66d;">DoSomethingElse</span><span>&lt;</span><span style="font-style:italic;color:#6e9cbe;">TT</span><span>&gt;() </span><span style="color:#cc7833;">where </span><span style="font-style:italic;color:#6e9cbe;">TT </span><span>: </span><span style="text-decoration:underline;font-style:italic;color:#ffc66d;">T
+</span><span>    {
+</span><span>        </span><span style="color:#cc7833;">throw new </span><span style="font-style:italic;color:#6e9cbe;">NotImplementedException</span><span>();
+</span><span>    }
+</span><span>}
+</span><span style="font-style:italic;color:#6e9cbe;">var </span><span style="color:#d0d0ff;">hospital </span><span style="color:#cc7833;">= new </span><span style="font-style:italic;color:#6e9cbe;">DogHospital</span><span>&lt;</span><span style="font-style:italic;color:#6e9cbe;">Animal</span><span>,</span><span style="font-style:italic;color:#6e9cbe;">Dog</span><span>&gt;();
+</span><span style="font-style:italic;color:#6e9cbe;">Animal </span><span style="color:#d0d0ff;">animal </span><span style="color:#cc7833;">= </span><span style="color:#d0d0ff;">hospital</span><span>.DoSomething(</span><span style="color:#cc7833;">new </span><span style="font-style:italic;color:#6e9cbe;">Schnauzer</span><span>());
+</span><span style="font-style:italic;color:#6e9cbe;">Dog </span><span style="color:#d0d0ff;">dog </span><span style="color:#cc7833;">= </span><span style="color:#d0d0ff;">hospital</span><span>.DoSomethingElse&lt;</span><span style="font-style:italic;color:#6e9cbe;">Cat</span><span>&gt;();
+</span></code></pre>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;csharp&#x2F;null&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Null Operator
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;csharp&#x2F;map-controller&#x2F;">
+              Conventionally-Routes, Attribute-Route<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js" integrity="sha384-Pulw7+h73841BQIK0LzJCydKRPChJUF9w8h8W0o3h+cLtoyNPJS847bQauLWOTwg" crossorigin="anonymous"></script>
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.en.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>
