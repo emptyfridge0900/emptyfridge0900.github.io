@@ -48,14 +48,15 @@ CLR은 이러이러한 규칙을 따라서 윈도우에서, 리눅스에서, 맥
 ### 3줄요약
 1. 아... 공부하기 싫다
 2. 정리해야 할게 너무 많다. 그냥 아래 링크를 따라가 읽자
-3. 면접 10번넘게 봤지만 어파치 이런거 안물어본다. 
+3. 면접 10번넘게 봤지만 어차피 이런거 안물어본다. 
 
-* https://blog.naver.com/ya3344/223125448918
-* https://en.wikipedia.org/wiki/Common_Intermediate_Language
-* https://en.wikipedia.org/wiki/Common_Language_Runtime
-* https://www.sysnet.pe.kr/2/0/1697
-* https://blog.naver.com/leusin/223697119291
-* https://namu.wiki/w/%EA%B8%B0%EA%B3%84%EC%96%B4
-* https://learn.microsoft.com/en-us/dotnet/core/introduction
+### Ref
+https://blog.naver.com/ya3344/223125448918  
+https://en.wikipedia.org/wiki/Common_Intermediate_Language  
+https://en.wikipedia.org/wiki/Common_Language_Runtime  
+https://www.sysnet.pe.kr/2/0/1697  
+https://blog.naver.com/leusin/223697119291  
+https://namu.wiki/w/%EA%B8%B0%EA%B3%84%EC%96%B4  
+https://learn.microsoft.com/en-us/dotnet/core/introduction  
 
 
