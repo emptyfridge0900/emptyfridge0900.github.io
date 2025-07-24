@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" integrity="sha384-oGm59HWAkwO32h2w8u0B98wKBZJwd6MbWtAJwQKCTffZjOXHXrnyv9Syjovgc+UV" crossorigin="anonymous">
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+ | Hello World
+
+  </title>
+
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;"></a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;data_structure">
+            DS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;algorithm">
+            Algo
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;leetcode">
+            Coding Practice
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;projects">
+            Toy Projects
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;commands">
+            Commands
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Hello World
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2023-08-01">August 01, 2023</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>1 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>117 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/rabbitmq/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>RabbitMQ</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/event-bus/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Event bus</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p><a href="https://www.rabbitmq.com/tutorials/tutorial-one-dotnet.html">https://www.rabbitmq.com/tutorials/tutorial-one-dotnet.html</a></p>
+<h1 id="setup">setup</h1>
+<h2 id="1-rabbitmq-seolci">1. RabbitMQ 설치</h2>
+<p>나는 로컬에 설치하기 보다는 docker를 사용해서 설치하는걸 선호한다</p>
+<p><a href="https://hub.docker.com/_/rabbitmq">docker 이미지로 설치하기</a></p>
+<pre style="background-color:#383838;color:#e6e1dc;"><code><span>docker run -d 
+</span><span>--hostname hello-world 
+</span><span>--name test-rabbit 
+</span><span>-p 7777:5672 
+</span><span>-p 17777:15672 
+</span><span>-e RABBITMQ_DEFAULT_USER=test 
+</span><span>-e RABBITMQ_DEFAULT_PASS=test123 
+</span><span>rabbitmq:3-management
+</span></code></pre>
+<h2 id="2-sedning-client">2. Sedning client</h2>
+<pre data-lang="ps1" style="background-color:#383838;color:#e6e1dc;" class="language-ps1 "><code class="language-ps1" data-lang="ps1"><span>dotnet new console </span><span style="color:#cc7833;">--</span><span>name Send
+</span><span>mv Send</span><span style="color:#cc7833;">/</span><span>Program.cs Send</span><span style="color:#cc7833;">/</span><span>Send.cs
+</span><span>cd Send
+</span><span>dotnet add package RabbitMQ.Client
+</span></code></pre>
+<pre data-lang="cs" style="background-color:#383838;color:#e6e1dc;" class="language-cs "><code class="language-cs" data-lang="cs"><span style="color:#cc7833;">using </span><span>System.Text;
+</span><span style="color:#cc7833;">using </span><span>RabbitMQ.Client;
+</span><span>
+</span><span style="font-style:italic;color:#6e9cbe;">var </span><span style="color:#d0d0ff;">factory </span><span style="color:#cc7833;">= new </span><span style="font-style:italic;color:#6e9cbe;">ConnectionFactory </span><span>{ </span><span style="color:#d0d0ff;">HostName </span><span style="color:#cc7833;">= </span><span style="color:#c1be91;">&quot;localhost&quot;</span><span>, </span><span style="color:#d0d0ff;">UserName</span><span style="color:#cc7833;">=</span><span style="color:#c1be91;">&quot;test&quot;</span><span>, </span><span style="color:#d0d0ff;">Password </span><span style="color:#cc7833;">=</span><span style="color:#c1be91;">&quot;test123&quot;</span><span>,</span><span style="color:#d0d0ff;">Port</span><span style="color:#cc7833;">=</span><span style="color:#a5c261;">7777  </span><span>};
+</span><span style="color:#cc7833;">using </span><span>var connection </span><span style="color:#cc7833;">= </span><span>factory.CreateConnection</span><span style="background-color:#b90622;color:#f8f8f0;">()</span><span>;
+</span><span style="color:#cc7833;">using </span><span>var channel </span><span style="color:#cc7833;">= </span><span>connection.CreateModel</span><span style="background-color:#b90622;color:#f8f8f0;">()</span><span>;
+</span><span>
+</span><span style="color:#d0d0ff;">channel</span><span>.QueueDeclare(</span><span style="font-style:italic;color:#fd971f;">queue</span><span>: </span><span style="color:#c1be91;">&quot;hello&quot;</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">durable</span><span>: </span><span style="color:#6e9cbe;">false</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">exclusive</span><span>: </span><span style="color:#6e9cbe;">false</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">autoDelete</span><span>: </span><span style="color:#6e9cbe;">false</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">arguments</span><span>: </span><span style="color:#6e9cbe;">null</span><span>);
+</span><span>
+</span><span style="color:#cc7833;">const </span><span style="font-style:italic;color:#6e9cbe;">string </span><span style="color:#d0d0ff;">message </span><span style="color:#cc7833;">= </span><span style="color:#c1be91;">&quot;Hello World!&quot;</span><span>;
+</span><span style="font-style:italic;color:#6e9cbe;">var </span><span style="color:#d0d0ff;">body </span><span style="color:#cc7833;">= </span><span style="color:#d0d0ff;">Encoding</span><span>.</span><span style="color:#d0d0ff;">UTF8</span><span>.GetBytes(</span><span style="color:#d0d0ff;">message</span><span>);
+</span><span>
+</span><span style="color:#d0d0ff;">channel</span><span>.BasicPublish(</span><span style="font-style:italic;color:#fd971f;">exchange</span><span>: </span><span style="font-style:italic;color:#6e9cbe;">string</span><span>.</span><span style="color:#d0d0ff;">Empty</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">routingKey</span><span>: </span><span style="color:#c1be91;">&quot;hello&quot;</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">basicProperties</span><span>: </span><span style="color:#6e9cbe;">null</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">body</span><span>: </span><span style="color:#d0d0ff;">body</span><span>);
+</span><span style="color:#d0d0ff;">Console</span><span>.WriteLine(</span><span style="color:#c1be91;">$&quot; [x] Sent </span><span>{</span><span style="color:#d0d0ff;">message</span><span>}</span><span style="color:#c1be91;">&quot;</span><span>);
+</span><span>
+</span><span style="color:#d0d0ff;">Console</span><span>.WriteLine(</span><span style="color:#c1be91;">&quot; Press [enter] to exit.&quot;</span><span>);
+</span><span style="color:#d0d0ff;">Console</span><span>.ReadLine();
+</span></code></pre>
+<h2 id="3-receving-client">3. Receving client</h2>
+<pre data-lang="ps1" style="background-color:#383838;color:#e6e1dc;" class="language-ps1 "><code class="language-ps1" data-lang="ps1"><span>dotnet new console </span><span style="color:#cc7833;">--</span><span>name Receive
+</span><span>mv Receive</span><span style="color:#cc7833;">/</span><span>Program.cs Receive</span><span style="color:#cc7833;">/</span><span>Receive.cs
+</span><span>cd Receive
+</span><span>dotnet add package RabbitMQ.Client
+</span></code></pre>
+<pre data-lang="cs" style="background-color:#383838;color:#e6e1dc;" class="language-cs "><code class="language-cs" data-lang="cs"><span style="color:#cc7833;">using </span><span>System.Text;
+</span><span style="color:#cc7833;">using </span><span>RabbitMQ.Client;
+</span><span style="color:#cc7833;">using </span><span>RabbitMQ.Client.Events;
+</span><span>
+</span><span style="font-style:italic;color:#6e9cbe;">var </span><span style="color:#d0d0ff;">factory </span><span style="color:#cc7833;">= new </span><span style="font-style:italic;color:#6e9cbe;">ConnectionFactory </span><span>{ </span><span style="color:#d0d0ff;">HostName </span><span style="color:#cc7833;">= </span><span style="color:#c1be91;">&quot;localhost&quot;</span><span>, </span><span style="color:#d0d0ff;">UserName</span><span style="color:#cc7833;">=</span><span style="color:#c1be91;">&quot;test&quot;</span><span>, </span><span style="color:#d0d0ff;">Password </span><span style="color:#cc7833;">=</span><span style="color:#c1be91;">&quot;test123&quot;</span><span>,</span><span style="color:#d0d0ff;">Port</span><span style="color:#cc7833;">=</span><span style="color:#a5c261;">7777  </span><span>};
+</span><span style="color:#cc7833;">using </span><span>var connection </span><span style="color:#cc7833;">= </span><span>factory.CreateConnection</span><span style="background-color:#b90622;color:#f8f8f0;">()</span><span>;
+</span><span style="color:#cc7833;">using </span><span>var channel </span><span style="color:#cc7833;">= </span><span>connection.CreateModel</span><span style="background-color:#b90622;color:#f8f8f0;">()</span><span>;
+</span><span>
+</span><span style="color:#d0d0ff;">channel</span><span>.QueueDeclare(</span><span style="font-style:italic;color:#fd971f;">queue</span><span>: </span><span style="color:#c1be91;">&quot;hello&quot;</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">durable</span><span>: </span><span style="color:#6e9cbe;">false</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">exclusive</span><span>: </span><span style="color:#6e9cbe;">false</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">autoDelete</span><span>: </span><span style="color:#6e9cbe;">false</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">arguments</span><span>: </span><span style="color:#6e9cbe;">null</span><span>);
+</span><span>
+</span><span> </span><span style="color:#d0d0ff;">Console</span><span>.WriteLine(</span><span style="color:#c1be91;">&quot; [*] Waiting for messages.&quot;</span><span>);
+</span><span>
+</span><span style="font-style:italic;color:#6e9cbe;">var </span><span style="color:#d0d0ff;">consumer </span><span style="color:#cc7833;">= new </span><span style="font-style:italic;color:#6e9cbe;">EventingBasicConsumer</span><span>(</span><span style="color:#d0d0ff;">channel</span><span>);
+</span><span style="color:#d0d0ff;">consumer</span><span>.</span><span style="color:#d0d0ff;">Received </span><span style="color:#cc7833;">+= </span><span>(</span><span style="font-style:italic;color:#fd971f;">model</span><span>, </span><span style="font-style:italic;color:#fd971f;">ea</span><span>) </span><span style="font-style:italic;color:#6e9cbe;">=&gt;
+</span><span>{
+</span><span>    </span><span style="font-style:italic;color:#6e9cbe;">var </span><span style="color:#d0d0ff;">body </span><span style="color:#cc7833;">= </span><span style="color:#d0d0ff;">ea</span><span>.</span><span style="color:#d0d0ff;">Body</span><span>.ToArray();
+</span><span>    </span><span style="font-style:italic;color:#6e9cbe;">var </span><span style="color:#d0d0ff;">message </span><span style="color:#cc7833;">= </span><span style="color:#d0d0ff;">Encoding</span><span>.</span><span style="color:#d0d0ff;">UTF8</span><span>.GetString(</span><span style="color:#d0d0ff;">body</span><span>);
+</span><span>    </span><span style="color:#d0d0ff;">Console</span><span>.WriteLine(</span><span style="color:#c1be91;">$&quot; [x] Received </span><span>{</span><span style="color:#d0d0ff;">message</span><span>}</span><span style="color:#c1be91;">&quot;</span><span>);
+</span><span>};
+</span><span style="color:#d0d0ff;">channel</span><span>.BasicConsume(</span><span style="font-style:italic;color:#fd971f;">queue</span><span>: </span><span style="color:#c1be91;">&quot;hello&quot;</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">autoAck</span><span>: </span><span style="color:#6e9cbe;">true</span><span>,
+</span><span>                     </span><span style="font-style:italic;color:#fd971f;">consumer</span><span>: </span><span style="color:#d0d0ff;">consumer</span><span>);
+</span><span>
+</span><span style="color:#d0d0ff;">Console</span><span>.WriteLine(</span><span style="color:#c1be91;">&quot; Press [enter] to exit.&quot;</span><span>);
+</span><span style="color:#d0d0ff;">Console</span><span>.ReadLine();
+</span></code></pre>
+<h1 id="management-plugin">Management Plugin</h1>
+<p>docker run을 할때 -p 17777:15672 옵션을 넣었던걸 기억하는가? 15672는 관리페이지 플러그인 포트다.
+<a href="http://localhost:17777/">http://localhost:17777/</a> 를 통하여 관리페이지에 접속할수 있다.</p>
+<h2 id="sender-receiver-silhaeng-sikigi-jeon">Sender, Receiver 실행 시키기 전</h2>
+<p>sender, receiver 클라이언트를 실행시키기 전에는  queue가 비어있는 것을 볼수 있다
+<img src="/images/rabbitmq/hello-world/3.png" alt="" /></p>
+<h2 id="sender-silhaeng-sikin-hu">Sender 실행 시킨 후</h2>
+<p>Sender 클라이언트를 실행시킨후에는 queue에 변화가 있다.
+Queue에 메세지가 들어가 있는것을 볼수 있다
+<img src="/images/rabbitmq/hello-world/7.png" alt="" /></p>
+<h2 id="receiver-silhaeng-sikin-hu">Receiver 실행 시킨 후</h2>
+<p>Sender를 종료시키고 Receiver를 실행시킨후에 관리페이지를 보면 Queue가 다시 비어서 0이 되어있다.
+<img src="/images/rabbitmq/hello-world/8.png" alt="" /></p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+               
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rabbitmq&#x2F;work-queeus&#x2F;">
+              Work Queues<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js" integrity="sha384-Pulw7+h73841BQIK0LzJCydKRPChJUF9w8h8W0o3h+cLtoyNPJS847bQauLWOTwg" crossorigin="anonymous"></script>
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.en.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" integrity="sha384-oGm59HWAkwO32h2w8u0B98wKBZJwd6MbWtAJwQKCTffZjOXHXrnyv9Syjovgc+UV" crossorigin="anonymous">
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+ | Package manager
+
+  </title>
+
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;"></a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;data_structure">
+            DS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;algorithm">
+            Algo
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;leetcode">
+            Coding Practice
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;projects">
+            Toy Projects
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;commands">
+            Commands
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Package manager
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2025-07-21">July 21, 2025</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>2 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>239 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/rust/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Rust</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>분명 몇일전까지만 해도 잘 작동하던 rust-analyzer가 갑자기 안되서 어디에 설치되었나 찾아보았다. 사실 저번에도 rust-analyzer 문제가 있어서 고생했던 기억이 있는데, 다음번에도 비슷한 일이 일어날거 같아서 오늘 사용했던 명령어를 정리해두었다.</p>
+<p>먼저 rust-analyzer가 어디에 설치되었는지 보자</p>
+<pre style="background-color:#383838;color:#e6e1dc;"><code><span>which package_name
+</span><span>which rust-analyer
+</span></code></pre>
+<p>설치 위치는 ~/.cargo/bin/rust-analyzer 로 뜬다.</p>
+<h2 id="cargo">cargo</h2>
+<h4 id="seolcidoen-peurogeuraem-riseuteu">설치된 프로그램 리스트</h4>
+<pre style="background-color:#383838;color:#e6e1dc;"><code><span>cargo install --list
+</span></code></pre>
+<p>cargo install --list로 설치된 프로그램들을 보았지만 rust-analyzer는 없었다.
+그럼 cargo 프로그램들이 설치되는 위치로 가보자.</p>
+<h4 id="peurogeuraem-seolciwici">프로그램 설치위치</h4>
+<pre style="background-color:#383838;color:#e6e1dc;"><code><span>ls ~/.cargo/bin/
+</span></code></pre>
+<p>.cargo/bin에 가보니 진짜 rust-analyzer가 있기는 한데 파일이름 마지막에 @가 붙어있다. 이건 심볼링크이다. 한마디로 윈도우에서의 바로가기랑 같은 것이라고 생각하면 된다.</p>
+<h4 id="simbolrig-ringkeuyi-jinjja-wici-cajgi">심볼릭 링크의 진짜 위치 찾기</h4>
+<pre style="background-color:#383838;color:#e6e1dc;"><code><span>readlink -f path
+</span><span>readlink ~/.cargo/bin/rust-analyzer
+</span></code></pre>
+<p>rust-analyzer의 실제 위치는 rustup인 것을 알 수 있다.</p>
+<h2 id="rustup">rustup</h2>
+<p>rustup 기본위치를 <strong>which rustup</strong>로 찾아보면 ~/.cargo/bin인걸 알수 있다. 왜그런지는 모르겠지만 실제 위지는 아니고 심볼릭 링크만 모여져 있는 곳이다.<br />
+참고로 rustup의 메타데이터와 툴체인은 ~/.rustup 에 있다.</p>
+<p>아마 예전에 rust-analyzer를 rustup으로 설치했다가 삭제하고 homebrew로 다시 설치해서 링크가 .cargo/bin에 남아있었나보다.</p>
+<p>그래서 다시 rustup으로 rust-analyzer 설치하고 homebrew로 설치했던 rust-analyzer 삭제하기로 했다.</p>
+<h4 id="peurogeuraem-seolci">프로그램 설치</h4>
+<pre style="background-color:#383838;color:#e6e1dc;"><code><span>rustup component add package_name
+</span><span>rustup component add rust analyzer
+</span></code></pre>
+<p>component add로 설치한 패키지는 어디에 설치될까?
+<strong>~/.rustup/툴체인/bin</strong>에 있다.
+나같은 경우는
+<strong>~/.rustup/toolchains/stable-aarch64-apple-darwin/lib</strong> 에 있었다.</p>
+<h2 id="homebrew">Homebrew</h2>
+<p>먼저 homebrew에 rust-analyzer가 있는지 확인해보자</p>
+<pre style="background-color:#383838;color:#e6e1dc;"><code><span>brew list
+</span></code></pre>
+<p>리스트에 rust-analyzer가 있다. 근데 왜 which rust-analyzer 했을때는 .cargo에 있다고 뜨는지 모르겠다...그리고 왜 그동안은 rust-analyzer가 잘 작동했는지도 모르겠다. 최근에 했던 brew ugrade 때문에 그런거려나<br />
+쨋든 <strong>brew install</strong>로 설치했던 프로그램의 실제 바이너리는 아래 폴더중 하나에 있을 것이다.</p>
+<pre style="background-color:#383838;color:#e6e1dc;"><code><span>ls /opt/homebrew/bin
+</span><span>ls /opt/homebrew/opt
+</span><span>ls /opt/homebrew/Cellar
+</span></code></pre>
+<p>이제 homebrew로 설치했던 rust-analyzer를 제거해주자</p>
+<pre data-lang="bash" style="background-color:#383838;color:#e6e1dc;" class="language-bash "><code class="language-bash" data-lang="bash"><span>brew uninstall package_name
+</span><span>brew uninstall rust-analyzer
+</span></code></pre>
+<p>helix로 러스트 파일을 열어보니 이제서야 잘 작동한다.</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rust&#x2F;tech-interview&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Frequently used methods
+            </a>
+          </div>
+           
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js" integrity="sha384-Pulw7+h73841BQIK0LzJCydKRPChJUF9w8h8W0o3h+cLtoyNPJS847bQauLWOTwg" crossorigin="anonymous"></script>
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.en.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" integrity="sha384-oGm59HWAkwO32h2w8u0B98wKBZJwd6MbWtAJwQKCTffZjOXHXrnyv9Syjovgc+UV" crossorigin="anonymous">
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+ | Frequently used methods
+
+  </title>
+
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;"></a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;data_structure">
+            DS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;algorithm">
+            Algo
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;leetcode">
+            Coding Practice
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;projects">
+            Toy Projects
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;commands">
+            Commands
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Frequently used methods
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2025-05-28">May 28, 2025</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>4 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>687 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/rust/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Rust</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>A collection of functions frequently used when solving leetcode problems with Rust</p>
+<h2 id="std">std</h2>
+<h3 id="struct-string-in-std-string-module">Struct <a href="https://doc.rust-lang.org/std/string/struct.String.html">String</a> in std::string module</h3>
+<p><a href="https://doc.rust-lang.org/std/string/struct.String.html#method.push">push</a><br />
+<a href="https://doc.rust-lang.org/std/string/struct.String.html#method.push_str">push_str</a><br />
+and all the methods listed below in <em>str</em></p>
+<h3 id="struct-vec-in-std-vec-module">Struct <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html">Vec</a> in std::vec module</h3>
+<p><a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.push">push</a><br />
+<a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.pop">pop</a><br />
+<a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.splice">slice</a><br />
+<a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.insert">insert</a><br />
+<a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.remove">remove</a><br />
+<a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.splice">splice</a><br />
+<a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.dedup">dedup</a><br />
+and all the methods listed below in <em>slice</em></p>
+<h3 id="primitive-type-str">Primitive Type <a href="https://doc.rust-lang.org/std/primitive.str.html">str</a></h3>
+<p><a href="https://doc.rust-lang.org/std/primitive.str.html#method.as_bytes">as_bytes</a><br />
+<a href="https://doc.rust-lang.org/std/primitive.str.html#method.bytes">bytes</a><br />
+<a href="https://doc.rust-lang.org/std/primitive.str.html#method.chars">chars</a><br />
+<a href="https://doc.rust-lang.org/std/primitive.str.html#method.len">len</a></p>
+<h3 id="primitive-type-slice">Primitive Type <a href="https://doc.rust-lang.org/std/primitive.slice.html">Slice</a></h3>
+<p><a href="https://doc.rust-lang.org/std/primitive.slice.html#method.contains">contains</a><br />
+<a href="https://doc.rust-lang.org/std/primitive.slice.html#method.concat">concat</a><br />
+<a href="https://doc.rust-lang.org/std/primitive.slice.html#method.join">join</a><br />
+<a href="https://doc.rust-lang.org/std/primitive.slice.html#method.first">first</a><br />
+<a href="https://doc.rust-lang.org/std/primitive.slice.html#method.last">last</a><br />
+<a href="https://doc.rust-lang.org/std/primitive.slice.html#method.get">get</a><br />
+<a href="https://doc.rust-lang.org/std/primitive.slice.html#method.len">len</a><br />
+<a href="https://doc.rust-lang.org/std/primitive.slice.html#method.iter">iter</a><br />
+<a href="https://doc.rust-lang.org/std/primitive.slice.html#method.iter_mut">iter_mut</a><br />
+<a href="https://doc.rust-lang.org/std/primitive.slice.html#method.split">split</a><br />
+<a href="https://doc.rust-lang.org/std/primitive.slice.html#method.rsplit">rsplit</a><br />
+<a href="https://doc.rust-lang.org/std/primitive.slice.html#method.sort">sort</a><br />
+<a href="https://doc.rust-lang.org/std/primitive.slice.html#method.sort_by">sort_by</a><br />
+<a href="https://doc.rust-lang.org/std/primitive.slice.html#method.reverse">reverse</a><br />
+<a href="https://doc.rust-lang.org/std/primitive.slice.html#method.windows">windows</a><br />
+<a href="https://doc.rust-lang.org/std/primitive.slice.html#method.to_vec">to_vec</a><br />
+*<a href="https://doc.rust-lang.org/std/primitive.slice.html#method.into_vec">into_vec</a></p>
+<h2 id="std-collections">std::collections</h2>
+<h3 id="struct-vecdeque">Struct <a href="https://doc.rust-lang.org/std/collections/struct.VecDeque.html">VecDeque</a></h3>
+<p><a href="https://doc.rust-lang.org/std/collections/struct.VecDeque.html#method.push_back">push_back</a><br />
+<a href="https://doc.rust-lang.org/std/collections/struct.VecDeque.html#method.pop_back">pop_back</a><br />
+<a href="https://doc.rust-lang.org/std/collections/struct.VecDeque.html#method.back">back</a><br />
+<a href="https://doc.rust-lang.org/std/collections/struct.VecDeque.html#method.back_mut">back_mut</a><br />
+<a href="https://doc.rust-lang.org/std/collections/struct.VecDeque.html#method.push_front">push_front</a><br />
+<a href="https://doc.rust-lang.org/std/collections/struct.VecDeque.html#method.pop_front">pop_front</a><br />
+<a href="https://doc.rust-lang.org/std/collections/struct.VecDeque.html#method.front">front</a><br />
+<a href="https://doc.rust-lang.org/std/collections/struct.VecDeque.html#method.front_mut">front_mut</a><br />
+<a href="https://doc.rust-lang.org/std/collections/struct.VecDeque.html#method.insert">insert</a><br />
+<a href="https://doc.rust-lang.org/std/collections/struct.VecDeque.html#method.get">get</a><br />
+<a href="https://doc.rust-lang.org/std/collections/struct.VecDeque.html#method.remove">remove</a><br />
+<a href="https://doc.rust-lang.org/std/collections/struct.VecDeque.html#method.append">append</a></p>
+<h3 id="struct-hashmap">Struct <a href="https://doc.rust-lang.org/std/collections/struct.HashMap.html">HashMap</a></h3>
+<p><a href="https://doc.rust-lang.org/std/collections/struct.HashMap.html#method.entry">entry</a></p>
+<blockquote>
+<p><a href="https://doc.rust-lang.org/std/collections/hash_map/enum.Entry.html#method.and_modify">and_motify</a><br />
+<a href="https://doc.rust-lang.org/std/collections/hash_map/enum.Entry.html#method.insert_entry">insert_entry</a><br />
+<a href="https://doc.rust-lang.org/std/collections/hash_map/enum.Entry.html#method.or_insert">or_insert</a></p>
+</blockquote>
+<p><a href="https://doc.rust-lang.org/std/collections/struct.HashMap.html#method.insert">insert</a><br />
+<a href="https://doc.rust-lang.org/std/collections/struct.HashMap.html#method.get">get</a><br />
+<a href="https://doc.rust-lang.org/std/collections/struct.HashMap.html#method.keys">keys</a><br />
+<a href="https://doc.rust-lang.org/std/collections/struct.HashMap.html#method.values">values</a><br />
+<a href="https://doc.rust-lang.org/std/collections/struct.HashMap.html#method.iter">iter</a><br />
+<a href="https://doc.rust-lang.org/std/collections/struct.HashMap.html#method.len">len</a></p>
+<h3 id="struct-hashset">Struct <a href="https://doc.rust-lang.org/std/collections/struct.HashSet.html">HashSet</a></h3>
+<p><a href="https://doc.rust-lang.org/std/collections/struct.HashSet.html#method.insert">insert</a><br />
+<a href="https://doc.rust-lang.org/std/collections/struct.HashSet.html#method.get">get</a><br />
+<a href="https://doc.rust-lang.org/std/collections/struct.HashSet.html#method.get_or_insert">get_or_insert</a><br />
+<a href="https://doc.rust-lang.org/std/collections/struct.HashSet.html#method.remove">remove</a><br />
+<a href="https://doc.rust-lang.org/std/collections/struct.HashSet.html#method.take">take</a><br />
+<a href="https://doc.rust-lang.org/std/collections/struct.HashSet.html#method.iter">iter</a><br />
+<a href="https://doc.rust-lang.org/std/collections/struct.HashSet.html#method.len">len</a></p>
+<h2 id="std-iter">std::iter</h2>
+<h3 id="trait-iterator">Trait <a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html">Iterator</a></h3>
+<p><a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.collect">collect</a><br />
+<a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.collect_into">collect_into</a><br />
+<a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.flatten">flatten</a><br />
+<a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.fold">fold</a><br />
+<a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.map">map</a><br />
+<a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.max">max</a><br />
+<a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.max_by">max_by</a><br />
+<a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.min">min</a><br />
+<a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.min_by">min_by</a><br />
+<a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.nth">nth</a><br />
+<a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.reduce">reduce</a> &amp;&amp; <a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.fold">fold</a><br />
+<a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.rev">rev</a><br />
+<a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.skip">skip</a><br />
+<a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.take">take</a><br />
+<a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.zip">zip</a></p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rust&#x2F;ownership&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Ownership
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rust&#x2F;package&#x2F;">
+              Package manager<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js" integrity="sha384-Pulw7+h73841BQIK0LzJCydKRPChJUF9w8h8W0o3h+cLtoyNPJS847bQauLWOTwg" crossorigin="anonymous"></script>
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.en.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>

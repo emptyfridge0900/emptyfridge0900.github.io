@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" integrity="sha384-oGm59HWAkwO32h2w8u0B98wKBZJwd6MbWtAJwQKCTffZjOXHXrnyv9Syjovgc+UV" crossorigin="anonymous">
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+ | Conventionally-Routes, Attribute-Route
+
+  </title>
+
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;"></a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;data_structure">
+            DS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;algorithm">
+            Algo
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;leetcode">
+            Coding Practice
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;projects">
+            Toy Projects
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;commands">
+            Commands
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Conventionally-Routes, Attribute-Route
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2025-04-18">April 18, 2025</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>2 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>290 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/c/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>C#</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>최근에 닷넷 프로젝트를 생성할 일이 있어서 mvc랑 api 프로젝트를template로 생성해봤는데 그동안 무시하고 지나갔던 미들웨어들이눈에 들어왔다. 생각해보니 라우팅 관련해서 공부해본적도 없고 그냥 예제 따라했던게 전부여서 인터넷을 뒤적여봤다.</p>
+<p>일단 마소 공식 홈페이지에서 보니 route template는 url링크를 생성, url을 action에 매칭하는 기능이 있다고 한다.
+action은 컨트롤러 안에 있는 모든 메소드를 가리킨다.<br />
+그리고 라우트의 action은 <strong>conventionally-route</strong>, <strong>attribute-route</strong> 두가지로 나뉜다.<br />
+conventioanlly-route방식은 mvc에서 사용되고 attribute-route는 api에서 사용된다,
+mvc가 attribute-route를 사용할수도 있지만 주로 conventionally-route 방식을 사용한다.<br />
+개인적으로는 mvc 프로젝트한게 몇년전이여서 mvc 라우팅은 건드려본적이 없다.<br />
+대신 회사에 일할때는 api만들어서 사용하는게 주된 업무여서 항상 controller에 attribute를 달아서 사용했다.</p>
+<h2 id="tempeulrise-ddalryeonaoneun-route">템플릿에 딸려나오는 route</h2>
+<p>개발하다 보면 template을 통해 많이 보게되는 Route세팅 방식이 있다<br />
+<strong>MapControllers</strong><br />
+<strong>MapControllerRoute</strong><br />
+<strong>MapDefaultContollerRoute</strong><br />
+모두ControllerEndpointRouteBuilderExtensions class에 속한 mehtod다</p>
+<h3 id="mapcontrollers">MapControllers</h3>
+<p><strong>Adds endpoints for controller actions to the IEndpointRouteBuilder without specifying any routes.</strong><br />
+api 프로젝트를 생성하면 기본적으로 사용되는 방식, attribute-route다.</p>
+<h3 id="mapcontrollerroute">MapControllerRoute</h3>
+<p><strong>Adds endpoints for controller actions to the IEndpointRouteBuilder and specifies a route with the given name, pattern, defaults, constraints, and dataTokens.</strong><br />
+mvc 프로젝트를 생성하면 주로  사용되는 라우터방식
+MapControllerRoute is used to create a single route.</p>
+<pre data-lang="cs" style="background-color:#383838;color:#e6e1dc;" class="language-cs "><code class="language-cs" data-lang="cs"><span>  </span><span style="color:#d0d0ff;">endpoints</span><span>.MapControllerRoute(
+</span><span>    </span><span style="font-style:italic;color:#fd971f;">name</span><span>: </span><span style="color:#c1be91;">&quot;default&quot;</span><span>,
+</span><span>    </span><span style="font-style:italic;color:#fd971f;">pattern</span><span>: </span><span style="color:#c1be91;">&quot;{controller=Home}/{action=Index}/{id?}&quot;</span><span>);
+</span></code></pre>
+<p>이게 mvc  template 사용해서 프로젝트를 만들면 기본적으로 주어지는 라우트세팅이다.
+기본 컨트롤러는 home, 기본 메소드는 index, id는 optional.</p>
+<h3 id="mapdefaultcontollerroute">MapDefaultContollerRoute</h3>
+<p><strong>Adds endpoints for controller actions to the IEndpointRouteBuilder and adds the default route {controller=Home}/{action=Index}/{id?}</strong><br />
+사실상 MapControllerRoute에 {controller=Home}/{action=Index}/{id?} 기본값을 넣은 것으로 이것대신 MapControllerRoute쓰면된다.
+지금은 잘 안보이는 미들웨어다</p>
+<h2 id="gyeolron">결론</h2>
+<p>라우터에 대한 설정은 엄청 많은데 오늘은 그냥 3가지 미들웨어가 어떻게 다른지만 읽어보았다.
+라우터 설정에 대해 더 알고싶으면 나머지 내용은 나중에 읽어보면 될거 같다.
+webapp 섹션에 razor pages, mvc, client-side 등등 여러 하위섹션이 있는데 왜 mvc에서만 라우팅을 다루는지 모르겠다.
+결론은 api 개발을 하면 MapControllers사용하고 필요할때마다 attribute-route 사용방법 읽어보면되고, mvc하면 MapControllerRoute 사용하면 된다. 끝!</p>
+<p>https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/routing?view=aspnetcore-9.0</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;csharp&#x2F;variance&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Variance
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;csharp&#x2F;hub&#x2F;">
+              SignalR Hub<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js" integrity="sha384-Pulw7+h73841BQIK0LzJCydKRPChJUF9w8h8W0o3h+cLtoyNPJS847bQauLWOTwg" crossorigin="anonymous"></script>
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.en.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" integrity="sha384-oGm59HWAkwO32h2w8u0B98wKBZJwd6MbWtAJwQKCTffZjOXHXrnyv9Syjovgc+UV" crossorigin="anonymous">
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+ | CLI? CIL? CLR?
+
+  </title>
+
+  
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;"></a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;data_structure">
+            DS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;algorithm">
+            Algo
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;leetcode">
+            Coding Practice
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;projects">
+            Toy Projects
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;commands">
+            Commands
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            CLI? CIL? CLR?
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2025-07-09">July 09, 2025</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>3 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>404 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/c/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>C#</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>인터뷰 준비중에 예상 질문들을 찾아보면 꼭 이런 질문들이 있다.<br />
+What is .NET?<br />
+What is CIL?<br />
+What is CLR?</p>
+<p>그동안에 이런 질문들은 무시했고 문법이나 아키텍쳐 같은 것에만 집중했는데 오늘은 잠깐 삼천포로 빠져보았다.</p>
+<p>이런 용어들의 기원을 따라가다보면 정말 끝이 없다. cil을 보면 byte code가 나오고, machine code가 나오고, compile code가 나오고, interprete code가 나오고, Jit이 나오고, runtime이 나오고, cross platform이 나오고....</p>
+<h3 id="common-intermediate-language">Common Intermediate Language</h3>
+<p>일단 제일 낮은 단계의 코드는 machine code이다. 컴퓨터가 바로 읽을 수 있는 코드.<br />
+그 machine code는 인간이 읽기 힘드니까 인간이 읽을 수 있는 수준의 코드와 machine code를 매칭시켜주는 것이 assembly라고 들었다.<br />
+모든 cpu는 각자에게 맞는 machine code가 있고 또한 각자에게 맞는 어셈블리코드가 있다.<br />
+어셈블리어로 개발하기에는 생산성이 떨어지니까 컴파일러가 등장했고 C 같은 하이레벨 언어(?)로 코딩하면 이제 컴파일러가 알아서 machine code로 변환해준다.<br />
+컴파일언어가 개발도 어렵고 복잡해서 인터프리터 언어가 탄생했다고 알고 있는데 구체적인 역사적 배경은 모르겠다. 일단 인터프리터 언어는 컴파일 언어와는 다르게 코드를 읽어가며 번역하는 언어이다.<br />
+그리고 오늘의 주제인 Intermdediate Lanugage (중간 언어)가 등장하는데 중간언어는 말 그대로 중간에 있는 언어이다.<br />
+먼저 소스코드를 중간언어,바이트코드 등으로 컴파일하고, 컴파일 된 코드를 인터프리트하는 방식으로 작동한다.<br />
+인터프리트 언어의 읽으면서 번역하는 장정도 챙기고 미리 컴파일 가능한 부분은 컴파일해서 속도를 높였다.<br />
+작동하는 속도도 컴파일언어와 인터프리트 언어 사이이다.
+.NET CLR에서는 CIL이라고 부르고 Java에서는 ByteCode라고 부른다.</p>
+<h3 id="common-language-runtime">Common Language Runtime</h3>
+<p>일단 CIL이 뭐하는 녀석인지 알겠는데 그럼 CLR은 뭘까?<br />
+간단하게 말하자면 런타임환경이다. 바로 이놈이 이미 한번 컴파일을 거친 중간언어를 머신코드로 바꿔주는 역할을 한다고 생각하면 된다.<br />
+자세한 내용은 <a href="https://en.wikipedia.org/wiki/Just-in-time_compilation">Just In Time</a> 이나 <a href="https://en.wikipedia.org/wiki/Managed_code">Managed Code</a> 읽어보는게 좋다.<br />
+JIT 은 컴파일 하는 방식이고 Managed Code는 Intermediate Code을 일컫는 다른 말이다. 모든 중간언어가 managed code는 아니지만 지금은 그렇게 생각하고 넘아가자.</p>
+<h3 id="common-language-infrastructure">Common Language Infrastructure</h3>
+<p>그럼 CIL은 컴파일된 중간언어고 CLR은 중간언어를 실행시켜주는 실행기인데, 그럼 CLI는 뭔가?<br />
+직역하면 공통언어기반시설? 한국어로는 감이 안온다. 간단하게 말하자면 기술 명세서이다. 공통언어기반시설 보다는 좀더 잘 와닿지 않는가?<br />
+CLR은 이러이러한 규칙을 따라서 윈도우에서, 리눅스에서, 맥에서 이렇게저렇게 동작하게 하세요 라고 정해놓은 규칙이라고 생각하면 될거같다.<br />
+그래서 CLI의 요구사항 대로 runtime을 구현한 구현체가 CLR인것이고 더 넓은 의미로는 .NET 그 자체이다.<br />
+.NET은 CLR을 포함하여 앱을 개발할 수 있게하는 요소(라이브러리, 컴파일러 등)를 집어넣은 CLI를 구현한 플랫폼이다.</p>
+<h3 id="3julyoyag">3줄요약</h3>
+<ol>
+<li>아... 공부하기 싫다</li>
+<li>정리해야 할게 너무 많다. 그냥 아래 링크를 따라가 읽자</li>
+<li>면접 10번넘게 봤지만 어차피 이런거 안물어본다.</li>
+</ol>
+<h3 id="ref">Ref</h3>
+<p>https://blog.naver.com/ya3344/223125448918<br />
+https://en.wikipedia.org/wiki/Common_Intermediate_Language<br />
+https://en.wikipedia.org/wiki/Common_Language_Runtime<br />
+https://www.sysnet.pe.kr/2/0/1697<br />
+https://blog.naver.com/leusin/223697119291<br />
+https://namu.wiki/w/%EA%B8%B0%EA%B3%84%EC%96%B4<br />
+https://learn.microsoft.com/en-us/dotnet/core/introduction</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;csharp&#x2F;jquery-post-request&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Razor Page에서 Ajax로 Post 요청하기
+            </a>
+          </div>
+           
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js" integrity="sha384-Pulw7+h73841BQIK0LzJCydKRPChJUF9w8h8W0o3h+cLtoyNPJS847bQauLWOTwg" crossorigin="anonymous"></script>
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.en.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>
