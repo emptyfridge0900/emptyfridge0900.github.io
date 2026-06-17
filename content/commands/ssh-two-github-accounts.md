@@ -46,7 +46,7 @@ ls -la ~/.ssh/
 
 ```bash
 cat ~/.ssh/id_ed25519.pub
-# ssh-ed25519 AAAA... emptyfridge0900@gmail.com
+# ssh-ed25519 AAAA... personal@gmail.com
 ```
 
 GitHub 에 실제로 연결되는지도 확인한다.
@@ -79,7 +79,7 @@ SSH 키 파일 이름은 두 부분으로 구성된다.
 ## 3. 회사 계정용 SSH 키 생성
 
 ```bash
-ssh-keygen -t ed25519 -C "dbeak@icloudhospital.com" -f ~/.ssh/id_ed25519_company -N ""
+ssh-keygen -t ed25519 -C "work@company.com" -f ~/.ssh/id_ed25519_company -N ""
 ```
 
 각 옵션 설명:
@@ -87,7 +87,7 @@ ssh-keygen -t ed25519 -C "dbeak@icloudhospital.com" -f ~/.ssh/id_ed25519_company
 | 옵션 | 의미 |
 |---|---|
 | `-t ed25519` | 알고리즘 타입 지정. `ed25519`가 현재 표준 (기존의 `rsa` 보다 짧고 빠르고 안전) |
-| `-C "dbeak@icloudhospital.com"` | Comment. 공개키 파일 맨 끝에 붙는 **라벨**. 어떤 계정 키인지 구분하는 용도. 이메일일 필요는 없지만 관례적으로 사용 |
+| `-C "work@company.com"` | Comment. 공개키 파일 맨 끝에 붙는 **라벨**. 어떤 계정 키인지 구분하는 용도. 이메일일 필요는 없지만 관례적으로 사용 |
 | `-f ~/.ssh/id_ed25519_company` | 저장할 파일 경로 지정. 기본값은 `~/.ssh/id_ed25519` 인데, 이미 개인용 키가 거기 있으니 이름을 다르게 준다 |
 | `-N ""` | 패스프레이즈(암호)를 빈 값으로 설정. 입력창이 뜨지 않고 바로 생성된다 |
 
@@ -156,8 +156,8 @@ ssh-add ~/.ssh/id_ed25519_company
 
 ```bash
 ssh-add -l
-# 256 SHA256:xxx emptyfridge0900@gmail.com (ED25519)
-# 256 SHA256:yyy dbeak@icloudhospital.com (ED25519)
+# 256 SHA256:xxx personal@gmail.com (ED25519)
+# 256 SHA256:yyy work@company.com (ED25519)
 ```
 
 > `ssh-add` 로 추가한 키는 재부팅하면 사라진다. `AddKeysToAgent yes` 를 config 에 넣으면 첫 사용 시 자동 재등록된다.
