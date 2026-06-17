@@ -18,25 +18,33 @@ tags = ["docker", "runc", "oci", "layers"]
 추상 개념이기를 멈추고 [Linux 커널](./component_and_layers.md) 위의 진짜 격리된
 프로세스가 되는 지점이다.
 
-작고, 한 가지 일만 하고, 컨테이너를 시작시킨 뒤 **즉시 종료**한다. **OCI Runtime
-Spec**의 레퍼런스 구현체다.
+작고, 한 가지 일만 하고, 컨테이너를 시작시킨 뒤 **즉시 종료**한다.
+[**OCI Runtime Spec**](https://github.com/opencontainers/runtime-spec)의
+[레퍼런스 구현체](https://github.com/opencontainers/runtime-spec/blob/main/implementations.md)다.
 
 ## "컨테이너를 생성한다"는 게 실제로 무슨 뜻인가
 
 컨테이너는 가상머신이 아니다. 그냥 **주변 세상에 대해 속고 있는 평범한 Linux
 프로세스**다. `runc`가 Linux 커널의 세 가지 기능으로 그 거짓말을 한다:
 
-- **namespace** — 프로세스가 *무엇을 볼 수 있는지*를 격리한다. PID(자기만의 PID 1),
-  마운트(자기만의 파일시스템 뷰), 네트워크(자기만의 인터페이스), 사용자, 호스트명
-  (UTS), IPC, cgroup(자기만의 cgroup 뷰), time(자기만의 시계)을 각각 분리한다.
-- **cgroup**(control group) — 프로세스가 *무엇을 얼마나 쓸 수 있는지*를 제한한다:
+- [**namespace**](https://man7.org/linux/man-pages/man7/namespaces.7.html) —
+  프로세스가 *무엇을 볼 수 있는지*를 격리한다.
+  [OCI spec이 정의하는 8종](https://github.com/opencontainers/runtime-spec/blob/main/config-linux.md#namespaces):
+  PID(자기만의 PID 1), 마운트(자기만의 파일시스템 뷰), 네트워크(자기만의 인터페이스),
+  사용자, 호스트명(UTS), IPC, cgroup(자기만의 cgroup 뷰), time(자기만의 시계)을
+  각각 분리한다.
+- [**cgroup**](https://man7.org/linux/man-pages/man7/cgroups.7.html)(control group) —
+  프로세스가 *무엇을 얼마나 쓸 수 있는지*를
+  [제한한다](https://github.com/opencontainers/runtime-spec/blob/main/config-linux.md#control-groups):
   CPU, 메모리, PID 수, I/O. `--memory=512m`이 강제되는 방식이 이거다.
 - **루트 파일시스템(rootfs)** — `runc`가 containerd가 이미지 레이어로 준비해 둔
   파일시스템으로 `pivot_root` 해서, 프로세스가 호스트가 아니라 이미지의 파일을
   `/`로 보게 만든다.
 
-여기에 보안 레이어도 적용한다: **capabilities**(root 권한 떨구기), **seccomp**
-(syscall 필터), 옵션으로 AppArmor/SELinux. 그런 다음 그 만들어진 세상 안에서
+여기에 보안 레이어도 적용한다:
+[**capabilities**](https://github.com/opencontainers/runtime-spec/blob/main/config.md)(root 권한 떨구기),
+[**seccomp**](https://github.com/opencontainers/runtime-spec/blob/main/config-linux.md#seccomp)(syscall 필터),
+옵션으로 AppArmor/SELinux. 그런 다음 그 만들어진 세상 안에서
 컨테이너의 entrypoint를 PID 1로 `exec`하고 — 종료한다.
 
 ## 왜 `ps`에 거의 안 나오나
@@ -59,18 +67,21 @@ containerd-shim-runc-v2     # 오래 사는 부모
 ## OCI Runtime Spec — runc가 교체 가능한 이유
 
 `runc`는 그저 **Open Container Initiative(OCI) Runtime Specification**의 *레퍼런스*
-구현일 뿐이다. 이 spec은 표준 "bundle"(rootfs + `config.json`)과 런타임이 지원해야
-하는 명령들(`create`, `start`, `kill`, `delete`)을 정의한다.
+구현일 뿐이다. 이 spec은 표준
+["bundle"](https://github.com/opencontainers/runtime-spec/blob/main/bundle.md)(rootfs + `config.json`)과
+런타임이 지원해야 하는
+[명령들](https://github.com/opencontainers/runtime-spec/blob/main/runtime.md)(`create`, `start`, `kill`, `delete`)을
+정의한다.
 [containerd](./layer3_containerd.md)가 이 spec으로 말하므로, OCI를 따르는 어떤
 런타임이든 갈아끼울 수 있다:
 
 | 저수준 런타임 | 바뀌는 점 |
 |---|---|
-| **runc** | 기본값. 표준 Linux namespace + cgroup. Go로 작성. |
-| **crun** | 같은 모델, C로 작성 — 시작 빠르고 메모리 적음. |
-| **gVisor (`runsc`)** | 실제 커널 앞에 **유저 공간 커널**을 둔다 — 격리 강함, 약간의 오버헤드. |
-| **Kata Containers** | 각 컨테이너를 **경량 마이크로 VM**에서 실행 — VM급 격리 + 컨테이너 사용성. |
-| **youki** | Rust로 작성한 runc 호환 런타임. |
+| [**runc**](https://github.com/opencontainers/runc) | 기본값. 표준 Linux namespace + cgroup. Go로 작성. |
+| [**crun**](https://github.com/containers/crun) | 같은 모델, C로 작성 — 시작 빠르고 메모리 적음. |
+| [**gVisor (`runsc`)**](https://gvisor.dev/docs/architecture_guide/security/) | 실제 커널 앞에 **유저 공간 커널**을 둔다 — 격리 강함, 약간의 오버헤드. |
+| [**Kata Containers**](https://github.com/kata-containers/kata-containers/blob/main/docs/design/architecture/README.md) | 각 컨테이너를 **경량 마이크로 VM**에서 실행 — VM급 격리 + 컨테이너 사용성. |
+| [**youki**](https://github.com/youki-dev/youki) | Rust로 작성한 runc 호환 런타임. |
 
 모두 같은 OCI 인터페이스를 구현하므로, (예: 더 강한 격리를 위해) 런타임을 바꿔도
 CLI·dockerd·containerd는 **건드릴 필요가 없다** — runtime-class 설정만 바꾸면 된다.
@@ -120,9 +131,17 @@ docker run nginx
 
 ## 참고
 
-- runc GitHub: <https://github.com/opencontainers/runc>
-- OCI Runtime Specification: <https://github.com/opencontainers/runtime-spec>
-- Linux namespaces: <https://man7.org/linux/man-pages/man7/namespaces.7.html>
-- cgroups: <https://man7.org/linux/man-pages/man7/cgroups.7.html>
-- gVisor: <https://gvisor.dev/>
-- Kata Containers: <https://katacontainers.io/>
+- runc — OCI Runtime Spec 레퍼런스 구현 (seccomp, AppArmor, SELinux 포함): <https://github.com/opencontainers/runc>
+- OCI Runtime Spec 구현체 목록 — runc가 레퍼런스: <https://github.com/opencontainers/runtime-spec/blob/main/implementations.md>
+- OCI Runtime Spec — namespace 8종 정의 (PID, mount, network, user, UTS, IPC, cgroup, time): <https://github.com/opencontainers/runtime-spec/blob/main/config-linux.md#namespaces>
+- OCI Runtime Spec — cgroup 리소스 제한 (CPU, memory, PIDs, Block IO): <https://github.com/opencontainers/runtime-spec/blob/main/config-linux.md#control-groups>
+- OCI Runtime Spec — capabilities 정의: <https://github.com/opencontainers/runtime-spec/blob/main/config.md>
+- OCI Runtime Spec — seccomp 필터 설정: <https://github.com/opencontainers/runtime-spec/blob/main/config-linux.md#seccomp>
+- OCI Runtime Spec — bundle 포맷 (rootfs + config.json): <https://github.com/opencontainers/runtime-spec/blob/main/bundle.md>
+- OCI Runtime Spec — 라이프사이클 (create, start, kill, delete): <https://github.com/opencontainers/runtime-spec/blob/main/runtime.md>
+- Linux namespaces(7) man page: <https://man7.org/linux/man-pages/man7/namespaces.7.html>
+- cgroups(7) man page: <https://man7.org/linux/man-pages/man7/cgroups.7.html>
+- crun — C로 작성, runc 대비 49.4% 빠른 시작: <https://github.com/containers/crun>
+- gVisor 보안 아키텍처 — 유저 공간 커널(Sentry)로 syscall 가로채기: <https://gvisor.dev/docs/architecture_guide/security/>
+- Kata Containers 아키텍처 — 경량 VM 기반 컨테이너 격리: <https://github.com/kata-containers/kata-containers/blob/main/docs/design/architecture/README.md>
+- youki — Rust로 작성한 OCI 런타임: <https://github.com/youki-dev/youki>

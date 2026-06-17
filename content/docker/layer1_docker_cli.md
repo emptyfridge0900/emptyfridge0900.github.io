@@ -15,8 +15,9 @@ tags = ["docker", "cli", "layers"]
 
 `docker` CLI는 내가 명령을 입력하는 프로그램이다 — `docker ps`, `docker run`,
 `docker build`. 얘는 **클라이언트일 뿐이다**. 직접 컨테이너를 돌리거나 빌드하거나
-저장하지 않는다. 하는 일은 오직 내 명령을 HTTP 요청으로 바꿔서 데몬에게 보내고,
-응답을 받아 화면에 보기 좋게 뿌리는 것뿐이다.
+저장하지 않는다. 하는 일은 오직 내 명령을
+[Docker API](https://docs.docker.com/get-started/docker-overview/#docker-architecture)
+요청으로 바꿔서 데몬에게 보내고, 응답을 받아 화면에 보기 좋게 뿌리는 것뿐이다.
 
 쓸 만한 비유: CLI는 **리모컨**이다. 버튼을 누르면 신호를 보내고, 실제 일은 TV가
 한다. `docker`가 리모컨, `dockerd`가 TV다.
@@ -41,7 +42,9 @@ Colima, 원격 서버 — Docker API만 말할 수 있으면 무엇에든 붙는
 
 ## 명령을 치면 일어나는 일
 
-`docker ps`는 로컬에서 "컨테이너 목록" 코드가 도는 게 아니다. API 호출이다:
+`docker ps`는 로컬에서 "컨테이너 목록" 코드가 도는 게 아니다.
+[`GET /containers/json`](https://docs.docker.com/reference/api/engine/version/v1.47/#tag/Container/operation/ContainerList)
+API 호출이다:
 
 ```
 docker ps
@@ -85,10 +88,12 @@ default    Current DOCKER_HOST based    unix:///var/run/docker.sock
 
 ## CLI가 말하는 Docker API
 
-CLI와 데몬은 **Docker Engine API**로 통신한다 — HTTP로 말하는 버전 있는 REST API다.
+CLI와 데몬은 [**Docker Engine API**](https://docs.docker.com/reference/api/engine/)로
+통신한다 — HTTP로 말하는 버전 있는 REST API다.
 
-- **버전 있음**: 요청에 버전이 붙는다(`/v1.43/...`). 최신 CLI도 협상으로 버전을
-  낮춰 옛 데몬과 대화할 수 있다.
+- **버전 있음**: 요청에 버전이 붙는다(`/v1.43/...`). 최신 CLI도
+  [협상으로 버전을 낮춰](https://docs.docker.com/reference/api/engine/) 옛 데몬과
+  대화할 수 있다.
 - **전송 방식 무관**: 같은 API가 Unix socket(로컬)으로도 TCP socket(원격)으로도
   돈다. CLI는 어느 쪽인지 신경 안 쓴다.
 - **마법이 아님**: CLI가 하는 건 전부 socket에 `curl`로도 할 수 있다. CLI는 API
@@ -101,9 +106,9 @@ CLI와 데몬은 **Docker Engine API**로 통신한다 — HTTP로 말하는 버
 | 클라이언트 | 비고 |
 |---|---|
 | `docker` | 표준 CLI. |
-| `nerdctl` | **containerd**를 직접 다루는 Docker 호환 CLI. |
+| [`nerdctl`](https://github.com/containerd/nerdctl) | **containerd**를 직접 다루는 Docker 호환 CLI. |
 | `podman` | 데몬리스. CLI가 거의 Docker 호환 (`alias docker=podman`). |
-| `crictl` | Kubernetes 디버깅에 쓰는 CRI 중심 CLI. |
+| [`crictl`](https://kubernetes.io/docs/tasks/debug/debug-cluster/crictl/) | Kubernetes 디버깅에 쓰는 CRI 중심 CLI. |
 | Docker SDK | 같은 API를 코드로 호출하는 Go/Python 등 라이브러리. |
 
 ## 정리
@@ -117,8 +122,10 @@ CLI와 데몬은 **Docker Engine API**로 통신한다 — HTTP로 말하는 버
 
 ## 참고
 
-- Docker Engine overview: <https://docs.docker.com/engine/>
-- Docker CLI reference: <https://docs.docker.com/reference/cli/docker/>
-- Docker Engine API: <https://docs.docker.com/engine/api/>
-- nerdctl — containerd CLI: <https://github.com/containerd/nerdctl>
-- crictl — CRI CLI: <https://github.com/kubernetes-sigs/cri-tools>
+- Docker 아키텍처 (client-server 구조, CLI가 API로 데몬에 말하는 구조): <https://docs.docker.com/get-started/docker-overview/#docker-architecture>
+- `docker` CLI 레퍼런스 — `--host`, `DOCKER_CONTEXT`, `DOCKER_HOST` 우선순위: <https://docs.docker.com/reference/cli/docker/>
+- Docker Engine API 버전 협상 ("Versioned API and SDK"): <https://docs.docker.com/reference/api/engine/>
+- `GET /containers/json` (= `docker ps`) API 레퍼런스: <https://docs.docker.com/reference/api/engine/version/v1.47/#tag/Container/operation/ContainerList>
+- Unix socket으로 직접 curl하는 예제: <https://docs.docker.com/reference/api/engine/sdk/examples/>
+- nerdctl — containerd용 Docker 호환 CLI: <https://github.com/containerd/nerdctl>
+- crictl — Kubernetes 노드 디버깅용 CRI CLI: <https://kubernetes.io/docs/tasks/debug/debug-cluster/crictl/>
