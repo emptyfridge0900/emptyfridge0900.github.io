@@ -55,6 +55,7 @@ galleria.enabled = true
 navbar_items = [
 	{code = "en",nav_items =[
 	{ url = "$BASE_URL", name = "Home" },
+	{ url = "$BASE_URL/cs", name = "CS" },
 	{ url = "$BASE_URL/data_structure", name = "DS" },
 	{ url = "$BASE_URL/algorithm", name = "Algo" },
 	{ url = "$BASE_URL/leetcode", name = "Coding Practice" },
@@ -68,6 +69,9 @@ navbar_items = [
 	{ url = "$BASE_URL/categories", name = "Categories" },
 	]}
 ]
+[extra.analytics]
+google = "G-L4HFLS5S5C"
+
 [extra.social]
 email = "emptyfridge0900@gmail.com"
 github = "emptyfridge0900"
@@ -89,7 +93,3 @@ avatar = "/images/avatar.png"
 
 [extra.commenting]
 disqus = "deepthought-theme"
-
-[extra.mapbox]
-enabled = true
-access_token = "pk.eyJ1IjoicmF0YW5zaHJlc2h0aGEiLCJhIjoiY2tla2s2NmM3MDd0ZzJzbXFtc3Y2YmU0NyJ9.0RhUnJPKbxHWw3xGPnnBlA"
