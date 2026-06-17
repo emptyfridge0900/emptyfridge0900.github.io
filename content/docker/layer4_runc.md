@@ -107,14 +107,12 @@ spec: 1.x.x          # <- 구현하는 OCI Runtime Spec 버전
 
 ```
 docker run nginx
-  └─ dockerd        이미지 해석, 네트워크/볼륨 세팅              [레이어 2]
-       └─ containerd  이미지 → rootfs 풀기, "task" 생성          [레이어 3]
-            └─ containerd-shim-runc-v2   (오래 사는 감독자)
-                 └─ runc create+start    namespace/cgroup 구성,
-                                          pivot_root, entrypoint exec,
-                                          그리고 종료              [레이어 4]
-                      └─ nginx (컨테이너 안 PID 1)
-                           └─ 호스트의 Linux 커널 위에서          [레이어 5]
+  └─ dockerd                    [레이어 2] 이미지 해석, 네트워크/볼륨 세팅
+       └─ containerd            [레이어 3] 이미지 → rootfs 풀기, "task" 생성
+            └─ containerd-shim-runc-v2    (상주 프로세스)
+                 └─ runc        [레이어 4] namespace/cgroup, pivot_root, exec → 종료
+                      └─ nginx  [       ] 컨테이너 안 PID 1
+                           └─   [레이어 5] Linux 커널
 ```
 
 ## 정리
