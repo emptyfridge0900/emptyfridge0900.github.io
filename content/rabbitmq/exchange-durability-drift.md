@@ -1,5 +1,5 @@
 +++
-title = "RabbitMQ Exchange가 durable=false로 굳어버린 사건"
+title = "선빵친놈이 이긴다 — RabbitMQ Exchange 상태 불일치 디버깅"
 date = 2026-06-22
 
 [taxonomies]
@@ -11,7 +11,7 @@ tags = ["RabbitMQ", "MassTransit", "debugging", "messaging"]
 
 ## 증상
 
-프로덕션 로그에 같은 에러가 무한 반복되고 있었다.
+프로덕션 아래와 같은 에러가 무한 반복되고 있었다.
 
 ```
 MassTransit.RabbitMqConnectionException: ReceiveTransport faulted ...
@@ -50,7 +50,7 @@ RabbitMQ.Client.Exceptions.OperationInterruptedException:
 
 `exchange.declare`는 **멱등(idempotent)** 이다. 같은 걸 여러 번 선언해도 문제없다 — 인자가 똑같을 때만. 이미 존재하는 exchange를 **다른 인자**로 선언하면 수정이 아니라 거절이다.
 
-> "이미 있는 거랑 인자가 다르네. 안 해줄게." → `406 PRECONDITION_FAILED`, 채널 종료.
+> "이미 있는 거랑 인자가 다르네. 안 해줄래." → `406 PRECONDITION_FAILED`, 채널 종료.
 
 exchange의 속성(`type`, `durable`, `auto_delete`, `internal`, `arguments`)은 **생성 시점에 고정, 이후 변경 불가.** 바꾸려면 지우고 다시 만드는 수밖에 없다.
 
@@ -67,7 +67,7 @@ exchange의 속성(`type`, `durable`, `auto_delete`, `internal`, `arguments`)은
 
 `auto-delete=true`이면 마지막 바인딩이 사라질 때 exchange가 스스로 삭제된다. 관리 UI에서 Features 컬럼에 `AD`로 표시된다. 문제의 exchange는 `AD` + non-durable 조합 — **"임시 exchange"의 전형적인 모양이다.**
 
-### 토폴로지 영속성
+### Topology 영속성
 
 exchange/queue/binding은 **서버(브로커) 측 상태**다. 그걸 만든 클라이언트 연결이 끊겨도 정의는 브로커에 남는다. 브로커 컨테이너 수명이 `Persistent`라서, 한 번 잘못 만들어진 정의가 계속 살아남아 있었다.
 
@@ -103,11 +103,11 @@ durability 고정이 exchange **하나하나** 단위로 일어난다는 게 핵
 
 > **WhatsApp과 LINE은 "안전"한 게 아니라 "운이 좋았던" 것이다.** 잘못된 클라이언트가 그들의 exchange를 먼저 transient로 선언하면 똑같이 깨진다.
 
-## 진단 — "살아 있는 범인"이 있나?
+## 진단 — 범인이 아직 살아있나?
 
 지우기 전에 한 가지 확인이 필요했다. 시나리오가 두 가지였기 때문이다.
 
-- **(A) 살아 있는 foreign publisher**: 지금도 이 exchange를 transient로 계속 다시 만든다 → 손으로 지워도 곧바로 다시 AD로 생긴다. 먼저 그 클라이언트를 멈춰야 한다.
+- **(A) 살아 있는 외부 publisher**: 지금도 이 exchange를 transient로 계속 다시 만든다 → 내가 지워도 곧바로 다시 AD로 생긴다. 먼저 그 클라이언트를 멈춰야 한다.
 - **(B) 오래된 잔재(orphaned leftover)**: 과거에 누군가 한 번 만들어 놨고 그 클라이언트는 이미 사라졌다 → 한 번 지우면 끝.
 
 브로커의 연결 목록으로 확인했다.
