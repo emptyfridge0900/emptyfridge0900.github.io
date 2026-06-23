@@ -17,8 +17,8 @@ Handler를 만들때 post request를 보내고 싶으면 OnPost, get request를 
 예를 들어 나의 핸들러는 Post request이고 UploadPicture라는 이름의 함수였으니까 OnPostUploadPicture라고 이름하면 된다.
 
 ### Anti Forgery Token
-이상하게도 핸들러 이름이 분명 정확한데 여전히 404가 반환되었다. 그래서 이름을 GetOnUploadPicture로 바꾸어 봤는데 Get요청 이건 잘 되었다. 
-또 구글링을 했고 [여기서](https://www.talkingdotnet.com/handle-ajax-requests-in-asp-net-core-razor-pages/) 답을 찾았다. razor page는 자동으로 csrf 공격을 방어하게 되있고 anti forgery token을 추가해주어야한다.  
+이상하게도 핸들러 이름이 분명 정확한데 여전히 요청이 실패했다. 그래서 이름을 `OnGetUploadPicture`로 바꾸어 봤는데 GET 요청은 잘 되었다. 
+또 구글링을 했고 [여기서](https://www.talkingdotnet.com/handle-ajax-requests-in-asp-net-core-razor-pages/) 답을 찾았다. Razor Pages는 unsafe HTTP method(POST 같은 요청)에 대해 antiforgery validation을 자동으로 적용하므로 AJAX POST에도 request verification token을 같이 보내야 한다. 일반적으로 토큰이 없거나 잘못되면 handler까지 도달하지 못하고 400 Bad Request가 난다.  
 나는 그냥 input element 아래에 
 ```cs
 @Html.AntiForgeryToken() 
@@ -40,10 +40,21 @@ public void ConfigureServices(IServiceCollection services)
     services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
 }
 ```
-이부분을 빼먹어서 그랬다. 기본적인 이름은 RequestVerificationToken 로 설정되고 만약 헤더이름을 바꾸고 싶다면 Program.cs 설정하는 부분에서 위의 코드를 사용하여 anti forgery token 헤더이름을 바꾸면된다. 나는 Program.cs에 설정 건드리기 귀찮아서 그냥 토큰 헤더이름을 RequestVerificationToken 로 바꾸어 주었더니 잘 동작했다.
+이부분을 빼먹어서 그랬다. header name을 바꾸고 싶다면 modern hosting model에서는 보통 Program.cs에서 아래처럼 설정한다.
+
+```cs
+builder.Services.AddAntiforgery(options =>
+{
+    options.HeaderName = "XSRF-TOKEN";
+});
+```
+
+기본 form field 이름은 `__RequestVerificationToken`이고, header로 보낼 때는 app의 antiforgery 설정이 기대하는 header name과 맞아야 한다. 나는 Program.cs 설정 건드리기 귀찮아서 AJAX request의 header name을 `RequestVerificationToken`로 바꾸어 주었더니 잘 동작했다.
 
 
 참고한 자료  
 https://www.talkingdotnet.com/handle-ajax-requests-in-asp-net-core-razor-pages/  
 https://www.mikesdotnetting.com/article/308/razor-pages-understanding-handler-methods  
 https://www.learnrazorpages.com/security/request-verification  
+https://learn.microsoft.com/en-us/aspnet/core/razor-pages/  
+https://learn.microsoft.com/en-us/aspnet/core/security/anti-request-forgery  

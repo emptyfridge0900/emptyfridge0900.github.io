@@ -1,5 +1,5 @@
 +++
-title="Conventionally-Routes, Attribute-Route"
+title="Conventional Route, Attribute Route"
 date=2025-04-18
 
 [taxonomies]
@@ -10,11 +10,10 @@ tags = ["C#"]
 최근에 닷넷 프로젝트를 생성할 일이 있어서 mvc랑 api 프로젝트를template로 생성해봤는데 그동안 무시하고 지나갔던 미들웨어들이눈에 들어왔다. 생각해보니 라우팅 관련해서 공부해본적도 없고 그냥 예제 따라했던게 전부여서 인터넷을 뒤적여봤다.  
 
 
-일단 마소 공식 홈페이지에서 보니 route template는 url링크를 생성, url을 action에 매칭하는 기능이 있다고 한다.
-action은 컨트롤러 안에 있는 모든 메소드를 가리킨다.  
-그리고 라우트의 action은 **conventionally-route**, **attribute-route** 두가지로 나뉜다.  
-conventioanlly-route방식은 mvc에서 사용되고 attribute-route는 api에서 사용된다,
-mvc가 attribute-route를 사용할수도 있지만 주로 conventionally-route 방식을 사용한다.  
+일단 마소 공식 홈페이지에서 보니 route template는 URL path를 action에 매칭하고, link를 만들 때 URL을 생성하는 데 쓰인다고 한다.
+action은 controller에서 request를 처리하는 method다. ASP.NET Core MVC에서는 public controller method가 기본적으로 action이고, action으로 노출하고 싶지 않으면 `[NonAction]`을 붙일 수 있다.  
+controller action은 보통 **conventional routing** 또는 **attribute routing**으로 매칭된다.  
+conventional routing은 controller/view 기반 MVC 앱에서 자주 쓰이고, REST API는 resource와 HTTP verb를 명확히 표현하기 위해 attribute routing을 쓰는 것이 권장된다. 둘 다 controller에서 사용할 수 있다.  
 개인적으로는 mvc 프로젝트한게 몇년전이여서 mvc 라우팅은 건드려본적이 없다.  
 대신 회사에 일할때는 api만들어서 사용하는게 주된 업무여서 항상 controller에 attribute를 달아서 사용했다.
 
@@ -22,8 +21,8 @@ mvc가 attribute-route를 사용할수도 있지만 주로 conventionally-route 
 개발하다 보면 template을 통해 많이 보게되는 Route세팅 방식이 있다  
 **MapControllers**  
 **MapControllerRoute**  
-**MapDefaultContollerRoute**   
-모두ControllerEndpointRouteBuilderExtensions class에 속한 mehtod다
+**MapDefaultControllerRoute**   
+모두 `ControllerEndpointRouteBuilderExtensions` class에 속한 method다
 
 
 ### MapControllers
@@ -43,10 +42,16 @@ MapControllerRoute is used to create a single route.
 기본 컨트롤러는 home, 기본 메소드는 index, id는 optional.
 
 
-### MapDefaultContollerRoute
+### MapDefaultControllerRoute
 **Adds endpoints for controller actions to the IEndpointRouteBuilder and adds the default route {controller=Home}/{action=Index}/{id?}**  
 사실상 MapControllerRoute에 {controller=Home}/{action=Index}/{id?} 기본값을 넣은 것으로 이것대신 MapControllerRoute쓰면된다.
-지금은 잘 안보이는 미들웨어다
+`MapDefaultControllerRoute()`는 아래 코드와 같은 convenience method다.
+
+```cs
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+```
 
 ## 결론
 라우터에 대한 설정은 엄청 많은데 오늘은 그냥 3가지 미들웨어가 어떻게 다른지만 읽어보았다.
@@ -54,4 +59,7 @@ MapControllerRoute is used to create a single route.
 webapp 섹션에 razor pages, mvc, client-side 등등 여러 하위섹션이 있는데 왜 mvc에서만 라우팅을 다루는지 모르겠다.
 결론은 api 개발을 하면 MapControllers사용하고 필요할때마다 attribute-route 사용방법 읽어보면되고, mvc하면 MapControllerRoute 사용하면 된다. 끝!
 
-https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/routing?view=aspnetcore-9.0
+### Ref
+
+- Routing to controller actions: <https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/routing>
+- Handle requests with controllers: <https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/actions>

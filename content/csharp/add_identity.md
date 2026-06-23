@@ -72,20 +72,20 @@ services.TryAddScoped<RoleManager<TRole>>();
 
 AddIdentityCore 와 AddIdentity 같은점
 1. 둘다 유저관리 서비스를 제공한다  
-2. 같은 네임스페이스 IdentityServiceCollectionExtensions 에 속해있다 하지만 코드는 다른 폴더에 있는데 
-AddIdentity 는 [Identity.Core](https://github.com/dotnet/aspnetcore/blob/main/src/Identity/Core) 
-AddIdentityCore 는 [Identity.Extensions.Core](https://github.com/dotnet/aspnetcore/blob/main/src/Identity/Extensions.Core) 
-에 위치해있다.
+2. 둘 다 `Microsoft.Extensions.DependencyInjection` namespace에 있는 extension method다. `AddIdentity`와 `AddIdentityCore`는 둘 다 `IdentityServiceCollectionExtensions` class에 있지만 source 위치와 포함하는 서비스 범위가 다르다.
+`AddIdentity`는 [Identity.Core](https://github.com/dotnet/aspnetcore/blob/main/src/Identity/Core) 쪽에 있고,
+`AddIdentityCore`는 [Identity.Extensions.Core](https://github.com/dotnet/aspnetcore/blob/main/src/Identity/Extensions.Core) 쪽에 있다.
 
 AddIdentityCore 와 AddIdentity 다른 점은 아래와 같다.  
-인증 관련한 서비스들이 추가된 것을 볼 수 있다. SignInManager나 RoleManager가 기본으로 딸려나온다.
+`AddIdentityCore<TUser>`는 지정한 user type을 위한 core Identity system을 추가한다. role service는 기본으로 추가되지 않고 `.AddRoles<TRole>()`로 붙일 수 있다.
+`AddIdentity<TUser, TRole>`는 user와 role type을 모두 받으며, default Identity system configuration을 추가한다. cookie 인증, `SignInManager<TUser>`, `RoleManager<TRole>` 같은 서비스가 기본으로 들어온다.
 ```cs
 
 services.AddAuthentication(o =>
  {
-    options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
-    options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
-    options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+    o.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
+    o.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
+    o.DefaultSignInScheme = IdentityConstants.ExternalScheme;
 })
 .AddCookie(IdentityConstants.ApplicationScheme, o =>
 {
@@ -134,9 +134,13 @@ return services.AddIdentityCore<TUser>(o =>
 .AddDefaultUI()
 .AddDefaultTokenProviders();
 ```
-AddIdentityCore와 대부분 같고 AddIdentityCore와 다른점은 기본적인 cookie-based 인증과 [AddDefaultUI](https://github.com/dotnet/aspnetcore/blob/main/src/Identity/UI/src/IdentityBuilderUIExtensions.cs#L32) 를 추가해준다는 것이다.  
-로그인 페이지를 만들 시간이 없다면 AddDefaultIdentity를 사용하여 AddDefultUI의 도움을 받자. Role이 기본으로 들어가지 않으니 알아서 추가해야한다.  
+`AddDefaultIdentity<TUser>`는 흔히 쓰는 Identity 구성을 한 번에 추가한다. 공식 API 설명 기준으로 default UI, token providers를 포함하고, authentication이 Identity cookie를 사용하도록 설정한다. 내부적으로는 `AddIdentityCore<TUser>` 위에 cookie 인증, [AddDefaultUI](https://github.com/dotnet/aspnetcore/blob/main/src/Identity/UI/src/IdentityBuilderUIExtensions.cs#L32), default token providers 등을 얹는 형태로 보면 된다.  
+로그인 페이지를 만들 시간이 없다면 AddDefaultIdentity를 사용하여 AddDefaultUI의 도움을 받자. Role이 기본으로 들어가지 않으니 알아서 추가해야한다.  
 처음부터 튜닝하고 싶으면 AddIdentityCore를 쓰고, 모든 기능이 필요하다면 AddIdentity를 쓰면 되겠다. 근데 Identity를 처음쓰는 초보자라면 AddIdentity에 있는 기능을 다 훑어보기도 벅찰거다.
 
+## Ref
 
-
+- AddIdentityCore API: <https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.identityservicecollectionextensions.addidentitycore>
+- AddIdentity API: <https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.identityservicecollectionextensions.addidentity>
+- AddDefaultIdentity API: <https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.identityservicecollectionuiextensions.adddefaultidentity>
+- ASP.NET Core Identity overview: <https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity>

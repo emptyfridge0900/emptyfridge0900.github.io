@@ -23,12 +23,11 @@ What is CLR?
 그 machine code는 인간이 읽기 힘드니까 인간이 읽을 수 있는 수준의 코드와 machine code를 매칭시켜주는 것이 assembly라고 들었다.  
 모든 cpu는 각자에게 맞는 machine code가 있고 또한 각자에게 맞는 어셈블리코드가 있다.  
 어셈블리어로 개발하기에는 생산성이 떨어지니까 컴파일러가 등장했고 C 같은 하이레벨 언어(?)로 코딩하면 이제 컴파일러가 알아서 machine code로 변환해준다.  
-컴파일언어가 개발도 어렵고 복잡해서 인터프리터 언어가 탄생했다고 알고 있는데 구체적인 역사적 배경은 모르겠다. 일단 인터프리터 언어는 컴파일 언어와는 다르게 코드를 읽어가며 번역하는 언어이다.  
-그리고 오늘의 주제인 Intermdediate Lanugage (중간 언어)가 등장하는데 중간언어는 말 그대로 중간에 있는 언어이다.  
-먼저 소스코드를 중간언어,바이트코드 등으로 컴파일하고, 컴파일 된 코드를 인터프리트하는 방식으로 작동한다.  
-인터프리트 언어의 읽으면서 번역하는 장정도 챙기고 미리 컴파일 가능한 부분은 컴파일해서 속도를 높였다.  
-작동하는 속도도 컴파일언어와 인터프리트 언어 사이이다.
-.NET CLR에서는 CIL이라고 부르고 Java에서는 ByteCode라고 부른다.  
+컴파일 언어와 인터프리터 언어의 역사적 구분은 단순히 "개발이 어렵다/쉽다"로 나누기에는 너무 복잡하다. 여기서 중요한 것은 .NET이 소스코드를 바로 CPU용 machine code로만 컴파일하지 않는다는 점이다.  
+오늘의 주제인 Intermediate Language(중간 언어)는 말 그대로 중간에 있는 언어이다.  
+C#, F#, VB 같은 .NET 언어를 컴파일하면 보통 assembly(.dll/.exe)가 나오고, 그 안에는 metadata와 Intermediate Language가 들어간다. .NET에서는 이 IL을 CIL(Common Intermediate Language)이라고도 부른다.  
+이 CIL은 실행 시 CLR이 대부분 Just-In-Time(JIT) 컴파일로 machine code로 바꿔 실행한다. 그러니까 ".NET은 컴파일된 CIL을 그냥 인터프리트한다"라고만 말하면 정확하지 않다. 현대 .NET에는 JIT뿐 아니라 ReadyToRun, Native AOT 같은 ahead-of-time 옵션도 있다.  
+.NET에서는 CIL이라고 부르고 Java에서는 보통 bytecode라고 부른다.  
   
 ### Common Language Runtime
 일단 CIL이 뭐하는 녀석인지 알겠는데 그럼 CLR은 뭘까?  
@@ -52,9 +51,9 @@ CIL 자체가 managed code이기도 하지만, managed code는 "중간언어"라
 ### Common Language Infrastructure
 그럼 CIL은 컴파일된 중간언어고 CLR은 중간언어를 실행시켜주는 실행기인데, 그럼 CLI는 뭔가?  
 직역하면 공통언어기반시설? 한국어로는 감이 안온다. 간단하게 말하자면 기술 명세서이다. 공통언어기반시설 보다는 좀더 잘 와닿지 않는가?  
-CLI는 이러이러한 규칙을 따라서 윈도우에서, 리눅스에서, 맥에서 이렇게저렇게 동작하게 하세요 라고 정해놓은 규칙이라고 생각하면 될거같다.  
-그래서 CLI의 요구사항 대로 runtime을 구현한 구현체가 CLR인것이고 더 넓은 의미로는 .NET 그 자체이다.  
-.NET은 CLR을 포함하여 앱을 개발할 수 있게하는 요소(라이브러리, 컴파일러 등)를 집어넣은 CLI를 구현한 플랫폼이다.  
+CLI는 "이러이러한 규칙을 따라서 runtime, type system, metadata, 중간 언어를 구현하세요"라고 정해놓은 표준이라고 생각하면 된다.  
+CLI의 runtime 영역을 표준 문서에서는 VES(Virtual Execution System)라고 부르고, Microsoft의 구현체가 CLR이다. 현대 .NET에서는 CoreCLR이 그 역할을 한다.  
+.NET은 runtime만 뜻하지 않는다. runtime, base libraries, SDK, compilers, app stack(ASP.NET Core, Windows Forms, WPF 등)을 포함한 개발 플랫폼이다. CLR/CoreCLR은 그중 실행을 담당하는 핵심 runtime이다.  
 
 
 ### 3줄요약
@@ -70,5 +69,8 @@ https://www.sysnet.pe.kr/2/0/1697
 https://blog.naver.com/leusin/223697119291  
 https://namu.wiki/w/%EA%B8%B0%EA%B3%84%EC%96%B4  
 https://learn.microsoft.com/en-us/dotnet/core/introduction  
-
-
+https://learn.microsoft.com/en-us/dotnet/standard/managed-code  
+https://learn.microsoft.com/en-us/dotnet/standard/clr  
+https://learn.microsoft.com/en-us/dotnet/standard/assembly/  
+https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/introduction  
+https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/  

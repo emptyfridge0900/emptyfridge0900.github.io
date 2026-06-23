@@ -18,6 +18,7 @@ Contravariance는 한국어로 반공변성이라고 하고 부모 타입이 자
 ```cs
 object[] array = new String[10];  
 ```
+다만 array covariance는 type-safe하지 않다. 위 배열에 `array[0] = 10;` 같은 값을 넣으면 compile은 될 수 있지만 runtime에 `ArrayTypeMismatchException`이 난다.
 
 ## [Variance in Generic Interfaces](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/covariance-contravariance/variance-in-generic-interfaces)
 ```cs
@@ -47,9 +48,9 @@ dogs = new List<Schnauzer>();
 It is also important to remember that classes that implement variant interfaces are still invariant. 
 ```cs
 //this generates a compiler error
-List<Dog> = new List<GermanShepherd>();
+List<Dog> dogList = new List<GermanShepherd>();
 //this compiles
-IEnumerable<Dog> = new List<GermanShepherd>();
+IEnumerable<Dog> dogEnumerable = new List<GermanShepherd>();
 ```
 Contravariance  
 ```cs
@@ -113,3 +114,9 @@ var hospital = new DogHospital<Animal,Dog>();
 Animal animal = hospital.DoSomething(new Schnauzer());
 Dog dog = hospital.DoSomethingElse<Cat>();
 ```
+
+## Ref
+
+- Covariance and contravariance: <https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/covariance-contravariance/>
+- Variance in generic interfaces: <https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/covariance-contravariance/variance-in-generic-interfaces>
+- Creating variant generic interfaces: <https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/covariance-contravariance/creating-variant-generic-interfaces>
