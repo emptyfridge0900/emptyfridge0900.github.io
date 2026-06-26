@@ -29,7 +29,7 @@ fn handle_request(request: HttpRequest) -> HttpResponse {
     // ...
 }
 ```
-위에 HttpRequest와 HttpResponse는 Tower 라이브러리에서 제공되는 구조체이다.
+위에 `HttpRequest`와 `HttpResponse`는 Tower가 제공하는 타입이 아니라, 예시로 만든 HTTP 프레임워크가 제공한다고 가정한 구조체이다.
 
 run함수는 아래와 같이 생겼을 것이다.
 ```rs, hl_lines=4
@@ -55,7 +55,7 @@ impl Server {
 }
 ```
 
-run함수는 HttpRequest를 받아서 HttpResponse를 return하는 cosure를 파라미터로 받는다.
+run함수는 HttpRequest를 받아서 HttpResponse를 return하는 closure를 파라미터로 받는다.
 그럼 handle_request함수는 아래와 같이 구현할 수 있다.
 ```rs
 fn handle_request(request: HttpRequest) -> HttpResponse {
@@ -75,7 +75,7 @@ fn handle_request(request: HttpRequest) -> HttpResponse {
 server.run(handle_request).await?;
 ```
 
-하지만 우리의 서버는 비동기적으로 요청을 받을 수 없다. 그러니 아래와 같이 바꿔주자
+하지만 이 설계에서는 핸들러가 요청을 비동기적으로 처리할 수 없다. DB 조회나 외부 API 호출을 기다리는 동안 다른 작업을 처리할 수 있게 하려면 아래와 같이 바꿔주자
 ```rs, hl_lines=26 28
 impl Server {
     async fn run<F>(self, handler: F) -> Result<(), Error>
@@ -206,6 +206,8 @@ impl Server {
 
 *타임아웃 기능*과 그리고 *content-type:application/json을 헤더에 추가하는 기능*을 추가해보자
 
+앞에서 `run`이 `Result<HttpResponse, Error>`를 받도록 바뀌었으므로, 여기서부터 `handle_request`도 `Result<HttpResponse, Error>`를 반환한다고 가정한다.
+
 handle_request를 사용하는 새로운 handler를 만들자
 ```rs
 async fn handler_with_timeout(request: HttpRequest) -> Result<HttpResponse, Error> {
@@ -249,8 +251,8 @@ where
 {
 }
 ```
-이런 핸들러를 쓸 수 있다면 좋을텐데 rust에서는 안된다. 특히 impl Fn() -> impl Future 는 불가능하다.
-Box를 사용해서 리턴할수는 있지만 퍼포먼스가 느려져서 배제한다.
+이런 형태의 핸들러 변환 함수를 쓸 수 있다면 좋겠지만, Rust에서는 `impl Trait`를 이런 위치에 중첩해서 쓸 수 없다. 특히 `impl Fn() -> impl Future` 형태는 불가능하다.
+`Box<dyn Future<...>>`를 사용해서 우회할 수는 있지만 heap allocation과 dynamic dispatch 비용이 있으므로 여기서는 배제한다.
 
 ### Handler trait
 
@@ -306,10 +308,10 @@ trait Handler {
 }
 ```
 
-하지만 rust는 async 매소드를 가진 trait를 지원하지 않아서
-1. Pin<Box<dyn Future<Output = Result<HttpResponse, Error>>> 을 리턴하는 매소드
+원문이 쓰인 2021년에는 Rust stable에서 async 메소드를 가진 trait를 지원하지 않았다. 현재 Rust 1.75+에서는 `async fn` in trait가 안정화되었지만, Tower의 `Service`처럼 future 타입을 associated type으로 노출하고 `poll_ready`까지 포함하는 설계에는 아래 방식이 더 잘 맞는다.
+1. Pin<Box<dyn Future<Output = Result<HttpResponse, Error>>> 을 리턴하는 메소드
 2. type Future을 associated type으로 가지는 Handler
-둘중 하나의 방식을 택할 수 있다.
+둘 중 하나의 방식을 택할 수 있다.
 
 두번째 방식으로 하자
 ```rs
@@ -422,7 +424,7 @@ where
 self가 async block으로 빨려들어가서 lifetime이 끝까지 살아남지 못해서 생긴 에러
 
 
-trait bound에 clone을 추가해주자
+trait bound에 `Clone`을 추가해주자
 ```rs, hl_lines=3
 impl<T> Handler for Timeout<T>
 where
@@ -482,7 +484,7 @@ where
 ```
 
 
-이제는 hadler들을 합성하기에 수월해졌다
+이제는 handler들을 합성하기에 수월해졌다
 ```rs
 let handler = RequestHandler;
 let handler = Timeout::new(handler, Duration::from_secs(30));
@@ -710,13 +712,13 @@ trait Service<Request> {
     fn call(&mut self, request: Request) -> Self::Future;
 }
 ```
-이것은 Tower에서 정의하는 Service trait에 근접했다. Tower에서는 이미 구현되있는 Timout, Retry, RateLimit 같은 service들이 존재한다.
+이것은 Tower에서 정의하는 Service trait에 근접했다. Tower에서는 이미 구현되어 있는 Timeout, Retry, RateLimit 같은 service들이 존재한다.
 
 Timeout 과 JsonContentType 같은 타입을 middleware라고 부른다. 얘들은 다른 service를 감싸기 때문. Request Handler같은 타입은 leaf service라고 부른다. 중첩된 서비스들 중 말단에 위치해있기 때문이다. 응답은 leaf service에서 생성되고 변조는 middleware에서 일어난다.
 
 ## 배압
 배압은 생성하는 속도를 소모하는 속도가 못 따라갈때 일어난다.
-동시 처리하는 요청의 최대 값을 설정 하는 rate limit middleware을 만든다고 생각해보자. 처리할수 있는 부하의 양의 상한선을 지켜주는 서비스가 있으면 좋을 것이다.
+동시 처리하는 요청의 최대 값을 설정하는 ConcurrencyLimit middleware를 만든다고 생각해보자. 처리할수 있는 부하의 양의 상한선을 지켜주는 서비스가 있으면 좋을 것이다.
 ```rs
 impl<R, T> Service<R> for ConcurrencyLimit<T> {
     fn call(&mut self, request: R) -> Self::Future {
@@ -731,7 +733,7 @@ impl<R, T> Service<R> for ConcurrencyLimit<T> {
 ```
 정원이 차면 자리가 빌때까지 기다려야하는데 요청을 메모리에 대기 시키기 때문에 메모리 손실이 일어남. 
 
-이러한 method가 있으면 요청을 줄세워 놓은 필요가 없음.
+이러한 method가 있으면 요청을 줄 세워 놓을 필요가 없음.
 ```rs
 trait Service<R> {
     async fn ready(&mut self);
@@ -739,7 +741,7 @@ trait Service<R> {
 ```
 service.call(request).await 하기 전에 service.ready().await 로 자리가 있는지 확인하면 메모리를 아낄수 있다.
 
-하지만 async 함수를 trait에서 사용하지 못한다. ReadyFuture 이라는 associated type을 하나 더 추가하는 방법도 생각해볼 수 있지만 Future를 리턴하면 예전과 같은 lifetime 문제를 야기할수 있다. 우리는 Future trai에서 아이디어를 얻을 수 있다. 바로 poll_ready 함수를 사용하는 것이다.
+원문이 쓰인 2021년에는 async 함수를 trait에서 사용할 수 없었다. 현재는 가능하지만, `ReadyFuture`라는 associated type을 하나 더 추가해서 Future를 리턴하면 예전과 같은 lifetime 문제를 야기할 수 있다. 우리는 Future trait에서 아이디어를 얻을 수 있다. 바로 poll_ready 함수를 사용하는 것이다.
 
 ```rs
 use std::task::{Context, Poll};
@@ -752,7 +754,7 @@ trait Service<R> {
 poll_ready가 Future를 리턴하지 않는다는 말은 우리는 기다리지 않고 신속하게 ready 상태를 체크할수 있다는 말이다. 만약 우리가 poll_ready를 부르고 Poll::Pending을 리턴받으면, 기다리는 대신 다른 일을 하기로 결정할 수도 있다. 무엇보다도 이것은 서비스가 얼마나 자주 Poll::Pending을 리턴하는지 평가해서 load balancer를 만들수 있게 해준다. 
 이런식으로 caller와 capacity에 대해 소통하는 것을 backpressure propagation이라고 한다. caller한테 요청이 너무 많으니 좀 줄이라고 말하는 것과 같다. 다른 방법으로 backpressure를 다루는 방법은 buffering, load shedding 이 있다.
 
-마지막으로 capacity 예비를 하는 동안 에러가 발생할 수 있으므로 poll_ready 는 Poll<Result<(), Self::Error>> 를 리턴해야 할 것이다.
+마지막으로 capacity 예약을 하는 동안 에러가 발생할 수 있으므로 poll_ready 는 Poll<Result<(), Self::Error>> 를 리턴해야 할 것이다.
 
 ```rs
 trait Service<Request> {
@@ -780,7 +782,7 @@ pub trait Service<Request> {
 ```
 이렇게 tower의 Service trait가 완성되었다.
 
-많은 middleware들이 자신만의 backpresure를 추가 하지 않고 자기가 감싸고 있는 service의 poll_ready 의 구현을 가져다 쓴다. 하지만 middleware에서의 backpressure는 의미있는 사용법들이 있다. 예를 들어 rate limiting, load balancing, 그리고 auto scaling등이다.
+많은 middleware들이 자신만의 backpressure를 추가 하지 않고 자기가 감싸고 있는 service의 poll_ready 의 구현을 가져다 쓴다. 하지만 middleware에서의 backpressure는 의미있는 사용법들이 있다. 예를 들어 rate limiting, load balancing, 그리고 auto scaling등이다.
 
 마지막으로 아래는 service를 사용하는 제일 흔한방법이다
 ```rs
