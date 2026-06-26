@@ -31,6 +31,7 @@ SSH 키를 계정별로 따로 만들고 `~/.ssh/config`로 라우팅하면 이 
 7. 연결 테스트 (ssh -T)
 8. 기존 repo의 remote URL 을 SSH 방식으로 변경
 9. 재부팅 후에도 유지되게 만들기 (AddKeysToAgent)
+10. GitHub CLI(`gh`) 계정도 분리하기 (`GH_CONFIG_DIR`)
 ```
 
 ---
@@ -264,3 +265,60 @@ Host github-company
 
 이제 `git push` / `git pull` 할 때 GitHub 계정을 의식하지 않아도 된다.
 repo 의 remote URL 에 붙인 Host 별칭이 알아서 맞는 키를 골라 쓴다.
+
+---
+## 주가기능
+
+## 10. GitHub CLI(`gh`) 계정도 분리하기
+
+여기까지 설정하면 `git push` / `git pull` 은 계정별 SSH 키로 잘 분리된다.
+하지만 `gh issue create`, `gh pr create` 같은 GitHub CLI 명령은 SSH 키가 아니라 GitHub API 토큰을 쓴다.
+즉, remote URL 이 `git@github-personal:...` 이어도 `gh` 가 회사 계정 토큰으로 로그인되어 있으면 개인 repo 이슈 생성이 실패할 수 있다.
+
+처음 떠오르는 해결책은 `gh auth switch` 이다.
+
+```bash
+gh auth switch -u emptyfridge0900
+gh issue create -R emptyfridge0900/repo-name
+
+gh auth switch -u bds0900
+gh issue create -R bds0900/repo-name
+```
+
+하지만 매번 계정을 바꾸는 방식은 귀찮고 실수하기 쉽다.
+더 나은 방법은 `gh` 설정 디렉터리를 계정별로 나누는 것이다.
+`gh` 는 `GH_CONFIG_DIR` 환경변수로 설정 저장 위치를 바꿀 수 있다.
+
+쉘 설정 파일(`~/.zshrc` 등)에 alias 를 추가한다.
+
+```bash
+alias ghp='GH_CONFIG_DIR=$HOME/.config/gh-personal gh'
+alias ghc='GH_CONFIG_DIR=$HOME/.config/gh-company gh'
+```
+
+그 다음 각 alias 로 한 번씩만 로그인한다.
+
+```bash
+GH_CONFIG_DIR=$HOME/.config/gh-personal gh auth login -h github.com --git-protocol ssh
+GH_CONFIG_DIR=$HOME/.config/gh-company gh auth login -h github.com --git-protocol ssh
+```
+
+이후부터는 계정을 전환하지 않고 명령어만 구분해서 쓰면 된다.
+
+```bash
+# 개인 계정으로 개인 repo 이슈 생성
+ghp issue create -R emptyfridge0900/repo-name
+
+# 회사 계정으로 회사 repo 이슈 생성
+ghc issue create -R bds0900/repo-name
+```
+
+정리하면 역할이 이렇게 나뉜다.
+
+| 도구 | 계정 분리 방법 | 예시 |
+|---|---|---|
+| `git` | SSH Host 별칭 | `git@github-personal:emptyfridge0900/repo-name.git` |
+| `gh` | `GH_CONFIG_DIR` 별도 설정 | `ghp issue create -R emptyfridge0900/repo-name` |
+
+이렇게 하면 `git` 도 `gh` 도 계정 전환 없이 사용할 수 있다.
+개인 작업은 `github-personal` + `ghp`, 회사 작업은 `github-company` + `ghc` 로 고정하면 된다.
