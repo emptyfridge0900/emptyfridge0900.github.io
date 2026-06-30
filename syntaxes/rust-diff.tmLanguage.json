@@ -1,0 +1,44 @@
+{
+  "name": "rust-diff",
+  "scopeName": "source.rust-diff",
+  "fileTypes": ["rust-diff", "rsdiff"],
+  "patterns": [
+    { "include": "#diff-header" },
+    { "include": "#hunk-header" },
+    { "include": "#inserted-line" },
+    { "include": "#deleted-line" },
+    { "include": "#context-line" },
+    { "include": "source.rust" }
+  ],
+  "repository": {
+    "diff-header": {
+      "name": "meta.diff.header",
+      "match": "^(diff --git|index |--- |\\+\\+\\+ ).*$"
+    },
+    "hunk-header": {
+      "name": "meta.diff.range",
+      "match": "^(@@).*$"
+    },
+    "inserted-line": {
+      "name": "markup.inserted.diff",
+      "match": "^\\+(?!\\+\\+ ).*$"
+    },
+    "deleted-line": {
+      "name": "markup.deleted.diff",
+      "match": "^-(?!-- ).*$"
+    },
+    "context-line": {
+      "name": "meta.diff.context",
+      "begin": "^( )",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.definition.context.diff"
+        }
+      },
+      "end": "$",
+      "patterns": [
+        { "include": "source.rust" }
+      ]
+    }
+  }
+}

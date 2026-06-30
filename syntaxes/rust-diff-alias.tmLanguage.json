@@ -1,0 +1,8 @@
+{
+  "name": "rust diff",
+  "scopeName": "source.rust-diff-alias",
+  "fileTypes": [],
+  "patterns": [
+    { "include": "source.rust-diff" }
+  ]
+}

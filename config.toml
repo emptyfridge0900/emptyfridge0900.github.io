@@ -46,6 +46,11 @@ render_emoji = true
 
 [markdown.highlighting]
 theme = "ayu-dark"
+extra_grammars = [
+	"syntaxes/rust-diff.tmLanguage.json",
+	"syntaxes/rs-diff-alias.tmLanguage.json",
+	"syntaxes/rust-diff-alias.tmLanguage.json",
+]
 
 [extra]
 # Put all your custom variables here
