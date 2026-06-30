@@ -3,13 +3,18 @@
   "scopeName": "source.rust-diff",
   "fileTypes": ["rust-diff", "rsdiff"],
   "patterns": [
-    { "include": "#diff-header" },
-    { "include": "#hunk-header" },
-    { "include": "#inserted-line" },
-    { "include": "#deleted-line" },
-    { "include": "#context-line" },
     { "include": "source.rust" }
   ],
+  "injections": {
+    "L:source.rust-diff": {
+      "patterns": [
+        { "include": "#diff-header" },
+        { "include": "#hunk-header" },
+        { "include": "#inserted-line" },
+        { "include": "#deleted-line" }
+      ]
+    }
+  },
   "repository": {
     "diff-header": {
       "name": "meta.diff.header",
@@ -21,24 +26,21 @@
     },
     "inserted-line": {
       "name": "markup.inserted.diff",
-      "match": "^\\+(?!\\+\\+ ).*$"
+      "match": "^(\\+)(?!\\+\\+ )(.*)$",
+      "captures": {
+        "1": {
+          "name": "markup.bold punctuation.definition.inserted.diff"
+        }
+      }
     },
     "deleted-line": {
       "name": "markup.deleted.diff",
-      "match": "^-(?!-- ).*$"
-    },
-    "context-line": {
-      "name": "meta.diff.context",
-      "begin": "^( )",
-      "beginCaptures": {
+      "match": "^(-)(?!-- )(.*)$",
+      "captures": {
         "1": {
-          "name": "punctuation.definition.context.diff"
+          "name": "markup.bold punctuation.definition.deleted.diff"
         }
-      },
-      "end": "$",
-      "patterns": [
-        { "include": "source.rust" }
-      ]
+      }
     }
   }
 }

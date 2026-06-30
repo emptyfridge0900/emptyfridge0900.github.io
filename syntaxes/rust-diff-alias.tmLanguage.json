@@ -3,6 +3,44 @@
   "scopeName": "source.rust-diff-alias",
   "fileTypes": [],
   "patterns": [
-    { "include": "source.rust-diff" }
-  ]
+    { "include": "source.rust" }
+  ],
+  "injections": {
+    "L:source.rust-diff-alias": {
+      "patterns": [
+        { "include": "#diff-header" },
+        { "include": "#hunk-header" },
+        { "include": "#inserted-line" },
+        { "include": "#deleted-line" }
+      ]
+    }
+  },
+  "repository": {
+    "diff-header": {
+      "name": "meta.diff.header",
+      "match": "^(diff --git|index |--- |\\+\\+\\+ ).*$"
+    },
+    "hunk-header": {
+      "name": "meta.diff.range",
+      "match": "^(@@).*$"
+    },
+    "inserted-line": {
+      "name": "markup.inserted.diff",
+      "match": "^(\\+)(?!\\+\\+ )(.*)$",
+      "captures": {
+        "1": {
+          "name": "markup.bold punctuation.definition.inserted.diff"
+        }
+      }
+    },
+    "deleted-line": {
+      "name": "markup.deleted.diff",
+      "match": "^(-)(?!-- )(.*)$",
+      "captures": {
+        "1": {
+          "name": "markup.bold punctuation.definition.deleted.diff"
+        }
+      }
+    }
+  }
 }
