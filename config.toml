@@ -42,10 +42,10 @@ include_content = true
 # truncate_content_length = 100
 
 [markdown]
-highlight_code = true
-extra_syntaxes_and_themes = []
-highlight_theme = "kronuz"
 render_emoji = true
+
+[markdown.highlighting]
+theme = "ayu-dark"
 
 [extra]
 # Put all your custom variables here
@@ -58,7 +58,6 @@ navbar_items = [
 	{ url = "$BASE_URL/cs", name = "CS" },
 	{ url = "$BASE_URL/data_structure", name = "DS" },
 	{ url = "$BASE_URL/algorithm", name = "Algo" },
-	{ url = "$BASE_URL/leetcode", name = "Coding Practice" },
 	{ url = "$BASE_URL/rust", name = "Rust" },
 	{ url = "$BASE_URL/csharp", name = "C#" },
   	{ url = "$BASE_URL/projects", name = "Toy Projects" },
