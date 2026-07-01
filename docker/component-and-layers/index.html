@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+
+
+  <title>
+    
+ | Docker 구성요소와 레이어: docker, dockerd, containerd, runc, Colima, Lima
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev"></a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;data_structure">
+            DS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;algorithm">
+            Algo
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;projects">
+            Toy Projects
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;commands">
+            Commands
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Docker 구성요소와 레이어: docker, dockerd, containerd, runc, Colima, Lima
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2026-06-17">June 17, 2026</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>5 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>809 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/docker/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>docker</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/colima/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>colima</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/lima/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>lima</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/containerd/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>containerd</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>Colima를 쓰는 맥에서 <code>docker ps</code>를 쳤을 때 실제로 무슨 일이 일어나는지, 그리고
+docker / Docker Desktop / Colima / Lima / dockerd / containerd / runc 이 녀석들이
+어떻게 레이어로 맞물려 돌아가는지 정리해봤다.</p>
+<h2 id="sirijeu-mogca">시리즈 목차</h2>
+<p>각 레이어를 더 자세히 다룬 글들. (5번째 레이어인 Linux 커널은 별도 글 없이 여기서만 다룬다.)</p>
+<ol>
+<li><a href="https://emptyfridge.dev/docker/component-and-layers/./layer1_docker_cli.md">Layer 1 — docker CLI (클라이언트)</a></li>
+<li><a href="https://emptyfridge.dev/docker/component-and-layers/./layer2_dockerd.md">Layer 2 — dockerd (데몬 / API 서버)</a></li>
+<li><a href="https://emptyfridge.dev/docker/component-and-layers/./layer3_containerd.md">Layer 3 — containerd (컨테이너 런타임)</a></li>
+<li><a href="https://emptyfridge.dev/docker/component-and-layers/./layer4_runc.md">Layer 4 — runc (저수준 OCI 런타임)</a></li>
+<li>Layer 5 — Linux 커널 (이 글에서 다룸)</li>
+</ol>
+<h2 id="baldani-doen-beogeu">발단이 된 버그</h2>
+<p><code>docker ps</code>를 쳤더니 <code>Command `docker` not found</code>가 떴다. 원인은 Docker가
+<strong>아니었다</strong>:</p>
+<ul>
+<li>Colima는 설치돼 있고 잘 돌아가고 있었다 (<code>runtime: docker</code>).</li>
+<li><code>docker</code> CLI도 Homebrew로 설치돼 있었다
+(<code>/opt/homebrew/Cellar/docker/&lt;ver&gt;/bin/docker</code>).</li>
+<li>그런데 <code>/opt/homebrew/bin/</code>으로 <strong>심볼릭 링크가 안 걸려 있어서</strong> <code>$PATH</code>에
+없었던 것이다.</li>
+</ul>
+<p>해결:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">brew</span><span style="color: #AAD94C;"> link</span><span style="color: #95E6CB;"> --overwrite</span><span style="color: #AAD94C;"> docker</span></span></code></pre>
+<p><code>brew link</code>는 formula가 설치된 파일들(이른바 "Cellar")을 Homebrew의 <code>bin/</code>
+(즉 <code>$PATH</code>에 들어있는 곳)으로 심볼릭 링크를 걸어준다. <code>--overwrite</code>는 목적지에
+이미 다른 파일이 있으면 그걸 덮어쓴다 — 예전에 깔았던 Docker Desktop의 잔재일
+가능성이 높다 (실제로 <code>~/.docker</code> 디렉터리가 아직 남아 있었다).</p>
+<h2 id="haegsim-gaenyeom">핵심 개념</h2>
+<p>Docker/OCI 컨테이너는 <strong>Linux</strong> 기술이다 — Linux 커널이 필요하다. 맥에는 Linux 커널이
+없으니까, 맥에서는 <strong>CLI 아래의 모든 것이 "숨겨진 Linux VM을 만들고 맥이 거기에
+말을 걸 수 있게" 하기 위해 존재한다.</strong></p>
+<h2 id="jeonce-seutaeg-wieseo-araero">전체 스택 (위에서 아래로)</h2>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>┌─────────────────────────────────────────────────────────────┐</span></span>
+<span class="giallo-l"><span>│  1. docker CLI            &quot;클라이언트&quot; — 내가 입력하는 것       │  ← 나</span></span>
+<span class="giallo-l"><span>│     (docker ps, run...)                                       │</span></span>
+<span class="giallo-l"><span>│            │ socket을 통해 Docker API(HTTP)로 말한다            │</span></span>
+<span class="giallo-l"><span>│            ▼                                                   │</span></span>
+<span class="giallo-l"><span>├─────────────────────────────────────────────────────────────┤</span></span>
+<span class="giallo-l"><span>│  2. dockerd               &quot;서버/데몬&quot; — API 요청을 받고          │</span></span>
+<span class="giallo-l"><span>│     (Docker daemon)        이미지/네트워크를 관리                │</span></span>
+<span class="giallo-l"><span>├─────────────────────────────────────────────────────────────┤</span></span>
+<span class="giallo-l"><span>│  3. containerd            컨테이너 런타임 — 이미지 pull,         │</span></span>
+<span class="giallo-l"><span>│                            컨테이너 라이프사이클 관리            │</span></span>
+<span class="giallo-l"><span>├─────────────────────────────────────────────────────────────┤</span></span>
+<span class="giallo-l"><span>│  4. runc                  저수준 OCI 런타임 — 커널 기능으로      │</span></span>
+<span class="giallo-l"><span>│                            실제로 컨테이너를 생성                │</span></span>
+<span class="giallo-l"><span>│                            (namespace, cgroup)                 │</span></span>
+<span class="giallo-l"><span>├─────────────────────────────────────────────────────────────┤</span></span>
+<span class="giallo-l"><span>│  5. Linux 커널            컨테이너가 진짜로 필요로 하는 것        │</span></span>
+<span class="giallo-l"><span>│     (맥에서는 VM 안에 존재)                                     │</span></span>
+<span class="giallo-l"><span>└─────────────────────────────────────────────────────────────┘</span></span></code></pre>
+<p>Docker Engine 자체는 "server + api + client" (레이어 1–2)다. 원래 Docker는
+<strong>모놀리식</strong>이었지만 (레이어 2–4가 한 프로그램), Docker가 아키텍처를 모듈화하면서
+<code>containerd</code>가 분리되어 나왔다 (Docker 1.11, 2016). 이후 Kubernetes의
+CRI(Container Runtime Interface)가 이 분리를 더욱 강화했고, 덕분에 Kubernetes
+같은 것들이 전체 Docker engine 없이도 <code>containerd</code>를 직접 쓸 수 있게 됐다.</p>
+<h3 id="gag-reieoga-matneun-il">각 레이어가 맡는 일</h3>
+<table><thead><tr><th>#</th><th>구성요소</th><th>하는 일</th></tr></thead><tbody>
+<tr><td>1</td><td><strong>docker CLI</strong></td><td><em>클라이언트</em>. 내 명령을 Docker API(HTTP) 요청으로 바꿔 보낸다. 자기 스스로는 아무것도 실행하지 않는다.</td></tr>
+<tr><td>2</td><td><strong>dockerd</strong></td><td><em>서버/데몬</em>. API 요청을 받아 이미지·네트워크·볼륨을 관리한다. 실제 실행은 아래로 위임한다.</td></tr>
+<tr><td>3</td><td><strong>containerd</strong></td><td><em>컨테이너 런타임</em>. 이미지를 pull/저장하고, 컨테이너 상태를 추적하며 라이프사이클을 감독한다.</td></tr>
+<tr><td>4</td><td><strong>runc</strong></td><td><em>저수준 런타임</em>. Linux 커널 기능(namespace + cgroup)으로 실제로 컨테이너를 만든다. 컨테이너 시작 때 잠깐 돌고 끝난다.</td></tr>
+<tr><td>5</td><td><strong>Linux 커널</strong></td><td>컨테이너의 본질: Linux 커널 위에서 격리된 프로세스. 맥에서는 VM 안에만 존재한다.</td></tr>
+</tbody></table>
+<h2 id="socket-cliwa-demoneul-isneun-tongro">socket — CLI와 데몬을 잇는 통로</h2>
+<p>docker CLI와 데몬은 별개의 프로그램이다. 둘은 <strong>Unix domain socket</strong>으로 대화하는데,
+이건 파일처럼 보이지만 데이터를 저장하지 않는다 — 살아있는 연결 지점이다
+("서랍이 아니라 문").</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>$ ls -l ~/.colima/default/docker.sock</span></span>
+<span class="giallo-l"><span>srw------- 1 bds0900 staff 0 Jun 11 13:05 ...docker.sock</span></span>
+<span class="giallo-l"><span>│          └─ 크기 0: 저장된 게 없다. 데이터는 *통과*할 뿐</span></span>
+<span class="giallo-l"><span>└─ 맨 앞 &#39;s&#39; = socket (파일 &#39;-&#39; 도 디렉터리 &#39;d&#39; 도 아님)</span></span></code></pre>
+<ul>
+<li><code>s</code> 플래그 → socket 확정 (<code>stat</code>은 <code>type: Socket</code>, <code>file</code>은 <code>socket</code>이라 한다).</li>
+<li>크기 <code>0</code> → 저장소가 아니라 통로다.</li>
+<li><code>srw-------</code> → Colima 환경에서는 소유자만 데몬에 말을 걸 수 있다. 표준 Linux Docker는 <code>srw-rw----</code>로 <code>docker</code> 그룹 멤버도 접근을 허용한다.</li>
+</ul>
+<p><code>docker ps</code>를 치면 CLI는 이 socket을 열어 HTTP 요청(<code>GET /containers/json</code>)을 쓰고
+응답을 읽는다. socket 파일은 <strong>맥</strong>에 있지만, 그게 닿는 데몬은 <strong>Linux VM</strong> 안에서
+돈다 — 그 경계를 넘겨주는 일을 Colima가 한다.</p>
+<h2 id="docker-desktop-vs-colima-vs-lima">Docker Desktop vs Colima vs Lima</h2>
+<p>이 셋은 새로운 레이어가 아니다. <strong>레이어 2–5(VM + 그 안의 데몬 스택)를 제공하는
+세 가지 다른 방법</strong>일 뿐이다. 맨 위의 <code>docker</code> CLI(레이어 1)는 셋 다 동일하다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>        ┌──────────── docker CLI (레이어 1) ────────────┐</span></span>
+<span class="giallo-l"><span>        │   아래에서 돌고 있는 데몬에게 말을 건다          │</span></span>
+<span class="giallo-l"><span>        └───────────────────────────────────────────────┘</span></span>
+<span class="giallo-l"><span>                            ▲  ▲  ▲</span></span>
+<span class="giallo-l"><span>          ┌─────────────────┘  │  └──────────────────┐</span></span>
+<span class="giallo-l"><span> ┌────────────────┐  ┌──────────────────┐  ┌──────────────────┐</span></span>
+<span class="giallo-l"><span> │ Docker Desktop │  │     Colima       │  │   (raw) Lima     │</span></span>
+<span class="giallo-l"><span> │ 자체 VM + 데몬 │  │  Lima를 감쌈 ────┼──┼──► Linux VM을    │</span></span>
+<span class="giallo-l"><span> │ 전체 + GUI     │  │  (&quot;런타임 프록시&quot;)│  │   제공            │</span></span>
+<span class="giallo-l"><span> └────────────────┘  └──────────────────┘  └──────────────────┘</span></span></code></pre>
+<ul>
+<li><strong>Lima</strong> (<em>Li</em>nux <em>ma</em>chines)는 "Linux 가상머신 레이어를 제공"한다. 목표 자체가
+<em>containerd를 널리 쓰이게 하는 것</em>이다.</li>
+<li><strong>Colima</strong> (<em>Co</em>ntainers on <em>Lima</em>)는 "컨테이너 런타임 실행 프록시"로 <strong>Lima를
+감싼다</strong> — Lima한테 "Linux VM 만들고, 데몬 깔고, socket 노출해줘"라고 시킨다.</li>
+<li><strong>Docker Desktop</strong>은 레이어 2–5에 해당하는 것을 자체적으로 다 번들하고, 여기에
+GUI·설정 UI·자동 업데이트·Compose·옵션 Kubernetes 클러스터까지 얹는다.</li>
+</ul>
+<table><thead><tr><th></th><th><strong>Docker Desktop</strong></th><th><strong>Colima</strong></th><th><strong>Lima (raw)</strong></th></tr></thead><tbody>
+<tr><td>VM 제공</td><td>자체 VM</td><td><strong>Lima</strong> 경유</td><td><strong>자기 자신</strong></td></tr>
+<tr><td>dockerd/containerd 제공</td><td>번들</td><td>VM 안에 세팅</td><td>직접 설정</td></tr>
+<tr><td>지향점</td><td>GUI + 올인원</td><td>컨테이너 우선, CLI</td><td>범용 Linux VM</td></tr>
+<tr><td>관계</td><td>독립</td><td><strong>Colima → Lima → VM</strong></td><td>토대</td></tr>
+</tbody></table>
+<p>Docker Desktop에서 Colima로 넘어가는 주된 이유는 <strong>라이선스</strong>(규모 큰 회사는
+Docker Desktop 유료 구독이 필요하지만 Colima는 무료 OSS)와 <strong>가볍고 CLI 중심</strong>
+(항상 떠 있는 GUI 앱이 없음)이라는 점이다.</p>
+<h2 id="gag-seulroseul-caeuneun-jepumdeul">각 슬롯을 채우는 제품들</h2>
+<p>모든 레이어는 고정된 제품이 아니라 <em>갈아끼울 수 있는 슬롯</em>이다:</p>
+<table><thead><tr><th>#</th><th>레이어 (역할)</th><th>표준 도구</th><th>다른 제품들</th></tr></thead><tbody>
+<tr><td>1</td><td>클라이언트 (CLI)</td><td><code>docker</code></td><td><code>nerdctl</code>, <code>podman</code>, <code>crictl</code></td></tr>
+<tr><td>2</td><td>데몬 / API 서버</td><td><code>dockerd</code></td><td>Podman(데몬리스)</td></tr>
+<tr><td>3</td><td>런타임 (고수준)</td><td><code>containerd</code></td><td>CRI-O</td></tr>
+<tr><td>4</td><td>런타임 (저수준, OCI)</td><td><code>runc</code></td><td><code>crun</code>, gVisor(<code>runsc</code>), Kata, <code>youki</code></td></tr>
+<tr><td>5</td><td>Linux 커널</td><td>Linux</td><td>(VM 안에서 제공)</td></tr>
+<tr><td>—</td><td>VM 엔진</td><td><strong>Docker Desktop</strong></td><td>Lima, Rancher Desktop, Podman Machine, Minikube</td></tr>
+<tr><td>—</td><td>컨테이너 래퍼</td><td><strong>Docker Desktop</strong></td><td>Colima, Rancher Desktop, OrbStack</td></tr>
+<tr><td>—</td><td>하이퍼바이저 (macOS)</td><td>Apple Virtualization.framework</td><td>Hypervisor.framework, QEMU</td></tr>
+</tbody></table>
+<h2 id="i-maege-maepinghamyeon">이 맥에 매핑하면</h2>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span> 레이어 1  클라이언트         →  docker            (Homebrew, /opt/homebrew/bin/docker)</span></span>
+<span class="giallo-l"><span> ─ socket ─                 →  docker.sock       (~/.colima/default/docker.sock)</span></span>
+<span class="giallo-l"><span> 레이어 2  데몬/API          →  dockerd           (VM 안)</span></span>
+<span class="giallo-l"><span> 레이어 3  런타임 (고수준)    →  containerd        (VM 안)</span></span>
+<span class="giallo-l"><span> 레이어 4  런타임 (저수준)    →  runc              (VM 안)</span></span>
+<span class="giallo-l"><span> 레이어 5  Linux 커널        →  Linux (aarch64)   (VM 안)</span></span>
+<span class="giallo-l"><span> ─────────────────────────────────────────────────────────────────</span></span>
+<span class="giallo-l"><span> VM 래퍼                    →  Colima            (&quot;런타임 프록시&quot;)</span></span>
+<span class="giallo-l"><span> VM 엔진                    →  Lima              (VM을 부팅)</span></span>
+<span class="giallo-l"><span> 하이퍼바이저               →  Apple Virtualization.framework</span></span></code></pre>
+<p><code>colima status</code>를 보면 VM이 <code>aarch64</code>에서 <em>macOS Virtualization.Framework</em>를
+쓰고, docker socket은 <code>~/.colima/default/docker.sock</code>에 있다고 나온다.</p>
+<p>VM 안에서 레이어 2–4가 도는 걸 보려면:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">colima</span><span style="color: #AAD94C;"> ssh</span><span style="color: #95E6CB;"> --</span><span style="color: #AAD94C;"> sh</span><span style="color: #95E6CB;"> -c</span><span style="color: #AAD94C;"> &#39;ps -e -o pid,comm | grep -E &quot;dockerd|containerd|runc&quot;&#39;</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># dockerd와 containerd는 계속 떠 있다.</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># runc는 보통 안 보인다 — 컨테이너 시작 시 잠깐 돌고 바로 끝나기 때문</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># (docker run 도중에만 잡힌다).</span></span></code></pre><h2 id="han-mundan-yoyag">한 문단 요약</h2>
+<p>컨테이너를 실제로 돌리는 <strong>수직 스택은 하나</strong>다:
+<code>docker CLI → dockerd → containerd → runc → Linux 커널</code>. 맥에서는 그 커널이
+<strong>Linux VM</strong> 안에만 존재한다. <strong>Docker Desktop, Colima, Lima는 이 스택의 단계가
+아니라, 이 스택을 <em>제공하는</em> 경쟁 방식들이다.</strong> Lima는 VM을 제공하고, Colima는
+Lima를 부려서 데몬까지 세팅하는 컨테이너 중심 래퍼이며, Docker Desktop은 자체
+VM + 데몬을 번들한 올인원 GUI 앱이다. 맨 위의 <code>docker</code> CLI는 무엇을 골랐든
+상관하지 않는다 — 그냥 socket을 열고, 듣고 있는 데몬에게 Docker API로 말할 뿐이다.</p>
+<h2 id="camgo">참고</h2>
+<ul>
+<li>emptyfridge.dev — Docker 구성요소 아키텍처: <a rel="external" href="https://emptyfridge.dev/docker/docker/">https://emptyfridge.dev/docker/docker/</a></li>
+</ul>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;docker&#x2F;layer1-docker-cli&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Layer 1 — docker CLI (클라이언트)
+            </a>
+          </div>
+           
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.en.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>
