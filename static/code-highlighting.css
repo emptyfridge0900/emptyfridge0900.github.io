@@ -32,6 +32,33 @@
   [data-lang="rs diff"],
   [data-lang="rust diff"],
   [data-lang="rust-diff"]
-) > .giallo-l > span:first-child[style*="font-weight: bold"] {
+) > .giallo-l > span:first-child[style*="font-weight: bold"]:not([style*="font-style: italic"]),
+.giallo > code:is(
+  [data-lang="rs diff"],
+  [data-lang="rust diff"],
+  [data-lang="rust-diff"]
+) > .giallo-l > span[style*="font-weight: bold"][style*="font-style: italic"] {
   display: none;
+}
+
+.giallo > code:is(
+  [data-lang="rs diff"],
+  [data-lang="rust diff"],
+  [data-lang="rust-diff"]
+) > .giallo-l:has(> span[style*="font-weight: bold"][style*="font-style: italic"])
+  > span[style*="color: #70BF56"] {
+  padding-inline: 0.12em;
+  background-color: rgb(112 191 86 / 28%);
+  border-radius: 2px;
+}
+
+.giallo > code:is(
+  [data-lang="rs diff"],
+  [data-lang="rust diff"],
+  [data-lang="rust-diff"]
+) > .giallo-l:has(> span[style*="font-weight: bold"][style*="font-style: italic"])
+  > span[style*="color: #F26D78"] {
+  padding-inline: 0.12em;
+  background-color: rgb(242 109 120 / 28%);
+  border-radius: 2px;
 }

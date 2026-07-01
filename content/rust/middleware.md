@@ -32,7 +32,7 @@ fn handle_request(request: HttpRequest) -> HttpResponse {
 위에 `HttpRequest`와 `HttpResponse`는 Tower가 제공하는 타입이 아니라, 예시로 만든 HTTP 프레임워크가 제공한다고 가정한 구조체이다.
 
 run함수는 아래와 같이 생겼을 것이다.
-```rs, hl_lines=4
+```rs diff, hl_lines=4
 impl Server {
     async fn run<F>(self, handler: F) -> Result<(), Error>
     where
@@ -57,7 +57,7 @@ impl Server {
 
 run함수는 HttpRequest를 받아서 HttpResponse를 return하는 closure를 파라미터로 받는다.
 그럼 handle_request함수는 아래와 같이 구현할 수 있다.
-```rs
+```rs diff
 fn handle_request(request: HttpRequest) -> HttpResponse {
     // ...
 }
@@ -65,18 +65,18 @@ fn handle_request(request: HttpRequest) -> HttpResponse {
 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
 fn handle_request(request: HttpRequest) -> HttpResponse {
-    if request.path() == "/" {
-        HttpResponse::ok("Hello, World!")
-    } else {
-        HttpResponse::not_found()
-    }
++    if request.path() == "/" {
++        HttpResponse::ok("Hello, World!")
++    } else {
++        HttpResponse::not_found()
++    }
 }
 
 server.run(handle_request).await?;
 ```
 
 하지만 이 설계에서는 핸들러가 요청을 비동기적으로 처리할 수 없다. DB 조회나 외부 API 호출을 기다리는 동안 다른 작업을 처리할 수 있게 하려면 아래와 같이 바꿔주자
-```rs, hl_lines=26 28
+```rust diff
 impl Server {
     async fn run<F>(self, handler: F) -> Result<(), Error>
     where
@@ -103,9 +103,10 @@ impl Server {
     async fn run<F, Fut>(self, handler: F) -> Result<(), Error>
     where
         // `handler` now returns a generic type `Fut`...
-        F: Fn(HttpRequest) -> Fut,
-        // ...which is a `Future` whose `Output` is an `HttpResponse`
-        Fut: Future<Output = HttpResponse>,
+-        F: Fn(HttpRequest) -> HttpResponse,
++        F: Fn(HttpRequest) -> Fut,
++        // ...which is a `Future` whose `Output` is an `HttpResponse`
++        Fut: Future<Output = HttpResponse>,
     {
         let listener = TcpListener::bind(self.addr).await?;
 
@@ -115,7 +116,8 @@ impl Server {
 
             task::spawn(async move {
                 // Await the future returned by `handler`
-                let response = handler(request).await;
+-                let response = handler(request);
++                let response = handler(request).await;
 
                 write_http_response(connection, response).await?;
             });
@@ -126,7 +128,7 @@ impl Server {
 
 서버 파라미터가 바뀌었으니 handle_request도 비동기 처리를 할수 있게되었다
 
-```rs
+```rs diff
 
 fn handle_request(request: HttpRequest) -> HttpResponse {
     if request.path() == "/" {
@@ -141,10 +143,10 @@ fn handle_request(request: HttpRequest) -> HttpResponse {
 async fn handle_request(request: HttpRequest) -> HttpResponse {
     if request.path() == "/" {
         HttpResponse::ok("Hello, World!")
-    } else if request.path() == "/important-data" {
-        // We can now do async stuff in here
-        let some_data = fetch_data_from_database().await;
-        make_response(some_data)
++    } else if request.path() == "/important-data" {
++        // We can now do async stuff in here
++        let some_data = fetch_data_from_database().await;
++        make_response(some_data)
     } else {
         HttpResponse::not_found()
     }
@@ -152,7 +154,7 @@ async fn handle_request(request: HttpRequest) -> HttpResponse {
 ```
 
 서버의 run함수가 error를 처리할수 있게 한번 더 업그레이드 해주자
-```rs,hl_lines=28 38-41
+```rs diff,hl_lines=28 39
 impl Server {
     async fn run<F, Fut>(self, handler: F) -> Result<(), Error>
     where
@@ -181,7 +183,8 @@ impl Server {
     where
         F: Fn(HttpRequest) -> Fut,
         // The response future is now allowed to fail
-        Fut: Future<Output = Result<HttpResponse, Error>>,
+-        Fut: Future<Output = HttpResponse>,
++        Fut: Future<Output = Result<HttpResponse, Error>>,
     {
         let listener = TcpListener::bind(self.addr).await?;
 
@@ -191,10 +194,13 @@ impl Server {
 
             task::spawn(async move {
                 // Pattern match on the result of the response future
-                match handler(request).await {
-                    Ok(response) => write_http_response(connection, response).await?,
-                    Err(error) => handle_error_somehow(error, connection),
-                }
+-                let response = handler(request).await;
+-
+-                write_http_response(connection, response).await?;
++                match handler(request).await {
++                    Ok(response) => write_http_response(connection, response).await?,
++                    Err(error) => handle_error_somehow(error, connection),
++                }
             });
         }
     }
@@ -257,7 +263,7 @@ where
 ### Handler trait
 
 Server::run이 F: Fn(HttpRequest) -> Fut 클로저를 받아들이게 하지 말고 async fn(HttpRequest) -> Result<HttpResponse, Error> 을 캡슐화 하는 Trait를 만들자
-```rs, hl_lines=26 28
+```rs diff, hl_lines=26 28
 impl Server {
     async fn run<F, Fut>(self, handler: F) -> Result<(), Error>
     where
@@ -283,9 +289,13 @@ impl Server {
 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
 impl Server {
-    async fn run<T>(self, mut handler: T) -> Result<(), Error>
-    where
-        T: Handler,
+-    async fn run<F, Fut>(self, handler: F) -> Result<(), Error>
+-    where
+-        F: Fn(HttpRequest) -> Fut,
+-        Fut: Future<Output = Result<HttpResponse, Error>>,
++    async fn run<T>(self, mut handler: T) -> Result<(), Error>
++    where
++        T: Handler,
     {
         let listener = TcpListener::bind(self.addr).await?;
 
@@ -425,10 +435,11 @@ self가 async block으로 빨려들어가서 lifetime이 끝까지 살아남지 
 
 
 trait bound에 `Clone`을 추가해주자
-```rs, hl_lines=3
+```rs diff
 impl<T> Handler for Timeout<T>
 where
-    T: Handler + Clone,
+-    T: Handler
++    T: Handler + Clone,
 ```
 그래도 에러가 뜬다.
 컴파일러가 말하길 static lifetime이 필요하다고 한다
@@ -447,23 +458,23 @@ where
 ```
 
 'static을 추가해주자. 이제 컴파일 잘 된다
-```rs, hl_lines=3
+```rs diff
 impl<T> Handler for Timeout<T>
 where
-    T: Handler + Clone + 'static,
+-    T: Handler + Clone
++    T: Handler + Clone + 'static,
 ```
 
 
 ###  Content-Type Handler
 
 T Type에 Clone, 'static 추가해주는걸 잊지말자
-```rs, hl_lines=8
+```rs, hl_lines=9
 #[derive(Clone)]
 struct JsonContentType<T> {
     inner_handler: T,
 }
 
-↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
 impl<T> Handler for JsonContentType<T>
 where
@@ -497,7 +508,7 @@ server.run(handler).await
 
 ## Handler를 더 유연하게...
 우리의 handler는 현재 HttpRequest만 다룰 수있다. 좀더 generic한 handler를 만들어보자
-```rs
+```rs diff
 trait Handler {
     type Future: Future<Output = Result<HttpResponse, Error>>;
 
@@ -506,16 +517,17 @@ trait Handler {
 
 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
-trait Handler<Request> {
-    type Response;
+trait Handler{+<Request>+} {
++    type Response;
 
     // Error should also be an associated type. No reason for that to be a
     // hardcoded type
-    type Error;
++    type Error;
 
     // Our future type from before, but now it's output must use
     // the associated `Response` and `Error` types
-    type Future: Future<Output = Result<Self::Response, Self::Error>>;
+-    type Future: Future<Output = Result<HttpResponse, Error>>;
++    type Future: Future<Output = Result<Self::Response, Self::Error>>;
 
     // `call` is unchanged, but note that `Request` here is our generic
     // `Request` type parameter and not the `HttpRequest` type we've used
@@ -524,7 +536,7 @@ trait Handler<Request> {
 }
 ```
 ### Request Handler
-```rs
+```rs diff
 impl Handler for RequestHandler {
     type Future = Pin<Box<dyn Future<Output = Result<HttpResponse, Error>>>>;
     fn call(&mut self, request: HttpRequest) -> Self::Future {
@@ -533,10 +545,11 @@ impl Handler for RequestHandler {
 
 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
-impl Handler<HttpRequest> for RequestHandler {
-    type Response = HttpResponse;
-    type Error = Error;
-    type Future = Pin<Box<dyn Future<Output = Result<HttpResponse, Error>>>>;
+impl Handler{+<HttpRequest>+} for RequestHandler {
++    type Response = HttpResponse;
++    type Error = Error;
+-    type Future = Pin<Box<dyn Future<Output = Result<HttpResponse, Error>>>>;
++    type Future = Pin<Box<dyn Future<Output = Result<HttpResponse, Error>>>>;
 
     fn call(&mut self, request: Request) -> Self::Future {
         // same as before
@@ -550,7 +563,7 @@ impl Handler<HttpRequest> for RequestHandler {
 
 에러타입은 좀 다르다. tokio::time::timeout은 Result<T, tokio::time::error::Elapsed> 을 리턴한다
 우리는 tokio::time::error::Elapsed 타입을 내부 핸들러의 에러타입(T::Error)으로 변환해야한다
-```rs
+```rs diff
 
 impl<T> Handler for Timeout<T>
 where
@@ -576,24 +589,25 @@ where
 
 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
-impl<R, T> Handler<R> for Timeout<T>
+impl<{+R,+}T> Handler{+<R>+} for Timeout<T>
 where
     // The actual type of request must not contain
     // references. The compiler would tell us to add
     // this if we didn't
-    R: 'static,
++    R: 'static,
     // `T` must accept requests of type `R`
-    T: Handler<R> + Clone + 'static,
+-    T: Handler,
++    T: Handler<R> + Clone + 'static,
     // We must be able to convert an `Elapsed` into
     // `T`'s error type
-    T::Error: From<tokio::time::error::Elapsed>,
++    T::Error: From<tokio::time::error::Elapsed>,
 {
     // Our response type is the same as `T`'s, since we
     // don't have to modify it
-    type Response = T::Response;
++    type Response = T::Response;
 
     // Error type is also the same
-    type Error = T::Error;
++    type Error = T::Error;
 
     // Future must output a `Result` with the correct types
     type Future = Pin<Box<dyn Future<Output = Result<T::Response, T::Error>>>>;
@@ -622,7 +636,7 @@ where
 ### Content-Type Handler
 JsonContentType Handler도 앞의 두 핸들러와는 좀 다르다. 요청과 에러 타입에 대해서는 신경 안쓰지만 응답 타입에 대해서는 신경써야한다.
 응답 타입은 반드시 set_header를 콜 할수 있는 타입이여야 한다.
-```rs
+```rs diff
 impl<T> Handler for JsonContentType<T>
 where
     T: Handler + Clone + 'static,
@@ -642,17 +656,18 @@ where
 
 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
-impl<R, T> Handler<R> for JsonContentType<T>
+impl<{+R,+} T> Handler{+<R>+} for JsonContentType<T>
 where
-    R: 'static,
++    R: 'static,
     // `T` must accept requests of any type `R` and return
     // responses of type `HttpResponse`
-    T: Handler<R, Response = HttpResponse> + Clone + 'static,
+-    T: Handler + Clone + 'static,
++    T: Handler<R, Response = HttpResponse> + Clone + 'static,
 {
-    type Response = HttpResponse;
++    type Response = HttpResponse;
 
     // Our error type is whatever `T`'s error type is
-    type Error = T::Error;
++    type Error = T::Error;
 
     type Future = Pin<Box<dyn Future<Output = Result<Response, T::Error>>>>;
 
@@ -669,7 +684,7 @@ where
 ```
 
 
-```rs
+```rs diff
 impl Server {
     async fn run<T>(self, mut handler: T) -> Result<(), Error>
     where
@@ -684,7 +699,8 @@ impl Server {
 impl Server {
     async fn run<T>(self, mut handler: T) -> Result<(), Error>
     where
-        T: Handler<HttpRequest, Response = HttpResponse>,
+-        T: Handler,
++        T: Handler<HttpRequest, Response = HttpResponse>,
     {
         // ...
     }
@@ -693,7 +709,7 @@ impl Server {
 
 ## Service trait의 등장
 Handler trait는 server에서도 client에서도 사용될 수 있다. server, client 둘다 사용 될 수 있기 때문에 Handler 라는 이름은 부적절하다. client는 요청을 handle하지 않기 때문이다. 그러니 Handler대신 Service라고 부르자
-```rs
+```rs diff
 trait Handler<Request> {
     type Response;
     type Error;
@@ -704,7 +720,8 @@ trait Handler<Request> {
 
 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
-trait Service<Request> {
+-trait Handler<Request> {
++trait Service<Request> {
     type Response;
     type Error;
     type Future: Future<Output = Result<Self::Response, Self::Error>>;

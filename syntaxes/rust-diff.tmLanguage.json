@@ -3,6 +3,7 @@
   "scopeName": "source.rust-diff",
   "fileTypes": ["rust-diff", "rsdiff"],
   "patterns": [
+    { "include": "#word-deleted-line" },
     { "include": "source.rust" }
   ],
   "injections": {
@@ -10,6 +11,7 @@
       "patterns": [
         { "include": "#diff-header" },
         { "include": "#hunk-header" },
+        { "include": "#word-inserted" },
         { "include": "#inserted-line" },
         { "include": "#deleted-line" }
       ]
@@ -23,6 +25,42 @@
     "hunk-header": {
       "name": "meta.diff.range",
       "match": "^(@@).*$"
+    },
+    "word-deleted-line": {
+      "begin": "^(?=.*\\[-)",
+      "end": "$",
+      "patterns": [
+        { "include": "#word-inserted" },
+        { "include": "#word-deleted" }
+      ]
+    },
+    "word-inserted": {
+      "match": "(\\{\\+)(.*?)(\\+\\})",
+      "captures": {
+        "1": {
+          "name": "markup.bold markup.italic punctuation.definition.inserted.begin.diff"
+        },
+        "2": {
+          "name": "markup.inserted.diff"
+        },
+        "3": {
+          "name": "markup.bold markup.italic punctuation.definition.inserted.end.diff"
+        }
+      }
+    },
+    "word-deleted": {
+      "match": "(\\[-)(.*?)(-\\])",
+      "captures": {
+        "1": {
+          "name": "markup.bold markup.italic punctuation.definition.deleted.begin.diff"
+        },
+        "2": {
+          "name": "markup.deleted.diff"
+        },
+        "3": {
+          "name": "markup.bold markup.italic punctuation.definition.deleted.end.diff"
+        }
+      }
     },
     "inserted-line": {
       "name": "markup.inserted.diff",
