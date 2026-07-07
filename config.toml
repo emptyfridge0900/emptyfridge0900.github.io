@@ -4,6 +4,9 @@ theme = "DeepThought"
 # The URL the site will be built for
 base_url = "https://emptyfridge.dev"
 
+# The default language; translated content is generated under /{code}/.
+default_language = "en"
+
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = true
 
@@ -52,6 +55,16 @@ extra_grammars = [
 	"syntaxes/rust-diff-alias.tmLanguage.json",
 ]
 
+[languages.ko]
+title = "Doosan의 블로그"
+description = "배움은 끝이 없는 과정"
+# Korean search indexing currently panics in elasticlunr during `zola build`.
+build_search_index = false
+taxonomies = [
+	{ name = "categories", feed = true, paginate_by = 10 },
+	{ name = "tags", feed = true, paginate_by = 10 },
+]
+
 [extra]
 # Put all your custom variables here
 katex.enabled = true
@@ -65,12 +78,26 @@ navbar_items = [
 	{ url = "$BASE_URL/algorithm", name = "Algo" },
 	{ url = "$BASE_URL/rust", name = "Rust" },
 	{ url = "$BASE_URL/csharp", name = "C#" },
-  	{ url = "$BASE_URL/projects", name = "Toy Projects" },
-  	{ url = "$BASE_URL/docker", name = "Docker" },
+  { url = "$BASE_URL/projects", name = "Toy Projects" },
+  { url = "$BASE_URL/docker", name = "Docker" },
 	{ url = "$BASE_URL/commands", name = "Commands" },
 	{ url = "$BASE_URL/rabbitmq", name = "RabbitMQ" },
 	{ url = "$BASE_URL/tags", name = "Tags" },
 	{ url = "$BASE_URL/categories", name = "Categories" },
+	]},
+	{code = "ko",nav_items =[
+	{ url = "$BASE_URL/ko", name = "홈" },
+	{ url = "$BASE_URL/ko/cs", name = "CS" },
+	{ url = "$BASE_URL/ko/data_structure", name = "자료구조" },
+	{ url = "$BASE_URL/ko/algorithm", name = "알고리즘" },
+	{ url = "$BASE_URL/ko/rust", name = "Rust" },
+	{ url = "$BASE_URL/ko/csharp", name = "C#" },
+	{ url = "$BASE_URL/ko/projects", name = "토이 프로젝트" },
+	{ url = "$BASE_URL/ko/docker", name = "Docker" },
+	{ url = "$BASE_URL/ko/commands", name = "명령어" },
+	{ url = "$BASE_URL/ko/rabbitmq", name = "RabbitMQ" },
+	{ url = "$BASE_URL/ko/tags", name = "태그" },
+	{ url = "$BASE_URL/ko/categories", name = "카테고리" },
 	]}
 ]
 [extra.analytics]
