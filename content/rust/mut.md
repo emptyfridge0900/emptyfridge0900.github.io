@@ -28,7 +28,7 @@ let mut a: &mut T;     // mutable binding to a mutable reference
 Function parameters follow the same rule:
 
 ```rust
-fn update(input: &mut T) {
+fn update<T>(input: &mut T) {
     // input has the same shape as:
     // let input: &mut T = ...
 }
@@ -42,6 +42,83 @@ If the function needs to mutate the value behind the reference, `input: &mut T` 
 fn append_world(input: &mut String) {
     input.push_str(" world");
 }
+```
+
+The caller usually owns a normal `String`, then creates the mutable reference at the call site:
+
+```rust
+let mut a = "hello".to_string(); // a: String
+append_world(&mut a);            // &mut a: &mut String
+```
+
+`a` itself is not a reference. Its type is still `String`. The expression `&mut a` temporarily borrows `a` as `&mut String` so it matches the function parameter.
+
+The parameter type must match the argument expression, not necessarily the original variable's type.
+
+For an `i32` parameter, the variable and the argument expression are often the same thing:
+
+```rust
+fn use_number(input: i32) {
+    println!("{input}");
+}
+
+let a = 5;       // a: i32
+use_number(a);   // a: i32
+```
+
+For a `&mut String` parameter, the argument expression is usually created from the variable:
+
+```rust
+let mut a = "hello".to_string(); // a: String
+append_world(&mut a);            // &mut a: &mut String
+```
+
+So the function receives a value whose type is `&mut String`, but the caller's variable does not have to be declared as `&mut String`. The expression `&mut a` is the part that has type `&mut String`.
+
+This does not compile:
+
+```rust
+let a = "hello".to_string();
+append_world(&mut a); // error: cannot borrow `a` as mutable
+```
+
+The problem is that `a` is an immutable binding. `String` is a type that can be mutated, but Rust still requires the variable binding to be declared with `mut` before you can create `&mut a`.
+
+`mut` is not part of the type annotation, so this is invalid:
+
+```rust
+let a: mut = "hello".to_string(); // invalid Rust
+```
+
+Write `mut` after `let`, before the variable name:
+
+```rust
+let mut a = "hello".to_string();
+```
+
+With an explicit type annotation, the order is still the same:
+
+```rust
+let mut a: String = "hello".to_string();
+```
+
+If you write a binding whose type is `&mut String`, that is also valid, but it means the binding stores a reference instead of owning the `String`:
+
+```rust
+let mut s = "hello".to_string();
+let input: &mut String = &mut s;
+
+input.push_str(" world");
+```
+
+This is conceptually close to what happens when `append_world` receives its parameter:
+
+```rust
+let mut s = "hello".to_string();
+append_world(&mut s);
+
+// Inside append_world, the parameter is like:
+// let input: &mut String = &mut s;
 ```
 
 If the function needs to reassign the local parameter variable itself, then the binding must be `mut`:
