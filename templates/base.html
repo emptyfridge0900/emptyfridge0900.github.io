@@ -12,21 +12,34 @@
     font-weight: 700;
     letter-spacing: 0;
   }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
 </style>
 {% endblock user_custom_stylesheet %}
 
 {% block user_custom_js %}
 <script>
   (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
     const navEnd = document.querySelector(".navbar-end");
     if (!navEnd) {
       return;
     }
 
-    const currentPath = window.location.pathname || "/";
-    const currentSearch = window.location.search || "";
-    const currentHash = window.location.hash || "";
-    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
     const targetPath = isKorean
       ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
       : (currentPath === "/" ? "/ko" : "/ko" + currentPath);

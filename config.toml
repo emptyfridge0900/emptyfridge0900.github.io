@@ -4,6 +4,10 @@ theme = "DeepThought"
 # The URL the site will be built for
 base_url = "https://emptyfridge.dev"
 
+# Default language site metadata.
+title = "Doosan's Blog"
+description = "Learning is an endless process"
+
 # The default language; translated content is generated under /{code}/.
 default_language = "en"
 
