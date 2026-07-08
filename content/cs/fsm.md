@@ -7,66 +7,62 @@ categories = ["CS"]
 tags = ["cs"]
 +++
 
-FSM(Finite State Machine, 유한 상태 기계)은 어떤 시스템을 **현재 상태**와 **입력에
-따른 상태 전이**로 설명하는 모델이다.
+An FSM(Finite State Machine) is a model that describes a system using its **current state** and **state transitions based on input**.
 
-핵심은 단순하다:
+The core idea is simple:
 
-> 시스템은 한 번에 하나의 상태에 있고, 입력이나 이벤트가 들어오면 정해진 규칙에
-> 따라 다음 상태로 이동한다.
+> A system is in exactly one state at a time, and when an input or event arrives, it moves to the next state according to predefined rules.
 
-상태의 개수가 유한하기 때문에 "finite" state machine이라고 부른다. 예를 들어 문은
-`Open` 또는 `Closed` 상태만 가질 수 있고, 회전문(turnstile)은 `Locked` 또는
-`Unlocked` 상태만 가질 수 있다.
+It is called a "finite" state machine because the number of states is finite. For example, a door can only be `Open` or `Closed`, and a turnstile can only be `Locked` or `Unlocked`.
 
-## 구성 요소
+## Components
 
-FSM은 보통 다음 5가지로 설명한다.
+An FSM is usually described with five components.
 
-| 구성 요소 | 의미 |
+| Component | Meaning |
 |---|---|
-| `S` | 가능한 상태들의 집합 |
-| `Σ` | 입력 알파벳 또는 이벤트들의 집합 |
-| `δ` | 전이 함수. 현재 상태와 입력을 받아 다음 상태를 결정한다 |
-| `s0` | 시작 상태 |
-| `F` | 종료 상태 또는 accepting state. 문제에 따라 없을 수도 있다 |
+| `S` | Set of possible states |
+| `Σ` | Input alphabet or set of events |
+| `δ` | Transition function. It takes the current state and input, then decides the next state |
+| `s0` | Initial state |
+| `F` | Final state or accepting state. Some problems may not need this |
 
-수식으로는 이렇게 쓴다:
+Mathematically, it is written like this:
 
 ```text
 FSM = (S, Σ, δ, s0, F)
 ```
 
-중요한 부분은 `δ`다.
+The important part is `δ`.
 
 ```text
 δ(current_state, input) -> next_state
 ```
 
-즉 FSM은 "지금 어디에 있는가?"와 "무슨 입력을 받았는가?"만으로 다음 상태를 정한다.
+In other words, an FSM decides the next state only from "where am I now?" and "what input did I receive?"
 
-## 예제: 회전문
+## Example: turnstile
 
-지하철 개찰구 같은 회전문을 생각해보자.
+Think of a turnstile like the one at a subway gate.
 
-- `Locked`: 잠겨 있음
-- `Unlocked`: 통과 가능
+- `Locked`: locked
+- `Unlocked`: passable
 
-입력은 두 개만 있다고 하자.
+Assume there are only two inputs.
 
-- `Coin`: 돈을 넣음
-- `Push`: 문을 밀음
+- `Coin`: insert money
+- `Push`: push the gate
 
-상태 전이표는 이렇게 된다.
+The transition table looks like this.
 
-| 현재 상태 | 입력 | 다음 상태 | 설명 |
+| Current state | Input | Next state | Description |
 |---|---|---|---|
-| `Locked` | `Coin` | `Unlocked` | 돈을 넣으면 통과 가능 |
-| `Locked` | `Push` | `Locked` | 잠긴 상태에서 밀어도 그대로 |
-| `Unlocked` | `Push` | `Locked` | 통과하면 다시 잠김 |
-| `Unlocked` | `Coin` | `Unlocked` | 이미 열려 있으니 그대로 |
+| `Locked` | `Coin` | `Unlocked` | Inserting money unlocks it |
+| `Locked` | `Push` | `Locked` | Pushing while locked changes nothing |
+| `Unlocked` | `Push` | `Locked` | Passing through locks it again |
+| `Unlocked` | `Coin` | `Unlocked` | Already unlocked, so it stays unlocked |
 
-코드로 쓰면 이런 모양이다.
+In code, it can look like this.
 
 ```cs
 enum TurnstileState
@@ -92,14 +88,13 @@ static TurnstileState Next(TurnstileState state, TurnstileEvent input) =>
     };
 ```
 
-이 코드에서 `switch`가 전이 함수 `δ` 역할을 한다.
+In this code, the `switch` acts as the transition function `δ`.
 
-## 왜 유용한가
+## Why is it useful?
 
-FSM은 복잡한 조건문을 "상태" 중심으로 정리할 때 좋다.
+FSMs are useful when complex conditional logic can be organized around "state."
 
-예를 들어 주문 시스템을 `bool isPaid`, `bool isShipped`, `bool isCanceled` 같은 플래그
-여러 개로 표현하면 이상한 조합이 생길 수 있다.
+For example, if an order system is represented with multiple flags like `bool isPaid`, `bool isShipped`, and `bool isCanceled`, strange combinations can appear.
 
 ```text
 isPaid = false
@@ -107,10 +102,9 @@ isShipped = true
 isCanceled = true
 ```
 
-결제도 안 됐는데 배송됐고, 동시에 취소도 된 상태다. 이런 상태는 실제 도메인에서는
-존재하면 안 된다.
+This says the order was shipped without payment and was canceled at the same time. That state should not exist in the real domain.
 
-FSM으로 표현하면 이런 불가능한 조합을 줄일 수 있다.
+Representing the system as an FSM reduces these impossible combinations.
 
 ```cs
 enum OrderState
@@ -123,7 +117,7 @@ enum OrderState
 }
 ```
 
-그리고 "어떤 상태에서 어떤 이벤트가 가능한가"를 전이 규칙으로 제한한다.
+Then transition rules restrict "which event is allowed in which state."
 
 ```text
 Created --Pay--> Paid
@@ -133,31 +127,26 @@ Created --Cancel--> Canceled
 Paid --Cancel--> Canceled
 ```
 
-이렇게 하면 `Delivered` 상태에서 `Pay` 이벤트가 들어오는 것처럼 말이 안 되는 흐름을
-명시적으로 막을 수 있다.
+This explicitly prevents nonsensical flows such as receiving a `Pay` event while already in the `Delivered` state.
 
-## DFA와 NFA
+## DFA and NFA
 
-FSM을 공부하면 보통 DFA와 NFA를 같이 보게 된다.
+When studying FSMs, DFA and NFA usually appear too.
 
-| 종류 | 의미 |
+| Type | Meaning |
 |---|---|
-| DFA(Deterministic Finite Automaton) | 현재 상태와 입력이 정해지면 다음 상태가 항상 하나로 결정된다 |
-| NFA(Nondeterministic Finite Automaton) | 같은 상태와 입력에서 여러 다음 상태가 가능하거나, 입력 없이 이동하는 ε-transition이 있을 수 있다 |
+| DFA(Deterministic Finite Automaton) | Given the current state and input, the next state is always exactly one state |
+| NFA(Nondeterministic Finite Automaton) | The same state and input may allow multiple next states, or there may be ε-transitions without input |
 
-정규 표현식(regex)은 내부적으로 이런 유한 오토마타와 연결된다. 보통 정규식을 NFA로
-만들고, 필요하면 DFA로 변환해서 문자열을 매칭할 수 있다.
+Regular expressions are internally connected to these finite automata. A regex can be built into an NFA and, if needed, converted into a DFA for string matching.
 
-다만 FSM은 메모리가 유한하다. 그래서 임의 깊이로 중첩되는 괄호처럼 "얼마나 깊게
-들어갔는지"를 무한히 기억해야 하는 문제는 순수 FSM만으로 처리할 수 없다. 이런 경우에는
-스택을 가진 pushdown automaton 같은 더 강한 모델이 필요하다.
+However, an FSM has finite memory. It cannot solve problems that require remembering arbitrary depth, such as infinitely nested parentheses. For those cases, stronger models such as pushdown automata, which have a stack, are needed.
 
-## C# async/await도 FSM인가?
+## Is C# async/await an FSM?
 
-결론부터 말하면, **그렇다. 하지만 도메인 FSM이라기보다는 컴파일러가 만든 coroutine
-state machine에 가깝다.**
+Short answer: **yes. But it is closer to a compiler-generated coroutine state machine than a domain FSM.**
 
-C#에서 `async` 메서드는 소스 코드 그대로 실행되는 것처럼 보인다.
+In C#, an `async` method looks like it runs as written in source code.
 
 ```cs
 public static async Task<int> CountBytesAsync(HttpClient client, string url)
@@ -168,16 +157,15 @@ public static async Task<int> CountBytesAsync(HttpClient client, string url)
 }
 ```
 
-하지만 컴파일러는 이 메서드를 대략 다음 구조로 바꾼다.
+But the compiler roughly transforms this method into the following structure.
 
-- 원래 메서드는 state machine을 만들고 `Task`를 반환하는 얇은 wrapper가 된다.
-- 실제 메서드 본문은 `MoveNext()` 안으로 들어간다.
-- `await` 지점마다 "다음에 어디서 다시 시작해야 하는지"를 상태 값으로 저장한다.
-- `await` 이후에도 살아 있어야 하는 지역 변수는 state machine의 필드로 올라간다.
-- 기다리던 작업이 끝나면 continuation이 `MoveNext()`를 다시 호출한다.
+- The original method becomes a thin wrapper that creates a state machine and returns a `Task`.
+- The actual method body moves into `MoveNext()`.
+- At each `await` point, the state machine stores "where to resume next."
+- Local variables that must survive after an `await` become fields of the state machine.
+- When the awaited operation completes, its continuation calls `MoveNext()` again.
 
-의사 코드로 보면 이런 느낌이다. 실제 컴파일러 출력은 버전과 최적화에 따라 달라질 수
-있다.
+As pseudocode, it feels like this. The actual compiler output can vary by version and optimization.
 
 ```cs
 private struct CountBytesAsyncStateMachine : IAsyncStateMachine
@@ -255,58 +243,48 @@ private struct CountBytesAsyncStateMachine : IAsyncStateMachine
 }
 ```
 
-위 코드는 정확한 디컴파일 결과가 아니라 구조를 보여주기 위한 예시다. 그래도 핵심은
-실제와 같다. 실제 컴파일러는 `AsyncTaskMethodBuilder<T>`의 `AwaitOnCompleted` 또는
-`AwaitUnsafeOnCompleted`를 사용해서 awaiter 완료 시 `MoveNext()`가 다시 호출되도록
-연결한다.
+This is not an exact decompiled result; it is an example that shows the structure. The core idea is still the same. The real compiler uses `AsyncTaskMethodBuilder<T>.AwaitOnCompleted` or `AwaitUnsafeOnCompleted` so that `MoveNext()` is called again when the awaiter completes.
 
-## await에서 실제로 일어나는 일
+## What actually happens at `await`
 
-`await`를 만나면 두 가지 경우가 있다.
+When execution reaches `await`, there are two cases.
 
-### 1. 이미 완료된 작업이면 계속 실행
+### 1. If the operation is already complete, keep running
 
 ```cs
 byte[] bytes = await client.GetByteArrayAsync(url);
 ```
 
-`GetByteArrayAsync(url)`의 awaiter가 이미 완료되어 있으면 state machine은 멈추지 않고
-바로 다음 줄로 진행한다.
+If the awaiter from `GetByteArrayAsync(url)` is already complete, the state machine does not stop and immediately continues to the next line.
 
-### 2. 아직 완료되지 않았으면 일단 반환
+### 2. If the operation is not complete, return for now
 
-작업이 아직 끝나지 않았다면 다음 일이 일어난다.
+If the operation is not finished yet, the following happens:
 
-1. 현재 위치를 `State = 0` 같은 값으로 저장한다.
-2. 나중에 다시 필요할 지역 변수와 awaiter를 필드에 저장한다.
-3. 작업이 끝났을 때 `MoveNext()`를 다시 호출할 continuation을 등록한다.
-4. 현재 스레드를 막지 않고 caller에게 제어권을 돌려준다.
+1. The current position is saved as something like `State = 0`.
+2. Local variables and the awaiter needed later are stored in fields.
+3. A continuation is registered so `MoveNext()` is called again when the operation completes.
+4. Control returns to the caller without blocking the current thread.
 
-그래서 `await`는 thread를 block하는 것이 아니다. `await`는 메서드의 실행을 잠시
-중단하고, 기다리던 작업이 끝나면 중단 지점 다음부터 다시 실행되게 만든다.
+So `await` does not block a thread. It pauses method execution and resumes from the suspension point when the awaited operation completes.
 
-## 일반 FSM과 async state machine 비교
+## Regular FSM vs async state machine
 
-| 일반 FSM | C# async state machine |
+| Regular FSM | C# async state machine |
 |---|---|
-| 상태: `Locked`, `Unlocked` 같은 도메인 상태 | 상태: `-1`, `0`, `1`, `-2` 같은 compiler-generated 실행 위치 |
-| 입력: `Coin`, `Push` 같은 이벤트 | 입력: awaited task completion, exception, cancellation |
-| 전이 함수: 직접 작성한 `switch` 또는 table | 컴파일러가 생성한 `MoveNext()` |
-| 종료 상태: accepting/final state | `Task`가 succeeded, faulted, canceled 중 하나로 완료 |
-| 목적: 도메인 규칙 모델링 | async 메서드의 suspend/resume 구현 |
+| State: domain states like `Locked`, `Unlocked` | State: compiler-generated execution positions like `-1`, `0`, `1`, `-2` |
+| Input: events like `Coin`, `Push` | Input: awaited task completion, exception, cancellation |
+| Transition function: handwritten `switch` or table | Compiler-generated `MoveNext()` |
+| Final state: accepting/final state | `Task` completes as succeeded, faulted, or canceled |
+| Purpose: modeling domain rules | implementing suspend/resume for async methods |
 
-즉 둘 다 "상태와 이벤트에 따라 다음 실행 위치가 결정된다"는 점에서는 FSM이다. 하지만
-async/await의 state machine은 사람이 직접 설계하는 도메인 모델이 아니라, 사람이 쓴
-순차적인 코드를 컴파일러가 비동기 실행 가능한 형태로 바꾼 결과다.
+Both are FSMs in the sense that "state and event determine the next execution position." But the async/await state machine is not a domain model designed by a person. It is the compiler's transformation of sequential-looking code into a form that can run asynchronously.
 
-## Rust async/await도 FSM인가?
+## Is Rust async/await also an FSM?
 
-Rust도 마찬가지다. **Rust의 `async` 블록과 `async fn`도 컴파일러가 `Future`를
-구현하는 state machine으로 바꾼다.**
+Rust is similar. **Rust `async` blocks and `async fn` are also transformed by the compiler into state machines that implement `Future`.**
 
-다만 C#과 실행 모델이 조금 다르다. Rust에서 `async fn`을 호출하면 함수 본문이 바로
-실행되지 않는다. 호출 결과는 익명 타입의 `Future` 값이고, 이 future가 executor에 의해
-`poll()`될 때 실제 본문이 진행된다.
+However, Rust's execution model is different from C#'s. When you call an `async fn` in Rust, the function body does not start immediately. The call returns an anonymous `Future` value, and the body progresses only when an executor polls that future.
 
 ```rust
 async fn page_title(url: &str) -> Option<String> {
@@ -316,7 +294,7 @@ async fn page_title(url: &str) -> Option<String> {
 }
 ```
 
-위 코드는 개념적으로 이런 future를 만든다고 볼 수 있다.
+Conceptually, the code above creates a future like this:
 
 ```rust
 enum PageTitleFuture {
@@ -327,12 +305,9 @@ enum PageTitleFuture {
 }
 ```
 
-실제 rustc가 저 enum을 그대로 노출하는 것은 아니다. Rust Reference는 async block이
-반환하는 future 타입의 실제 데이터 형식은 지정하지 않는다고 말한다. 하지만 개념적으로는
-**각 `await` 지점마다 하나의 variant가 있고, 그 variant 안에 resume에 필요한 데이터를
-저장하는 enum**과 비슷하다고 설명한다.
+The real rustc output does not expose this exact enum. The Rust Reference says the actual data format of the future returned by an async block is unspecified. Conceptually, though, it is similar to **an enum where each `await` point has a variant, and that variant stores the data needed to resume**.
 
-Rust future의 핵심 인터페이스는 `Future::poll`이다.
+The core interface of a Rust future is `Future::poll`.
 
 ```rust
 trait Future {
@@ -345,53 +320,44 @@ trait Future {
 }
 ```
 
-`poll()`은 다음 둘 중 하나를 반환한다.
+`poll()` returns one of two values.
 
-| 반환값 | 의미 |
+| Return value | Meaning |
 |---|---|
-| `Poll::Pending` | 아직 끝나지 않았다. 나중에 다시 poll해야 한다 |
-| `Poll::Ready(value)` | 완료됐다. 최종 결과가 `value`다 |
+| `Poll::Pending` | Not finished yet. Poll again later |
+| `Poll::Ready(value)` | Finished. `value` is the final result |
 
-어떤 `.await` 지점에서 아직 준비되지 않은 future를 만나면, 현재 future는 자기 상태와
-필요한 지역 변수를 저장한 뒤 `Poll::Pending`을 반환한다. 나중에 I/O나 타이머 같은 작업이
-준비되면 `Waker`가 task를 깨우고, executor가 다시 `poll()`을 호출한다. 그때 future는
-처음부터 다시 시작하는 것이 아니라 저장된 상태에서 이어서 실행한다.
+If a future reaches an `.await` point and the child future is not ready yet, the current future stores its state and necessary locals, then returns `Poll::Pending`. Later, when I/O or a timer becomes ready, a `Waker` wakes the task and the executor calls `poll()` again. At that point, the future resumes from the stored state instead of starting from the beginning.
 
-그래서 Rust의 `.await`도 thread를 block하는 것이 아니다. 현재 future가
-`Poll::Pending`을 반환해서 executor에게 제어권을 돌려주고, executor는 같은 thread에서
-다른 task를 poll할 수 있다.
+So Rust `.await` also does not block a thread. The current future returns `Poll::Pending` and gives control back to the executor, which can poll other tasks on the same thread.
 
-## C#과 Rust async state machine 비교
+## C# vs Rust async state machines
 
-| 항목 | C# | Rust |
+| Topic | C# | Rust |
 |---|---|---|
-| async 호출 시점 | 메서드가 시작되고 첫 incomplete `await`까지 진행될 수 있다 | `async fn`은 호출만으로 본문을 실행하지 않고 `Future`를 반환한다 |
-| 반환 타입 | `Task`, `Task<T>`, `ValueTask<T>` 등 | 익명 타입의 `impl Future<Output = T>` |
-| 실행 진입점 | compiler-generated `MoveNext()` | `Future::poll()` |
-| 재개 방식 | awaiter completion이 continuation을 호출한다 | `Waker`가 task를 깨우고 executor가 다시 poll한다 |
-| 저장되는 것 | await 이후 필요한 locals, awaiter, 상태 값 | await 이후 필요한 locals, child future, 상태 값 |
-| 특이점 | 런타임/GC 환경과 잘 맞는 task 모델 | `Pin`이 중요하다. future 내부가 자기 자신의 필드를 참조할 수 있기 때문이다 |
+| When async execution starts | The method may start and run until the first incomplete `await` | Calling `async fn` does not execute the body; it returns a `Future` |
+| Return type | `Task`, `Task<T>`, `ValueTask<T>`, etc. | Anonymous `impl Future<Output = T>` type |
+| Execution entry point | Compiler-generated `MoveNext()` | `Future::poll()` |
+| Resume mechanism | Awaiter completion invokes a continuation | `Waker` wakes the task and the executor polls again |
+| Stored data | Locals needed after await, awaiters, state value | Locals needed after await, child futures, state value |
+| Notable detail | Task model fits runtime/GC environments well | `Pin` matters because a future may internally reference its own fields |
 
-둘 다 compiler-generated state machine이라는 점은 같다. 차이는 C#은 `Task`와
-continuation 중심으로 설명되고, Rust는 `Future`, `Poll`, `Waker`, executor 중심으로
-설명된다는 점이다.
+Both are compiler-generated state machines. The difference is that C# is usually explained through `Task` and continuation, while Rust is explained through `Future`, `Poll`, `Waker`, and executor.
 
-## 기억할 점
+## Things to remember
 
-- FSM은 복잡한 흐름을 상태와 전이로 쪼개서 이해하는 도구다.
-- 상태는 유한해야 한다.
-- 전이는 "현재 상태 + 입력 -> 다음 상태"로 정리한다.
-- C#의 `async` 메서드는 컴파일될 때 `IAsyncStateMachine`을 구현하는 구조로 바뀐다.
-- Rust의 `async` 블록과 `async fn`도 `Future`를 구현하는 state machine으로 바뀐다.
-- `await`는 스레드를 block하지 않는다. 메서드를 suspend하고, 작업 완료 후
-  continuation으로 resume한다.
-- async state machine의 상태 값은 도메인 상태가 아니라 "어느 await 지점에서
-  멈췄는가"를 나타내는 실행 위치다.
+- An FSM is a tool for understanding complex flows by splitting them into states and transitions.
+- The number of states must be finite.
+- A transition is "current state + input -> next state."
+- A C# `async` method is compiled into a structure that implements `IAsyncStateMachine`.
+- Rust `async` blocks and `async fn` are also compiled into state machines that implement `Future`.
+- `await` does not block a thread. It suspends the method and resumes it through a continuation when the operation completes.
+- The state value in an async state machine is not a domain state. It is an execution position that says "which await point did we stop at?"
 
-## 참고
+## References
 
-- 유한 상태 기계: <https://ko.wikipedia.org/wiki/%EC%9C%A0%ED%95%9C_%EC%83%81%ED%83%9C_%EA%B8%B0%EA%B3%84>
-- 정규식과 오토마타: <https://statkclee.github.io/nlp2/regex-under-the-hood.html>
+- Finite-state machine: <https://en.wikipedia.org/wiki/Finite-state_machine>
+- Regex and automata: <https://statkclee.github.io/nlp2/regex-under-the-hood.html>
 - C# language specification - Async functions: <https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/classes#1514-async-functions>
 - `await` operator: <https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/await>
 - `IAsyncStateMachine`: <https://learn.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.iasyncstatemachine>

@@ -1,5 +1,5 @@
 +++
-title = "Docker 구성요소와 레이어: docker, dockerd, containerd, runc, Colima, Lima"
+title = "Docker Components and Layers: docker, dockerd, containerd, runc, Colima, Lima"
 date = 2026-06-17
 
 [taxonomies]
@@ -7,197 +7,197 @@ categories = ["post"]
 tags = ["docker", "colima", "lima", "containerd"]
 +++
 
-Colima를 쓰는 맥에서 `docker ps`를 쳤을 때 실제로 무슨 일이 일어나는지, 그리고
-docker / Docker Desktop / Colima / Lima / dockerd / containerd / runc 이 녀석들이
-어떻게 레이어로 맞물려 돌아가는지 정리해봤다.
+This article organizes what actually happens when I run `docker ps` on a Mac using
+Colima, and how docker / Docker Desktop / Colima / Lima / dockerd / containerd / runc fit
+together as layers.
 
-## 시리즈 목차
+## Series index
 
-각 레이어를 더 자세히 다룬 글들. (5번째 레이어인 Linux 커널은 별도 글 없이 여기서만 다룬다.)
+These articles cover each layer in more detail. Layer 5, the Linux kernel, is covered only
+in this overview.
 
-1. [Layer 1 — docker CLI (클라이언트)](./layer1_docker_cli.md)
-2. [Layer 2 — dockerd (데몬 / API 서버)](./layer2_dockerd.md)
-3. [Layer 3 — containerd (컨테이너 런타임)](./layer3_containerd.md)
-4. [Layer 4 — runc (저수준 OCI 런타임)](./layer4_runc.md)
-5. Layer 5 — Linux 커널 (이 글에서 다룸)
+1. [Layer 1 — docker CLI (Client)](./layer1_docker_cli.md)
+2. [Layer 2 — dockerd (Daemon / API Server)](./layer2_dockerd.md)
+3. [Layer 3 — containerd (Container Runtime)](./layer3_containerd.md)
+4. [Layer 4 — runc (Low-level OCI Runtime)](./layer4_runc.md)
+5. Layer 5 — Linux kernel, covered in this article
 
-## 발단이 된 버그
+## The bug that started this
 
-`docker ps`를 쳤더니 ``Command `docker` not found``가 떴다. 원인은 Docker가
-**아니었다**:
+When I ran `docker ps`, I got ``Command `docker` not found``. The cause was **not**
+Docker itself:
 
-- Colima는 설치돼 있고 잘 돌아가고 있었다 (`runtime: docker`).
-- `docker` CLI도 Homebrew로 설치돼 있었다
+- Colima was installed and running correctly (`runtime: docker`).
+- The `docker` CLI was also installed through Homebrew
   (`/opt/homebrew/Cellar/docker/<ver>/bin/docker`).
-- 그런데 `/opt/homebrew/bin/`으로 **심볼릭 링크가 안 걸려 있어서** `$PATH`에
-  없었던 것이다.
+- But it was **not symlinked into** `/opt/homebrew/bin/`, so it was missing from `$PATH`.
 
-해결:
+The fix:
 
 ```bash
 brew link --overwrite docker
 ```
 
-`brew link`는 formula가 설치된 파일들(이른바 "Cellar")을 Homebrew의 `bin/`
-(즉 `$PATH`에 들어있는 곳)으로 심볼릭 링크를 걸어준다. `--overwrite`는 목적지에
-이미 다른 파일이 있으면 그걸 덮어쓴다 — 예전에 깔았던 Docker Desktop의 잔재일
-가능성이 높다 (실제로 `~/.docker` 디렉터리가 아직 남아 있었다).
+`brew link` creates symlinks from the files installed in a formula's "Cellar" into
+Homebrew's `bin/`, which is on `$PATH`. `--overwrite` replaces any existing destination
+file. In this case, that was likely leftover Docker Desktop state, because `~/.docker`
+still existed.
 
-## 핵심 개념
+## Core idea
 
-Docker/OCI 컨테이너는 **Linux** 기술이다 — Linux 커널이 필요하다. 맥에는 Linux 커널이
-없으니까, 맥에서는 **CLI 아래의 모든 것이 "숨겨진 Linux VM을 만들고 맥이 거기에
-말을 걸 수 있게" 하기 위해 존재한다.**
+Docker/OCI containers are **Linux** technology. They need the Linux kernel. A Mac does not
+have a Linux kernel, so on macOS, everything below the CLI exists to "create a hidden
+Linux VM and let the Mac talk to it."
 
-## 전체 스택 (위에서 아래로)
+## The full stack, top to bottom
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
-│  1. docker CLI            "클라이언트" — 내가 입력하는 것       │  ← 나
+│  1. docker CLI            "client" — what I type              │  ← me
 │     (docker ps, run...)                                       │
-│            │ socket을 통해 Docker API(HTTP)로 말한다            │
+│            │ speaks Docker API (HTTP) through a socket         │
 │            ▼                                                   │
 ├─────────────────────────────────────────────────────────────┤
-│  2. dockerd               "서버/데몬" — API 요청을 받고          │
-│     (Docker daemon)        이미지/네트워크를 관리                │
+│  2. dockerd               "server/daemon" — receives API       │
+│     (Docker daemon)        requests, manages images/networking │
 ├─────────────────────────────────────────────────────────────┤
-│  3. containerd            컨테이너 런타임 — 이미지 pull,         │
-│                            컨테이너 라이프사이클 관리            │
+│  3. containerd            container runtime — pulls images,    │
+│                            manages container lifecycle         │
 ├─────────────────────────────────────────────────────────────┤
-│  4. runc                  저수준 OCI 런타임 — 커널 기능으로      │
-│                            실제로 컨테이너를 생성                │
-│                            (namespace, cgroup)                 │
+│  4. runc                  low-level OCI runtime — actually     │
+│                            creates containers with kernel      │
+│                            features (namespace, cgroup)        │
 ├─────────────────────────────────────────────────────────────┤
-│  5. Linux 커널            컨테이너가 진짜로 필요로 하는 것        │
-│     (맥에서는 VM 안에 존재)                                     │
+│  5. Linux kernel          what containers truly need           │
+│     (inside a VM on macOS)                                     │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-Docker Engine 자체는 "server + api + client" (레이어 1–2)다. 원래 Docker는
-**모놀리식**이었지만 (레이어 2–4가 한 프로그램), Docker가 아키텍처를 모듈화하면서
-`containerd`가 분리되어 나왔다 (Docker 1.11, 2016). 이후 Kubernetes의
-CRI(Container Runtime Interface)가 이 분리를 더욱 강화했고, 덕분에 Kubernetes
-같은 것들이 전체 Docker engine 없이도 `containerd`를 직접 쓸 수 있게 됐다.
+Docker Engine itself is "server + api + client" (Layers 1 and 2). Docker was originally
+**monolithic**, with Layers 2 through 4 inside one program. As Docker modularized its
+architecture, `containerd` was split out (Docker 1.11, 2016). Kubernetes' CRI, or
+Container Runtime Interface, strengthened that separation further, allowing systems such
+as Kubernetes to use `containerd` directly without the full Docker engine.
 
-### 각 레이어가 맡는 일
+### What each layer owns
 
-| # | 구성요소 | 하는 일 |
+| # | Component | What it does |
 |---|---|---|
-| 1 | **docker CLI** | *클라이언트*. 내 명령을 Docker API(HTTP) 요청으로 바꿔 보낸다. 자기 스스로는 아무것도 실행하지 않는다. |
-| 2 | **dockerd** | *서버/데몬*. API 요청을 받아 이미지·네트워크·볼륨을 관리한다. 실제 실행은 아래로 위임한다. |
-| 3 | **containerd** | *컨테이너 런타임*. 이미지를 pull/저장하고, 컨테이너 상태를 추적하며 라이프사이클을 감독한다. |
-| 4 | **runc** | *저수준 런타임*. Linux 커널 기능(namespace + cgroup)으로 실제로 컨테이너를 만든다. 컨테이너 시작 때 잠깐 돌고 끝난다. |
-| 5 | **Linux 커널** | 컨테이너의 본질: Linux 커널 위에서 격리된 프로세스. 맥에서는 VM 안에만 존재한다. |
+| 1 | **docker CLI** | *Client*. Converts my command into a Docker API (HTTP) request. It does not run anything by itself. |
+| 2 | **dockerd** | *Server/daemon*. Receives API requests and manages images, networking, and volumes. Delegates actual execution downward. |
+| 3 | **containerd** | *Container runtime*. Pulls/stores images, tracks container state, and supervises lifecycle. |
+| 4 | **runc** | *Low-level runtime*. Creates actual containers using Linux kernel features: namespaces and cgroups. Runs briefly during container start, then exits. |
+| 5 | **Linux kernel** | The essence of containers: isolated processes on top of the Linux kernel. On macOS, it exists only inside a VM. |
 
-## socket — CLI와 데몬을 잇는 통로
+## socket: the path between CLI and daemon
 
-docker CLI와 데몬은 별개의 프로그램이다. 둘은 **Unix domain socket**으로 대화하는데,
-이건 파일처럼 보이지만 데이터를 저장하지 않는다 — 살아있는 연결 지점이다
-("서랍이 아니라 문").
+The docker CLI and daemon are separate programs. They communicate through a **Unix domain
+socket**. It looks like a file, but it does not store data. It is a live connection point,
+more like a door than a drawer.
 
-```
+```text
 $ ls -l ~/.colima/default/docker.sock
 srw------- 1 bds0900 staff 0 Jun 11 13:05 ...docker.sock
-│          └─ 크기 0: 저장된 게 없다. 데이터는 *통과*할 뿐
-└─ 맨 앞 's' = socket (파일 '-' 도 디렉터리 'd' 도 아님)
+│          └─ size 0: nothing is stored. Data only passes through.
+└─ leading 's' = socket, not a regular file '-' or directory 'd'
 ```
 
-- `s` 플래그 → socket 확정 (`stat`은 `type: Socket`, `file`은 `socket`이라 한다).
-- 크기 `0` → 저장소가 아니라 통로다.
-- `srw-------` → Colima 환경에서는 소유자만 데몬에 말을 걸 수 있다. 표준 Linux Docker는 `srw-rw----`로 `docker` 그룹 멤버도 접근을 허용한다.
+- `s` flag → it is definitely a socket. `stat` reports `type: Socket`, and `file` says `socket`.
+- Size `0` → it is a passage, not storage.
+- `srw-------` → in this Colima environment, only the owner can talk to the daemon. Standard Linux Docker usually uses `srw-rw----` so members of the `docker` group can also access it.
 
-`docker ps`를 치면 CLI는 이 socket을 열어 HTTP 요청(`GET /containers/json`)을 쓰고
-응답을 읽는다. socket 파일은 **맥**에 있지만, 그게 닿는 데몬은 **Linux VM** 안에서
-돈다 — 그 경계를 넘겨주는 일을 Colima가 한다.
+When I run `docker ps`, the CLI opens this socket, writes an HTTP request
+(`GET /containers/json`), and reads the response. The socket file is on the **Mac**, but
+the daemon it reaches runs inside the **Linux VM**. Colima bridges that boundary.
 
 ## Docker Desktop vs Colima vs Lima
 
-이 셋은 새로운 레이어가 아니다. **레이어 2–5(VM + 그 안의 데몬 스택)를 제공하는
-세 가지 다른 방법**일 뿐이다. 맨 위의 `docker` CLI(레이어 1)는 셋 다 동일하다.
+These three are not new layers. They are three different ways to provide **Layers 2
+through 5**, meaning the VM and the daemon stack inside it. The top `docker` CLI, Layer 1,
+is the same for all three.
 
-```
-        ┌──────────── docker CLI (레이어 1) ────────────┐
-        │   아래에서 돌고 있는 데몬에게 말을 건다          │
+```text
+        ┌──────────── docker CLI (Layer 1) ────────────┐
+        │   talks to the daemon running underneath      │
         └───────────────────────────────────────────────┘
                             ▲  ▲  ▲
           ┌─────────────────┘  │  └──────────────────┐
  ┌────────────────┐  ┌──────────────────┐  ┌──────────────────┐
- │ Docker Desktop │  │     Colima       │  │   (raw) Lima     │
- │ 자체 VM + 데몬 │  │  Lima를 감쌈 ────┼──┼──► Linux VM을    │
- │ 전체 + GUI     │  │  ("런타임 프록시")│  │   제공            │
+ │ Docker Desktop │  │     Colima       │  │   raw Lima       │
+ │ own VM + full  │  │  wraps Lima ─────┼──┼──► provides a    │
+ │ daemon + GUI   │  │  ("runtime proxy")│  │   Linux VM       │
  └────────────────┘  └──────────────────┘  └──────────────────┘
 ```
 
-- **Lima** (*Li*nux *ma*chines)는 "Linux 가상머신 레이어를 제공"한다. 목표 자체가
-  *containerd를 널리 쓰이게 하는 것*이다.
-- **Colima** (*Co*ntainers on *Lima*)는 "컨테이너 런타임 실행 프록시"로 **Lima를
-  감싼다** — Lima한테 "Linux VM 만들고, 데몬 깔고, socket 노출해줘"라고 시킨다.
-- **Docker Desktop**은 레이어 2–5에 해당하는 것을 자체적으로 다 번들하고, 여기에
-  GUI·설정 UI·자동 업데이트·Compose·옵션 Kubernetes 클러스터까지 얹는다.
+- **Lima** (*Li*nux *ma*chines) provides the Linux virtual machine layer. One of its goals is to promote containerd.
+- **Colima** (*Co*ntainers on *Lima*) wraps **Lima** as a "container runtime proxy." It asks Lima to create a Linux VM, install the daemon, and expose the socket.
+- **Docker Desktop** bundles everything corresponding to Layers 2 through 5 itself, plus GUI, settings UI, auto-updates, Compose, and an optional Kubernetes cluster.
 
 | | **Docker Desktop** | **Colima** | **Lima (raw)** |
 |---|---|---|---|
-| VM 제공 | 자체 VM | **Lima** 경유 | **자기 자신** |
-| dockerd/containerd 제공 | 번들 | VM 안에 세팅 | 직접 설정 |
-| 지향점 | GUI + 올인원 | 컨테이너 우선, CLI | 범용 Linux VM |
-| 관계 | 독립 | **Colima → Lima → VM** | 토대 |
+| VM provider | Own VM | Through **Lima** | **Itself** |
+| dockerd/containerd provided | Bundled | Set up inside the VM | Manual setup |
+| Orientation | GUI + all-in-one | Container-first, CLI | General-purpose Linux VM |
+| Relationship | Independent | **Colima → Lima → VM** | Foundation |
 
-Docker Desktop에서 Colima로 넘어가는 주된 이유는 **라이선스**(규모 큰 회사는
-Docker Desktop 유료 구독이 필요하지만 Colima는 무료 OSS)와 **가볍고 CLI 중심**
-(항상 떠 있는 GUI 앱이 없음)이라는 점이다.
+The main reasons to move from Docker Desktop to Colima are **licensing** (larger
+companies need paid Docker Desktop subscriptions, while Colima is free OSS) and a
+**lighter CLI-centered workflow** with no always-running GUI app.
 
-## 각 슬롯을 채우는 제품들
+## Products that fill each slot
 
-모든 레이어는 고정된 제품이 아니라 *갈아끼울 수 있는 슬롯*이다:
+Each layer is not a fixed product, but a swappable slot:
 
-| # | 레이어 (역할) | 표준 도구 | 다른 제품들 |
+| # | Layer (role) | Standard tool | Other products |
 |---|---|---|---|
-| 1 | 클라이언트 (CLI) | `docker` | `nerdctl`, `podman`, `crictl` |
-| 2 | 데몬 / API 서버 | `dockerd` | Podman(데몬리스) |
-| 3 | 런타임 (고수준) | `containerd` | CRI-O |
-| 4 | 런타임 (저수준, OCI) | `runc` | `crun`, gVisor(`runsc`), Kata, `youki` |
-| 5 | Linux 커널 | Linux | (VM 안에서 제공) |
-| — | VM 엔진 | **Docker Desktop** | Lima, Rancher Desktop, Podman Machine, Minikube |
-| — | 컨테이너 래퍼 | **Docker Desktop** | Colima, Rancher Desktop, OrbStack |
-| — | 하이퍼바이저 (macOS) | Apple Virtualization.framework | Hypervisor.framework, QEMU |
+| 1 | Client (CLI) | `docker` | `nerdctl`, `podman`, `crictl` |
+| 2 | Daemon / API server | `dockerd` | Podman, daemonless |
+| 3 | Runtime, high-level | `containerd` | CRI-O |
+| 4 | Runtime, low-level OCI | `runc` | `crun`, gVisor (`runsc`), Kata, `youki` |
+| 5 | Linux kernel | Linux | Provided inside the VM |
+| — | VM engine | **Docker Desktop** | Lima, Rancher Desktop, Podman Machine, Minikube |
+| — | Container wrapper | **Docker Desktop** | Colima, Rancher Desktop, OrbStack |
+| — | Hypervisor on macOS | Apple Virtualization.framework | Hypervisor.framework, QEMU |
 
-## 이 맥에 매핑하면
+## Mapping to this Mac
 
-```
- 레이어 1  클라이언트         →  docker            (Homebrew, /opt/homebrew/bin/docker)
- ─ socket ─                 →  docker.sock       (~/.colima/default/docker.sock)
- 레이어 2  데몬/API          →  dockerd           (VM 안)
- 레이어 3  런타임 (고수준)    →  containerd        (VM 안)
- 레이어 4  런타임 (저수준)    →  runc              (VM 안)
- 레이어 5  Linux 커널        →  Linux (aarch64)   (VM 안)
+```text
+ Layer 1  client              →  docker            (Homebrew, /opt/homebrew/bin/docker)
+ ─ socket ─                  →  docker.sock       (~/.colima/default/docker.sock)
+ Layer 2  daemon/API          →  dockerd           (inside VM)
+ Layer 3  runtime (high-level) →  containerd        (inside VM)
+ Layer 4  runtime (low-level)  →  runc              (inside VM)
+ Layer 5  Linux kernel         →  Linux (aarch64)   (inside VM)
  ─────────────────────────────────────────────────────────────────
- VM 래퍼                    →  Colima            ("런타임 프록시")
- VM 엔진                    →  Lima              (VM을 부팅)
- 하이퍼바이저               →  Apple Virtualization.framework
+ VM wrapper                   →  Colima            ("runtime proxy")
+ VM engine                    →  Lima              (boots the VM)
+ Hypervisor                   →  Apple Virtualization.framework
 ```
 
-`colima status`를 보면 VM이 `aarch64`에서 *macOS Virtualization.Framework*를
-쓰고, docker socket은 `~/.colima/default/docker.sock`에 있다고 나온다.
+`colima status` shows that the VM runs on `aarch64` using *macOS
+Virtualization.Framework*, and that the docker socket is at
+`~/.colima/default/docker.sock`.
 
-VM 안에서 레이어 2–4가 도는 걸 보려면:
+To see Layers 2 through 4 running inside the VM:
 
 ```bash
 colima ssh -- sh -c 'ps -e -o pid,comm | grep -E "dockerd|containerd|runc"'
-# dockerd와 containerd는 계속 떠 있다.
-# runc는 보통 안 보인다 — 컨테이너 시작 시 잠깐 돌고 바로 끝나기 때문
-# (docker run 도중에만 잡힌다).
+# dockerd and containerd stay running.
+# runc is usually not visible because it runs briefly during container start and exits.
+# You can catch it only during docker run.
 ```
 
-## 한 문단 요약
+## One-paragraph summary
 
-컨테이너를 실제로 돌리는 **수직 스택은 하나**다:
-`docker CLI → dockerd → containerd → runc → Linux 커널`. 맥에서는 그 커널이
-**Linux VM** 안에만 존재한다. **Docker Desktop, Colima, Lima는 이 스택의 단계가
-아니라, 이 스택을 *제공하는* 경쟁 방식들이다.** Lima는 VM을 제공하고, Colima는
-Lima를 부려서 데몬까지 세팅하는 컨테이너 중심 래퍼이며, Docker Desktop은 자체
-VM + 데몬을 번들한 올인원 GUI 앱이다. 맨 위의 `docker` CLI는 무엇을 골랐든
-상관하지 않는다 — 그냥 socket을 열고, 듣고 있는 데몬에게 Docker API로 말할 뿐이다.
+The vertical stack that actually runs containers is:
+`docker CLI → dockerd → containerd → runc → Linux kernel`. On a Mac, that kernel exists
+only inside a **Linux VM**. **Docker Desktop, Colima, and Lima are not steps in this
+stack; they are competing ways to provide the stack.** Lima provides the VM. Colima uses
+Lima to set up the daemon stack as a container-focused wrapper. Docker Desktop is an
+all-in-one GUI app bundling its own VM and daemon stack. The top-level `docker` CLI does
+not care which one you chose. It simply opens a socket and speaks Docker API to whichever
+daemon is listening.
 
-## 참고
+## References
 
-- emptyfridge.dev — Docker 구성요소 아키텍처: <https://emptyfridge.dev/docker/docker/>
+- emptyfridge.dev — Docker component architecture: <https://emptyfridge.dev/docker/docker/>

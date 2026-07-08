@@ -1,5 +1,5 @@
 +++
-title = "SSH로 GitHub 계정 두 개 동시에 쓰기 (회사 + 개인)"
+title = "Using two GitHub accounts with SSH on one machine (work + personal)"
 date = 2026-06-17
 
 [taxonomies]
@@ -7,114 +7,114 @@ categories = ["post"]
 tags = ["git", "ssh", "github", "command"]
 +++
 
-GitHub 계정이 두 개(회사용, 개인용)인데 같은 맥에서 쓰려면 HTTPS 방식으로는 한계가 있다.
-macOS Keychain이 `github.com` 당 토큰을 하나만 저장하기 때문에, 나중에 로그인한 계정의 토큰으로 항상 덮어씌워진다.
+If you have two GitHub accounts, one for work and one personal, using both on the same Mac is awkward with HTTPS.
+macOS Keychain stores one token per `github.com`, so the token from the account you logged into most recently can overwrite the previous one.
 
 ```
 remote: Permission to emptyfridge0900/repo.git denied to bds0900.
 fatal: unable to access '...': The requested URL returned error: 403
 ```
 
-SSH 키를 계정별로 따로 만들고 `~/.ssh/config`로 라우팅하면 이 문제를 깔끔하게 해결할 수 있다.
+The clean fix is to create separate SSH keys per account and route them through `~/.ssh/config`.
 
 ---
 
-## 전체 흐름
+## Overall flow
 
 ```
-1. 기존 SSH 키 확인
-2. 파일 이름 규칙 이해
-3. 회사 계정용 SSH 키 새로 생성 (ssh-keygen)
-4. ~/.ssh/config 에 Host 별칭 등록
-5. SSH 에이전트에 키 추가 (ssh-add)
-6. 회사 GitHub 에 공개키 등록
-7. 연결 테스트 (ssh -T)
-8. 기존 repo의 remote URL 을 SSH 방식으로 변경
-9. 재부팅 후에도 유지되게 만들기 (AddKeysToAgent)
-10. GitHub CLI(`gh`) 계정도 분리하기 (`GH_CONFIG_DIR`)
+1. Check existing SSH keys
+2. Understand SSH key file naming
+3. Create a new SSH key for the work account (ssh-keygen)
+4. Register Host aliases in ~/.ssh/config
+5. Add keys to the SSH agent (ssh-add)
+6. Register the public key in the work GitHub account
+7. Test the connection (ssh -T)
+8. Change existing repo remote URLs to SSH
+9. Make the setup survive reboot (AddKeysToAgent)
+10. Separate GitHub CLI(`gh`) accounts too (`GH_CONFIG_DIR`)
 ```
 
 ---
 
-## 1. 기존 SSH 키 확인
+## 1. Check existing SSH keys
 
 ```bash
 ls -la ~/.ssh/
 ```
 
-`id_ed25519` 와 `id_ed25519.pub` 가 있으면 이미 SSH 키가 하나 있는 것이다.
-어느 계정에 연결되어 있는지는 공개키 파일 마지막 줄을 보면 알 수 있다.
+If `id_ed25519` and `id_ed25519.pub` exist, you already have one SSH key.
+To see which account it belongs to, check the last part of the public key file.
 
 ```bash
 cat ~/.ssh/id_ed25519.pub
 # ssh-ed25519 AAAA... personal@gmail.com
 ```
 
-GitHub 에 실제로 연결되는지도 확인한다.
+Also verify that it connects to GitHub.
 
 ```bash
 ssh -T git@github.com
 # Hi emptyfridge0900! You've successfully authenticated...
 ```
 
-`ssh -T`는 **터미널(shell) 세션 없이 인증만 테스트**하는 옵션이다 (`-T` = no pseudo-terminal).
+`ssh -T` tests authentication without opening a terminal shell session (`-T` = no pseudo-terminal).
 
 ---
 
-## 2. 파일 이름 규칙 이해
+## 2. Understand SSH key file naming
 
-SSH 키 파일 이름은 두 부분으로 구성된다.
+An SSH key filename has two parts.
 
-| 부분 | 의미 |
+| Part | Meaning |
 |---|---|
-| `id_` | "identity"의 약자. SSH가 인증에 쓰는 파일임을 나타내는 표준 접두사 |
-| `ed25519` | 암호화 알고리즘 이름 (Edwards-curve Digital Signature Algorithm 25519). 현재 가장 권장되는 방식 |
+| `id_` | Short for "identity." A standard prefix for files used by SSH authentication. |
+| `ed25519` | The encryption algorithm name, Edwards-curve Digital Signature Algorithm 25519. It is currently the recommended default. |
 
-키를 생성하면 항상 두 파일이 만들어진다.
+Creating a key always produces two files.
 
-- `id_ed25519` — **개인키(private key)**. 절대 외부에 공유하지 않는다.
-- `id_ed25519.pub` — **공개키(public key)**. GitHub 에 등록하는 파일.
+- `id_ed25519` — **private key**. Never share this.
+- `id_ed25519.pub` — **public key**. This is the file you register in GitHub.
 
 ---
 
-## 3. 회사 계정용 SSH 키 생성
+## 3. Create an SSH key for the work account
 
 ```bash
 ssh-keygen -t ed25519 -C "work@company.com" -f ~/.ssh/id_ed25519_company -N ""
 ```
 
-각 옵션 설명:
+Option meanings:
 
-| 옵션 | 의미 |
+| Option | Meaning |
 |---|---|
-| `-t ed25519` | 알고리즘 타입 지정. `ed25519`가 현재 표준 (기존의 `rsa` 보다 짧고 빠르고 안전) |
-| `-C "work@company.com"` | Comment. 공개키 파일 맨 끝에 붙는 **라벨**. 어떤 계정 키인지 구분하는 용도. 이메일일 필요는 없지만 관례적으로 사용 |
-| `-f ~/.ssh/id_ed25519_company` | 저장할 파일 경로 지정. 기본값은 `~/.ssh/id_ed25519` 인데, 이미 개인용 키가 거기 있으니 이름을 다르게 준다 |
-| `-N ""` | 패스프레이즈(암호)를 빈 값으로 설정. 입력창이 뜨지 않고 바로 생성된다 |
+| `-t ed25519` | Sets the algorithm type. `ed25519` is the current standard. It is shorter, faster, and safer than older `rsa` usage. |
+| `-C "work@company.com"` | Comment. A label appended to the end of the public key file. It helps identify which account the key belongs to. It does not have to be an email, but that is common. |
+| `-f ~/.ssh/id_ed25519_company` | Sets the output path. The default is `~/.ssh/id_ed25519`, but the personal key already uses that name, so this key needs a different filename. |
+| `-N ""` | Sets an empty passphrase. The command creates the key without opening an interactive prompt. |
 
-실행 후 두 파일이 생긴다.
+After running it, two files are created.
 
 ```
-~/.ssh/id_ed25519_company      # 개인키
-~/.ssh/id_ed25519_company.pub  # 공개키
+~/.ssh/id_ed25519_company      # private key
+~/.ssh/id_ed25519_company.pub  # public key
 ```
 
 ---
 
-## 4. `~/.ssh/config` 설정
+## 4. Configure `~/.ssh/config`
 
-SSH 클라이언트는 연결 시 `~/.ssh/config` 를 읽어서 어떤 키를 쓸지 결정한다.
-계정별로 `Host` 별칭을 만들어주면 된다.
+The SSH client reads `~/.ssh/config` when connecting and decides which key to use.
+Create a `Host` alias per account.
 
 ```
-# 개인 GitHub (emptyfridge0900)
+# Personal GitHub (emptyfridge0900)
 Host github-personal
   HostName github.com
   User git
   IdentityFile ~/.ssh/id_ed25519
   AddKeysToAgent yes
 
-# 회사 GitHub (bds0900)
+# Work GitHub (bds0900)
 Host github-company
   HostName github.com
   User git
@@ -122,38 +122,38 @@ Host github-company
   AddKeysToAgent yes
 ```
 
-각 지시어 설명:
+Directive meanings:
 
-| 지시어 | 의미 |
+| Directive | Meaning |
 |---|---|
-| `Host github-personal` | 이 블록에 붙이는 **별칭**. `git@github-personal:...` 처럼 쓰면 이 설정이 적용됨 |
-| `HostName github.com` | 실제 접속할 서버 주소. 별칭이 달라도 실제로는 `github.com` 에 연결 |
-| `User git` | SSH 로그인할 유저명. GitHub 은 항상 `git` 유저를 사용 (계정 구분은 키로 함) |
-| `IdentityFile` | 이 별칭으로 접속할 때 사용할 개인키 경로 |
-| `AddKeysToAgent yes` | 처음 사용 시 자동으로 SSH 에이전트에 키를 등록. 재부팅 후에도 `ssh-add` 를 수동으로 안 해도 됨 |
+| `Host github-personal` | The alias for this block. When you use `git@github-personal:...`, this block is applied. |
+| `HostName github.com` | The real server address. Even with different aliases, both connect to `github.com`. |
+| `User git` | SSH username. GitHub always uses the `git` user; account identity is determined by the key. |
+| `IdentityFile` | Private key path to use for this alias. |
+| `AddKeysToAgent yes` | Automatically adds the key to the SSH agent on first use, so you do not have to run `ssh-add` manually after reboot. |
 
 ---
 
-## 5. SSH 에이전트에 키 추가
+## 5. Add keys to the SSH agent
 
 ```bash
 ssh-add ~/.ssh/id_ed25519
 ssh-add ~/.ssh/id_ed25519_company
 ```
 
-**SSH 에이전트(`ssh-agent`)** 란 개인키를 메모리에 올려두고 필요할 때 꺼내주는 백그라운드 프로세스다.
-키를 에이전트에 등록하면 매번 키 파일 경로를 지정하지 않아도 된다.
+The **SSH agent(`ssh-agent`)** is a background process that keeps private keys in memory and provides them when needed.
+Once a key is registered in the agent, you do not have to specify the key file path every time.
 
-`ssh-add` 주요 옵션:
+Main `ssh-add` options:
 
-| 옵션 | 의미 |
+| Option | Meaning |
 |---|---|
-| `~/.ssh/id_ed25519` | 등록할 개인키 파일 경로 |
-| `-l` | 현재 에이전트에 등록된 키 목록 확인 (list) |
-| `-d ~/.ssh/id_ed25519` | 에이전트에서 특정 키 제거 (delete) |
-| `-D` | 에이전트의 모든 키 제거 |
+| `~/.ssh/id_ed25519` | Private key file path to add. |
+| `-l` | List keys currently registered in the agent. |
+| `-d ~/.ssh/id_ed25519` | Remove a specific key from the agent. |
+| `-D` | Remove all keys from the agent. |
 
-등록 확인:
+Verify registration:
 
 ```bash
 ssh-add -l
@@ -161,23 +161,23 @@ ssh-add -l
 # 256 SHA256:yyy work@company.com (ED25519)
 ```
 
-> `ssh-add` 로 추가한 키는 재부팅하면 사라진다. `AddKeysToAgent yes` 를 config 에 넣으면 첫 사용 시 자동 재등록된다.
+> Keys added with `ssh-add` disappear after reboot. If `AddKeysToAgent yes` is in the config, SSH automatically re-adds the key on first use.
 
 ---
 
-## 6. 회사 GitHub 에 공개키 등록
+## 6. Register the public key in the work GitHub account
 
-공개키를 클립보드에 복사한다.
+Copy the public key to the clipboard.
 
 ```bash
 cat ~/.ssh/id_ed25519_company.pub | pbcopy
 ```
 
-GitHub → **Settings** → **SSH and GPG keys** → **New SSH key** 에서 붙여넣기 후 저장.
+In GitHub, go to **Settings** -> **SSH and GPG keys** -> **New SSH key**, paste it, and save.
 
 ---
 
-## 7. 연결 테스트
+## 7. Test connections
 
 ```bash
 ssh -T git@github-personal
@@ -187,95 +187,96 @@ ssh -T git@github-company
 # Hi bds0900! You've successfully authenticated...
 ```
 
-`github-personal` / `github-company` 는 `~/.ssh/config` 에서 만든 별칭이다.
-실제로는 둘 다 `github.com` 에 접속하지만, 서로 다른 키를 쓴다.
+`github-personal` and `github-company` are aliases from `~/.ssh/config`.
+They both connect to `github.com`, but they use different keys.
 
 ---
 
-## 8. Remote URL 변경
+## 8. Change remote URLs
 
-### 기존 repo (HTTPS → SSH)
+### Existing repo (HTTPS -> SSH)
 
 ```bash
 git remote set-url origin git@github-personal:emptyfridge0900/repo-name.git
 ```
 
-`git remote -v` 로 확인:
+Check with `git remote -v`:
 
 ```
 origin  git@github-personal:emptyfridge0900/repo-name.git (fetch)
 origin  git@github-personal:emptyfridge0900/repo-name.git (push)
 ```
 
-### 회사 repo
+### Work repo
 
 ```bash
 git remote set-url origin git@github-company:bds0900/repo-name.git
 ```
 
-### 새 repo 클론 시
+### Cloning a new repo
 
 ```bash
-# 개인 계정 repo
+# Personal account repo
 git clone git@github-personal:emptyfridge0900/repo-name.git
 
-# 회사 계정 repo
+# Work account repo
 git clone git@github-company:bds0900/repo-name.git
 ```
 
-URL 구조: `git@<Host별칭>:<GitHub유저명>/<저장소이름>.git`
+URL structure: `git@<Host alias>:<GitHub username>/<repository name>.git`
 
 ---
 
-## 9. 재부팅 후에도 유지되게 만들기
+## 9. Make it survive reboot
 
-`ssh-add` 로 에이전트에 등록한 키는 **재부팅하면 사라진다**. 터미널 세션이 닫히면 메모리에서 내려가기 때문이다.
+Keys added to the agent with `ssh-add` **disappear after reboot** because terminal session memory is cleared.
 
-`~/.ssh/config` 에 `AddKeysToAgent yes` 를 넣으면 해결된다.
+Putting `AddKeysToAgent yes` in `~/.ssh/config` solves this.
 
 ```
 Host github-personal
   ...
-  AddKeysToAgent yes   # ← 이 줄
+  AddKeysToAgent yes   # <- this line
 
 Host github-company
   ...
-  AddKeysToAgent yes   # ← 이 줄
+  AddKeysToAgent yes   # <- this line
 ```
 
-`AddKeysToAgent yes` 가 하는 일:
+What `AddKeysToAgent yes` does:
 
-- 재부팅 후 처음으로 `git push` 나 `git pull` 을 실행하면 SSH가 `~/.ssh/config` 를 읽는다.
-- 해당 Host 에 `AddKeysToAgent yes` 가 있으면, SSH가 **자동으로 `ssh-add` 를 대신 실행**해서 에이전트에 키를 올린다.
-- 그 이후부터는 같은 세션에서 다시 물어보지 않는다.
+- After reboot, the first `git push` or `git pull` causes SSH to read `~/.ssh/config`.
+- If the matching `Host` has `AddKeysToAgent yes`, SSH automatically runs the equivalent of `ssh-add` and loads the key into the agent.
+- After that, it will not ask again in the same session.
 
-즉, 재부팅 후 수동으로 `ssh-add` 를 칠 필요가 없다. 첫 git 명령 한 번이면 자동으로 로드된다.
+So after reboot, you do not need to run `ssh-add` manually. The first git command reloads the key automatically.
 
-> macOS 에서 `~/.ssh/config` 파일 자체는 영구적이다. 재부팅해도 설정은 그대로 남는다.
-> 휘발되는 건 **에이전트 메모리(ssh-add 결과)** 뿐이고, `AddKeysToAgent yes` 가 그걸 자동으로 채워준다.
+> On macOS, the `~/.ssh/config` file itself is persistent. It remains after reboot.
+> What disappears is **agent memory(the result of ssh-add)**, and `AddKeysToAgent yes` fills it again automatically.
 
 ---
 
-## 최종 구성 요약
+## Final setup summary
 
-| 계정 | Host 별칭 | 키 파일 |
+| Account | Host alias | Key file |
 |---|---|---|
-| `emptyfridge0900` (개인) | `git@github-personal` | `~/.ssh/id_ed25519` |
-| `bds0900` (회사) | `git@github-company` | `~/.ssh/id_ed25519_company` |
+| `emptyfridge0900` (personal) | `git@github-personal` | `~/.ssh/id_ed25519` |
+| `bds0900` (work) | `git@github-company` | `~/.ssh/id_ed25519_company` |
 
-이제 `git push` / `git pull` 할 때 GitHub 계정을 의식하지 않아도 된다.
-repo 의 remote URL 에 붙인 Host 별칭이 알아서 맞는 키를 골라 쓴다.
+Now you do not have to think about GitHub accounts when running `git push` or `git pull`.
+The Host alias in the repo remote URL chooses the correct key.
 
 ---
-## 주가기능
 
-## 10. GitHub CLI(`gh`) 계정도 분리하기
+## Extra
 
-여기까지 설정하면 `git push` / `git pull` 은 계정별 SSH 키로 잘 분리된다.
-하지만 `gh issue create`, `gh pr create` 같은 GitHub CLI 명령은 SSH 키가 아니라 GitHub API 토큰을 쓴다.
-즉, remote URL 이 `git@github-personal:...` 이어도 `gh` 가 회사 계정 토큰으로 로그인되어 있으면 개인 repo 이슈 생성이 실패할 수 있다.
+## 10. Separate GitHub CLI(`gh`) accounts too
 
-처음 떠오르는 해결책은 `gh auth switch` 이다.
+At this point, `git push` and `git pull` are separated correctly by account-specific SSH keys.
+But GitHub CLI commands such as `gh issue create` and `gh pr create` use GitHub API tokens, not SSH keys.
+So even if the remote URL is `git@github-personal:...`, issue creation in a personal repo can fail if `gh` is logged in with the work account token.
+
+The first solution that comes to mind is `gh auth switch`.
 
 ```bash
 gh auth switch -u emptyfridge0900
@@ -285,40 +286,40 @@ gh auth switch -u bds0900
 gh issue create -R bds0900/repo-name
 ```
 
-하지만 매번 계정을 바꾸는 방식은 귀찮고 실수하기 쉽다.
-더 나은 방법은 `gh` 설정 디렉터리를 계정별로 나누는 것이다.
-`gh` 는 `GH_CONFIG_DIR` 환경변수로 설정 저장 위치를 바꿀 수 있다.
+But switching accounts every time is annoying and easy to get wrong.
+A better approach is to separate the `gh` config directory per account.
+`gh` can change where it stores configuration through the `GH_CONFIG_DIR` environment variable.
 
-쉘 설정 파일(`~/.zshrc` 등)에 alias 를 추가한다.
+Add aliases to a shell config file such as `~/.zshrc`.
 
 ```bash
 alias ghp='GH_CONFIG_DIR=$HOME/.config/gh-personal gh'
 alias ghc='GH_CONFIG_DIR=$HOME/.config/gh-company gh'
 ```
 
-그 다음 각 alias 로 한 번씩만 로그인한다.
+Then log in once with each alias.
 
 ```bash
 GH_CONFIG_DIR=$HOME/.config/gh-personal gh auth login -h github.com --git-protocol ssh
 GH_CONFIG_DIR=$HOME/.config/gh-company gh auth login -h github.com --git-protocol ssh
 ```
 
-이후부터는 계정을 전환하지 않고 명령어만 구분해서 쓰면 된다.
+After that, distinguish accounts by command instead of switching accounts.
 
 ```bash
-# 개인 계정으로 개인 repo 이슈 생성
+# Create an issue in a personal repo using the personal account
 ghp issue create -R emptyfridge0900/repo-name
 
-# 회사 계정으로 회사 repo 이슈 생성
+# Create an issue in a work repo using the work account
 ghc issue create -R bds0900/repo-name
 ```
 
-정리하면 역할이 이렇게 나뉜다.
+The final split looks like this:
 
-| 도구 | 계정 분리 방법 | 예시 |
+| Tool | Account separation method | Example |
 |---|---|---|
-| `git` | SSH Host 별칭 | `git@github-personal:emptyfridge0900/repo-name.git` |
-| `gh` | `GH_CONFIG_DIR` 별도 설정 | `ghp issue create -R emptyfridge0900/repo-name` |
+| `git` | SSH Host alias | `git@github-personal:emptyfridge0900/repo-name.git` |
+| `gh` | Separate `GH_CONFIG_DIR` | `ghp issue create -R emptyfridge0900/repo-name` |
 
-이렇게 하면 `git` 도 `gh` 도 계정 전환 없이 사용할 수 있다.
-개인 작업은 `github-personal` + `ghp`, 회사 작업은 `github-company` + `ghc` 로 고정하면 된다.
+With this setup, both `git` and `gh` can be used without account switching.
+Personal work stays fixed to `github-personal` + `ghp`, and work tasks stay fixed to `github-company` + `ghc`.

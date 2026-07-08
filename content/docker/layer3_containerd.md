@@ -1,5 +1,5 @@
 +++
-title = "Layer 3 — containerd (컨테이너 런타임)"
+title = "Layer 3 — containerd (Container Runtime)"
 date = 2026-06-17
 
 [taxonomies]
@@ -7,138 +7,128 @@ categories = ["post"]
 tags = ["docker", "containerd", "runtime", "layers"]
 +++
 
-> Docker 레이어 시리즈 3편. 스택은 위에서 아래로:
+> Part 3 of the Docker layers series. From top to bottom, the stack is:
 > 1. docker CLI → 2. dockerd → **3. containerd** → 4. runc →
-> 5. Linux 커널. [개요 글](./component_and_layers.md) 참고.
+> 5. Linux kernel. See the [overview article](./component_and_layers.md).
 
-## 정체
+## Identity
 
-`containerd`는 **컨테이너 런타임** — 위의 [dockerd](./layer2_dockerd.md)와 아래의
-[runc](./layer4_runc.md) 사이에 앉은 데몬이다. 컨테이너 라이프사이클의 힘든 일을
-도맡는다: 이미지 콘텐츠를 pull/저장하고, 파일시스템으로 풀어내고, 컨테이너를
-시작부터 종료까지 감독한다.
+`containerd` is a **container runtime**: the daemon that sits between
+[dockerd](./layer2_dockerd.md) above and [runc](./layer4_runc.md) below. It handles the
+hard parts of the container lifecycle: pulling and storing image content, unpacking it
+into a filesystem, and supervising containers from start to stop.
 
-CNCF [**graduated 프로젝트**](https://www.cncf.io/announcements/2019/02/28/cncf-announces-containerd-graduation/)이자
-업계 표준이다. 같은 `containerd`가 Docker, 대부분의
-Kubernetes 클러스터, `nerdctl` 같은 도구들을 굴린다 — 애초에 Docker에서 분리해낸
-이유가 바로 이거다.
+It is a CNCF [**graduated project**](https://www.cncf.io/announcements/2019/02/28/cncf-announces-containerd-graduation/)
+and an industry standard. The same `containerd` powers Docker, most Kubernetes clusters,
+and tools such as `nerdctl`. That is exactly why it was split out of Docker.
 
-## 왜 존재하나 (모놀리식 해체)
+## Why it exists: breaking up the monolith
 
-원래 Docker는 모놀리식이었다. Docker가 아키텍처를
-[모듈화하면서](https://www.docker.com/blog/docker-engine-1-11-runc/) 런타임이 독립
-프로젝트로 떨어져 나왔고(Docker 1.11, 2016), 이후 Kubernetes의
-[**CRI(Container Runtime Interface)**](https://kubernetes.io/docs/concepts/containers/cri/)가
-이 분리를 더욱 강화했다. 다른 시스템들이 전체 Docker engine
-**없이도** 런타임을 쓸 수 있게 하려고:
+Docker was originally monolithic. As Docker
+[modularized its architecture](https://www.docker.com/blog/docker-engine-1-11-runc/),
+the runtime became an independent project (Docker 1.11, 2016). Later, Kubernetes'
+[**CRI, or Container Runtime Interface**](https://kubernetes.io/docs/concepts/containers/cri/),
+reinforced the split so other systems could use the runtime **without** the whole Docker
+engine:
 
+```text
+        dockerd   ── needs ──►  containerd  ◄── needs ──  Kubernetes (kubelet)
+       (Docker)                  (shared)                 (through CRI)
 ```
-        dockerd   ── 필요 ──►  containerd  ◄── 필요 ──  Kubernetes (kubelet)
-       (Docker)                  (공유)                  (CRI 경유)
-```
 
-그래서 `containerd`는 두 개의 API로 아주 다른 두 주인을 섬긴다:
+So `containerd` serves two very different owners through two APIs:
 
-- **dockerd**는 containerd의 [**네이티브 gRPC API**](https://github.com/containerd/containerd/blob/main/RELEASES.md)로 말한다.
-- **Kubernetes**는 [**CRI**](https://github.com/containerd/containerd/blob/main/docs/cri/architecture.md)(Kubernetes가 정의한 gRPC API)로 말한다.
+- **dockerd** talks through containerd's [**native gRPC API**](https://github.com/containerd/containerd/blob/main/RELEASES.md).
+- **Kubernetes** talks through [**CRI**](https://github.com/containerd/containerd/blob/main/docs/cri/architecture.md), the gRPC API defined by Kubernetes.
 
-이 이중 역할 때문에 `dockerd`를 버려도(Kubernetes "dockershim 제거") 실제 런타임은
-바뀌는 게 없다 — Kubernetes가 같은 `containerd`에 직접 말할 뿐이다.
+Because of this double role, dropping `dockerd` in Kubernetes ("dockershim removal") did
+not change the actual runtime. Kubernetes simply talks directly to the same `containerd`.
 
-## 무엇을 책임지나
+## What it owns
 
-`containerd`는 런타임 관심사를 소유한다 — `dockerd`보다 구체적이고 `runc`보다
-추상적인 레이어:
+`containerd` owns runtime concerns: a layer more concrete than `dockerd`, but more
+abstract than `runc`.
 
-- **이미지 관리**: 이미지 pull, digest 검증, **콘텐츠**를 content-addressable
-  저장소에 보관, 스냅샷/레이어 관리.
-- **스냅샷**: [*snapshotter*](https://github.com/containerd/containerd/blob/main/docs/snapshotters/README.md)(예: `overlayfs`)로
-  이미지 레이어에서 컨테이너 루트 파일시스템을 준비.
-- **컨테이너 라이프사이클**: create, start, pause, stop, delete — 그리고 실행
-  프로세스를 **감독**해서 `dockerd`가 재시작돼도 살아남게 한다.
-- **태스크(task)**: 컨테이너의 실제 실행 인스턴스.
-- **shim**: 컨테이너마다 붙는 작은
-  [`containerd-shim-runc-v2`](https://github.com/containerd/containerd/blob/main/docs/runtime-v2.md)
-  프로세스. 컨테이너의 I/O와 종료 상태를 containerd 본체로부터 분리해 준다.
+- **Image management**: pulls images, verifies digests, stores **content** in a content-addressable store, and manages snapshots/layers.
+- **Snapshots**: prepares container root filesystems from image layers through a [*snapshotter*](https://github.com/containerd/containerd/blob/main/docs/snapshotters/README.md), such as `overlayfs`.
+- **Container lifecycle**: create, start, pause, stop, delete, and **supervise** running processes so they survive even if `dockerd` restarts.
+- **Task**: the actual running instance of a container.
+- **Shim**: a small [`containerd-shim-runc-v2`](https://github.com/containerd/containerd/blob/main/docs/runtime-v2.md) process attached to each container. It separates container I/O and exit status from the main containerd daemon.
 
-namespace/cgroup을 직접 만드는 일은 하지 않는다 — 그 마지막 단계는
-[runc](./layer4_runc.md)에 위임한다.
+It does not directly create namespaces or cgroups. That final step is delegated to
+[runc](./layer4_runc.md).
 
-## shim — containerd가 안전하게 재시작되는 이유
+## shim: why containerd can restart safely
 
-핵심 설계 포인트: `containerd`는 모든 컨테이너의 직접 부모로 남지 않는다. 대신
-컨테이너마다 **shim**을 띄운다:
+The key design point: `containerd` does not remain the direct parent of every container.
+Instead, it starts a **shim** for each container:
 
-```
+```text
 containerd
-   └─ containerd-shim-runc-v2   ← 컨테이너 수명 내내 살아 있음
-         └─ runc  (컨테이너를 만들려고 잠깐 돌고 종료)
-               └─ 내 컨테이너 프로세스 (컨테이너 안에서 PID 1)
+   └─ containerd-shim-runc-v2   ← lives for the container's lifetime
+         └─ runc  (runs briefly to create the container, then exits)
+               └─ my container process (PID 1 inside the container)
 ```
 
-오래 사는 부모가 containerd가 아니라 shim이기 때문에:
+Because the long-lived parent is the shim, not containerd:
 
-- **`containerd`/`dockerd`를 재시작·업그레이드해도 돌고 있는 컨테이너가 안 죽는다**
-  — shim이 살려두고 다시 연결한다.
-- shim이 컨테이너의 **stdout/stderr**를 잡고 **종료 코드**를 containerd에 보고한다.
+- **Running containers do not die when `containerd` or `dockerd` restarts or upgrades**. The shim keeps them alive and reconnects.
+- The shim captures the container's **stdout/stderr** and reports the **exit code** back to containerd.
 
-이게 `runc`가 `ps`에 거의 안 보이는 구조적 이유다: 할 일 하고 종료하면, shim이
-지휘권을 넘겨받는다.
+This is the structural reason `runc` rarely appears in `ps`: after it finishes its job and
+exits, the shim takes over.
 
-## 이 맥에서 보기
+## Seeing it on this Mac
 
-`containerd`는 Colima VM 안에서 돈다:
+`containerd` runs inside the Colima VM:
 
 ```bash
 $ colima ssh -- sh -c 'command -v containerd; ctr --version'
 /usr/bin/containerd
 ctr github.com/containerd/containerd v1.7.x
 
-# `ctr`는 containerd 자체 저수준 디버그 CLI (docker와 별개):
+# `ctr` is containerd's low-level debug CLI, separate from docker:
 $ colima ssh -- sudo ctr namespaces ls
 NAME    LABELS
 default
-moby            # <- dockerd가 containerd 안에서 쓰는 namespace
+moby            # <- namespace used by dockerd inside containerd
 ```
 
-`moby`는 Docker가 쓰는 [containerd namespace](https://github.com/containerd/containerd/blob/main/docs/namespaces.md)다
-([Moby](https://github.com/moby/moby)는 Docker의 업스트림 프로젝트 이름). `dockerd`가 그 아래에서 `containerd`를 부리고 있다는 걸 보여준다.
+`moby` is the [containerd namespace](https://github.com/containerd/containerd/blob/main/docs/namespaces.md)
+used by Docker. [Moby](https://github.com/moby/moby) is the name of Docker's upstream
+open-source project. Seeing this namespace shows that `dockerd` is controlling
+`containerd` underneath.
 
-## containerd와 주변 레이어
+## containerd and surrounding layers
 
-| 관심사 | 소유자 |
+| Concern | Owner |
 |---|---|
-| `docker build`, 네트워킹, 볼륨, Docker API | **dockerd** (레이어 2) |
-| 이미지 pull/저장, 스냅샷, 라이프사이클, shim | **containerd** (레이어 3) |
-| namespace/cgroup 생성, 프로세스 `exec` | **runc** (레이어 4) |
+| `docker build`, networking, volumes, Docker API | **dockerd** (Layer 2) |
+| Image pull/storage, snapshots, lifecycle, shim | **containerd** (Layer 3) |
+| Namespace/cgroup creation, process `exec` | **runc** (Layer 4) |
 
-## 이 슬롯을 채우는 대안들
+## Alternatives that fill this slot
 
-- [**CRI-O**](https://github.com/cri-o/cri-o) — *오직* Kubernetes CRI만을 위해 만든
-  런타임. 그 단일 목적엔 containerd보다 가볍고, Docker API는 없다.
-- **다른 저수준 런타임을 쓰는 containerd** — containerd는 runtime-class 메커니즘으로
-  `runc`, `crun`, gVisor(`runsc`), Kata를 골라 부릴 수 있다
-  ([레이어 4](./layer4_runc.md) 참고).
+- [**CRI-O**](https://github.com/cri-o/cri-o): a runtime built *only* for Kubernetes CRI. It is lighter than containerd for that single purpose and has no Docker API.
+- **containerd with another low-level runtime**: through runtime classes, containerd can choose `runc`, `crun`, gVisor (`runsc`), or Kata. See [Layer 4](./layer4_runc.md).
 
-## 정리
+## Summary
 
-- `containerd`는 **표준 런타임** — 이미지 콘텐츠, 스냅샷, 컨테이너 라이프사이클.
-- Kubernetes 등이 CRI로 직접 쓸 수 있게 **Docker에서 분리**됐고, `dockerd`를
-  우회한다.
-- **shim** 설계 덕에 데몬을 재시작해도 컨테이너가 안 멈춘다.
-- 마지막 저수준 컨테이너 생성은 여전히 [runc](./layer4_runc.md)에 위임한다
-  (다음 레이어).
+- `containerd` is the **standard runtime** for image content, snapshots, and container lifecycle.
+- It was **split out of Docker** so Kubernetes and other systems could use it directly through CRI and bypass `dockerd`.
+- The **shim** design lets containers keep running even when daemons restart.
+- The final low-level container creation is still delegated to [runc](./layer4_runc.md), the next layer.
 
-## 참고
+## References
 
-- CNCF containerd graduation 발표 (2019): <https://www.cncf.io/announcements/2019/02/28/cncf-announces-containerd-graduation/>
-- Docker 1.11 — 최초로 containerd/runc 기반으로 전환한 릴리스: <https://www.docker.com/blog/docker-engine-1-11-runc/>
-- Docker — "Introducing containerd" (모듈화 배경): <https://www.docker.com/blog/introducing-containerd/>
-- containerd CRI 플러그인 아키텍처 (Kubernetes 연동): <https://github.com/containerd/containerd/blob/main/docs/cri/architecture.md>
-- containerd 네이티브 gRPC API ("the primary product of containerd"): <https://github.com/containerd/containerd/blob/main/RELEASES.md>
-- Snapshotter — 이미지 레이어에서 rootfs 준비: <https://github.com/containerd/containerd/blob/main/docs/snapshotters/README.md>
-- 콘텐츠 흐름 — 이미지 pull부터 rootfs까지: <https://github.com/containerd/containerd/blob/main/docs/content-flow.md>
-- Runtime v2 shim — 데몬 재시작 시 컨테이너 생존 설계: <https://github.com/containerd/containerd/blob/main/docs/runtime-v2.md>
-- containerd namespace (moby 등 멀티테넌시): <https://github.com/containerd/containerd/blob/main/docs/namespaces.md>
-- Moby — Docker의 업스트림 오픈소스 프로젝트: <https://github.com/moby/moby>
-- CRI-O — Kubernetes CRI 전용 경량 런타임: <https://github.com/cri-o/cri-o>
+- CNCF containerd graduation announcement (2019): <https://www.cncf.io/announcements/2019/02/28/cncf-announces-containerd-graduation/>
+- Docker 1.11, the first release to move to containerd/runc: <https://www.docker.com/blog/docker-engine-1-11-runc/>
+- Docker, "Introducing containerd" and the modularization background: <https://www.docker.com/blog/introducing-containerd/>
+- containerd CRI plugin architecture for Kubernetes integration: <https://github.com/containerd/containerd/blob/main/docs/cri/architecture.md>
+- containerd native gRPC API, "the primary product of containerd": <https://github.com/containerd/containerd/blob/main/RELEASES.md>
+- Snapshotter, preparing rootfs from image layers: <https://github.com/containerd/containerd/blob/main/docs/snapshotters/README.md>
+- Content flow, from image pull to rootfs: <https://github.com/containerd/containerd/blob/main/docs/content-flow.md>
+- Runtime v2 shim, container survival across daemon restarts: <https://github.com/containerd/containerd/blob/main/docs/runtime-v2.md>
+- containerd namespaces, including `moby` multitenancy: <https://github.com/containerd/containerd/blob/main/docs/namespaces.md>
+- Moby, Docker's upstream open-source project: <https://github.com/moby/moby>
+- CRI-O, lightweight runtime dedicated to Kubernetes CRI: <https://github.com/cri-o/cri-o>

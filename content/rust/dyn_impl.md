@@ -7,9 +7,11 @@ categories = ["Post"]
 tags = ["post","Rust"]
 +++
 
-dyn는 trait object를 표현하는 keyword다.
-가끔보면 dyn나 impl을 function parameter로 받거나 return하는 경우가 있다.
-뭐가 다른거지 하고 검색하다가 https://cotigao.medium.com/dyn-impl-and-trait-objects-rust-fd7280521bea 에 간단하게 정리되있어서 가져와봤다.
+`dyn` is the keyword used to represent a trait object.
+
+Sometimes `dyn` or `impl` appears as a function parameter or return type.
+
+I was wondering what the difference was and found a concise explanation at <https://cotigao.medium.com/dyn-impl-and-trait-objects-rust-fd7280521bea>, so I summarized it here.
 
 ```rust
 trait Animal {
@@ -38,24 +40,30 @@ fn main() {
 }
 ```
 
-animal_talk 함수를 보면 인자로 &dyn Animal 을 받는다.
-&을 제거하면 compile time에 size를 알수 없다고 컴파일러가 징징거린다.
+The `animal_talk` function receives `&dyn Animal` as an argument.
 
+If `&` is removed, the compiler complains that the size cannot be known at compile time.
 
-만일 &dyn 대신 impl를 쓰면 어떨까?
-똑같은 결과가 나온다. 
-대신 다른 점은 impl 쓰면 compile time에 타입이 결정되고 Dog를 받는 함수 하나, Cat을 받는 함수 하나를 만들어낸다.
-그럼 generic type을 쓰는 함수와 impl을 쓰는 함수는 뭐가 다를까?
-```rust 
+What happens if we use `impl` instead of `&dyn`?
+
+The result is the same. The difference is that with `impl`, the type is decided at compile time, and Rust generates one function for `Dog` and one function for `Cat`.
+
+Then what is the difference between a function using a generic type and one using `impl`?
+
+```rust
 fn animal_talk<T: Animal>(a: T) {
   a.talk();
 }
 ```
-똑같은 결과가 나온다. 다를게 없어보인다. 하지만 Animal 타입으로 리턴은 안된다.
-그러면 generic 타입을 리턴하려면 어떻게 할까?
-impl이나 Box< dyn Trait>를 사용해야한다.
 
-impl Trait를 return하는 함수를 만들어보자
+The result is the same. It does not seem different. But we cannot return the `Animal` type directly.
+
+So how do we return a generic-looking type?
+
+Use `impl` or `Box<dyn Trait>`.
+
+Let's create a function that returns `impl Trait`.
+
 ```rust
 fn animal () -> impl Animal {
   if (is_dog_available()) {
@@ -64,19 +72,19 @@ fn animal () -> impl Animal {
   Cat {}
 }
 ```
-fail한다. 왜냐면 impl은 타입을 comile time에 결정하기 때문에 Dog나 Cat 타입 둘중 하나만 리턴할수 있기 때문이다. 
 
+This fails because `impl` decides the type at compile time, so it can return only one of `Dog` or `Cat`.
 
 ```rust
 fn animal() -> Box<dyn Animal> {
   if (is_dog_available()) {
     return Box::new(Dog {});
-  } 
-    
+  }
+
   Box::new(Cat {})
 }
 ```
-이렇게 하면 runtime에 타입이 결정되기 때문에 여러 타입을 리턴하고 싶으면 trait object을 사용하고 하나의 타입만 리턴한다면 impl을 쓰자.
 
+This works because the type is decided at runtime. If you want to return multiple concrete types, use a trait object. If you return only one concrete type, use `impl`.
 
-https://joshleeb.com/posts/rust-traits-and-trait-objects/ 이것도 참조해서 보자. 아직도 완전히 이해가 가지 않는다. 역시 C#이 편하다.
+Also see <https://joshleeb.com/posts/rust-traits-and-trait-objects/>. I still do not fully understand it. C# is definitely more comfortable.

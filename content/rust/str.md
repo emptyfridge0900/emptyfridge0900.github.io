@@ -1,5 +1,5 @@
 +++
-title="String and str "
+title="String and str"
 date=2023-02-03
 
 [taxonomies]
@@ -7,30 +7,36 @@ categories = ["Post"]
 tags = ["post","Rust"]
 +++
 
-### <code>String</code>와 <code>str</code>차이
-<code>String</code>은 <code>Vec<T></code>이랑 비슷하다. C++의 String class와 비슷.
-<code>str</code>은 <code>char[]</code>랑 비슷하다. C++에서 char array를 사용할때 변수명을 통해 pointer를 사용하는 것과 같이, &를 str앞에 붙여서 레퍼런스로 사용한다.
+### Difference between <code>String</code> and <code>str</code>
 
-### 타입변환
-<code>String</code> 타입을 <code>&str</code>으로 변환하려면?
-&*을 String 앞에 붙인다. [Deref](https://doc.rust-lang.org/std/string/struct.String.html#deref) 참조
+<code>String</code> is similar to <code>Vec&lt;T&gt;</code>. It is similar to the C++ `String` class.
+
+<code>str</code> is similar to <code>char[]</code>. Just as C++ uses a variable name as a pointer when working with a char array, Rust usually uses `str` through a reference by putting `&` in front of it.
+
+### Type conversion
+
+How do you convert a <code>String</code> into <code>&str</code>?
+
+Put `&*` in front of the `String`. See [Deref](https://doc.rust-lang.org/std/string/struct.String.html#deref).
 
 ```rust
 let s = String::from("hello world")
-let ss = *s; //str type, Deref coerce 
+let ss = *s; //str type, Deref coerce
 let sss = &*s; //&str
 ```
-또는
-as_str()함수를 사용한다
+
+Or use the `as_str()` function.
 
 ```rust
 let s = String::from("hello world")
 let ss = s.as_str; //&str
 ```
 
-<code>&'static str</code> 타입(string static)을 <coe>String</code>으로 변환하려면?
-to_string()함수를 사용하면된다.
-<code>&str</code>을 <code>String</code>으로 변환하는 것은 메모리를 할당해야하기 때문에 될수 있으면 하지말자
+How do you convert <code>&'static str</code> into <code>String</code>?
+
+Use `to_string()`.
+
+Converting <code>&str</code> into <code>String</code> requires allocation, so avoid it when possible.
 
 ```rust
 let s = "hello world";
@@ -38,7 +44,8 @@ let ss = s.to_string();
 ```
 
 ### Byte String Literal
-b"whatever"은 byte string literal이다. 타입은 buf:&[u8;8] 이다.
+
+`b"whatever"` is a byte string literal. Its type is `buf: &[u8; 8]`.
 
 ```rust
 let s = b"hello world"; //buf:&[u8;11]

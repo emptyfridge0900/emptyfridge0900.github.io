@@ -103,8 +103,10 @@ Console.ReadLine();
 ### 2. Round-robin dispatching
 
 One of the advantages of using a Task Queue is the ability to easily parallelise work. If we are building up a backlog of work, we can just add more workers and that way, scale easily.
-Task Queue의 장점은 병렬작업을 할수 있다는 것. 처리해야할 주문을 담당하는 일을 구축하려면 그냥 작업자를 추가하면 쉽게 확장가능
-NewTask 객체 하나와 Worker 객체를 두개 만들어서 돌려보자. 둘다 queue로부터 메세지를 받게 된다
+
+One advantage of a Task Queue is that it allows parallel work. If we need to build a system that handles a growing backlog of jobs, we can scale easily by adding more workers.
+
+Create one `NewTask` object and run two `Worker` objects. Both receive messages from the queue.
 
 NewTask
 ```ps1
@@ -125,7 +127,7 @@ Worker
 dotnet run
 ```
 
-결과
+Result
 ```ps1
 Press [enter] to exit.
 [x] Received First message.
@@ -143,25 +145,31 @@ Press [enter] to exit.
 [x] Received Fourth message....
 [x] Done
 ```
-RabbitMQ는 다음 consumer에게 메세지를 차례대로 전달한다. 모든 consumer가 균등한 양의 메세지를 받게된다.
-이런방식을 Round robin이라고 한다
+RabbitMQ delivers messages to the next consumer in order. Each consumer receives an equal number of messages.
+
+This method is called round-robin.
 
 ### 3. Message acknowledgment
 
-만약 어떤 consumer가 작업을 하다가 작업을 마치지 못하고 죽어버린다면? RabbitMQ는 기본적으로 consumer에게 메시지를 보내고 나면 메세지를 지워버린다. 
-이런경우 consumer가 작업하다 죽어버리면 우리는 메세지를 잃어버리게된다.
-메세지를 잃지 않기 위해 RabbitMQ는 message acknowlegement를 지원한다. Mesaage acknowlegement는 consumer가 RabittMQ에게 메세지를 받았다는 신호를 보내는 것이다.
-메세지 수신 신호를 받으면 RabbitMQ는 메세지를 삭제하게된다.
-Consumer가 ack를 보내지 않고 죽어버리게 된다면 RabbitMQ는 메세지가 처리되지 않은것으로 간주해 다시 queue에 메세지를 쌓는다. 이때 다른 consumer가 있다면 queue에 있는 메세지를 꺼내볼것이다. 
+What happens if a consumer dies while processing a task and cannot finish it? By default, RabbitMQ deletes a message after sending it to a consumer.
 
-Acknowledgement timeout 기본값은 30분
+In that case, if the consumer dies during processing, we lose the message.
 
-Manual message acknowledgments이 기본으로 켜져있다. 앞선 예제에서는 autoAck에 true값을 주어서 명시적으로 켰다.
-이번에는 끄고 수동으로 ack신호를 보내보자.
+To avoid losing messages, RabbitMQ supports message acknowledgment. A message acknowledgment is a signal from the consumer to RabbitMQ saying that the message was received and processed.
+
+When RabbitMQ receives the acknowledgment, it deletes the message.
+
+If a consumer dies without sending an ack, RabbitMQ treats the message as unprocessed and puts it back into the queue. If another consumer exists, that consumer can take the message from the queue.
+
+The default acknowledgement timeout is 30 minutes.
+
+Manual message acknowledgments are enabled by default. In the previous example, we explicitly enabled auto acknowledgment by setting `autoAck` to `true`.
+
+This time, turn it off and send the ack manually.
 
 Worker.cs
 
-BasicAck를 추가하고 autoAck:false로 만들자
+Add `BasicAck` and set `autoAck: false`.
 ```cs,hl_lines=28-29 32
 using System.Text;
 using RabbitMQ.Client;
@@ -200,12 +208,13 @@ channel.BasicConsume(queue: "hello",
 Console.WriteLine(" Press [enter] to exit.");
 Console.ReadLine();
 ```
-Acknowledgement는 반드시 같은 channel로 보내져야한다.
+The acknowledgement must be sent on the same channel.
 
 ### 4. Message durability
 
-consumer가 멈추면 다른 worker가 메세지를 받아줄수 있다는걸 배웠다. 그런데 rabbitMQ가 멈춰버리면 작업하던거 날아간다.
-메세지와 queue에 durable이라는 플레그를 주면 rabbitMQ가 멈춰도 하던작업을 기억한다.
+We learned that if a consumer stops, another worker can receive the message. But if RabbitMQ itself stops, the queued work disappears.
+
+If we mark both the message and the queue as durable, RabbitMQ can remember the work even after it stops.
 
 NewTask.cs
 ```cs,hl_lines=8-9 17-18 21-22
@@ -282,13 +291,14 @@ channel.BasicConsume(queue: "task_queue",
 Console.WriteLine(" Press [enter] to exit.");
 Console.ReadLine();
 ```
-이미 hello라는 이름의 queue가 있으니까 task_queue이름으로 만들어주자. 기존에 있던 queue의 파라미터를 재정의 하는것은 불가하다자.
+Because a queue named `hello` already exists, create a new one named `task_queue`. You cannot redefine the parameters of an existing queue.
 
 ### 5. Fair Dispatch
 
-한쪽에만 무거운 작업이 분배되고 다른 한쪽은 가벼운 작업이 분배될 때가 있다. 하지만 RabbitMQ는 그런거 상관 안하고 똑같은 갯수의 메세지를 준다.
+Sometimes heavy tasks are distributed to one worker while light tasks go to another. RabbitMQ does not know that difference by default; it just gives each worker the same number of messages.
 
-이런 행위를 바꾸려면 BasicQos 메소드에 prefetchCount=1 값을 설정하면 된다. 이것은 RabbitMQ한테 작업자에게 한 번에 둘 이상의 메시지를 제공하지 않도록 지시한다.
+To change this behavior, set `prefetchCount=1` on the `BasicQos` method. This tells RabbitMQ not to give a worker more than one message at a time.
+
 Worker.cs
 ```cs,hl_lines=15
 using System.Text;

@@ -1,5 +1,5 @@
 +++
-title = "Layer 2 — dockerd (데몬 / API 서버)"
+title = "Layer 2 — dockerd (Daemon / API Server)"
 date = 2026-06-17
 
 [taxonomies]
@@ -7,105 +7,105 @@ categories = ["post"]
 tags = ["docker", "dockerd", "daemon", "layers"]
 +++
 
-> Docker 레이어 시리즈 2편. 스택은 위에서 아래로:
-> 1. docker CLI → **2. dockerd (데몬)** → 3. containerd → 4. runc →
-> 5. Linux 커널. [개요 글](./component_and_layers.md) 참고.
+> Part 2 of the Docker layers series. From top to bottom, the stack is:
+> 1. docker CLI → **2. dockerd (daemon)** → 3. containerd → 4. runc →
+> 5. Linux kernel. See the [overview article](./component_and_layers.md).
 
-## 정체
+## Identity
 
-`dockerd`는 [**Docker 데몬**](https://docs.docker.com/get-started/docker-overview/#docker-architecture) —
-사람들이 "Docker"라고 하면 흔히 떠올리는 그 오래 떠 있는 서버 프로세스다. [docker CLI](./layer1_docker_cli.md)는 클라이언트일
-뿐이고, `dockerd`가 실제 관리 일을 하는 서버다. socket에서 듣고 있다가 Docker API
-요청을 받아, 그걸 처리하는 데 필요한 모든 걸 조율한다.
+`dockerd` is the [**Docker daemon**](https://docs.docker.com/get-started/docker-overview/#docker-architecture):
+the long-running server process people usually imagine when they say "Docker." The
+[docker CLI](./layer1_docker_cli.md) is only the client. `dockerd` is the server that
+does the actual management work. It listens on a socket, receives Docker API requests,
+and coordinates everything needed to handle them.
 
-맥에서 흔히 보는 ``Cannot connect to the Docker daemon... Is the docker daemon
-running?`` 에러의 주인공이 바로 이 프로세스다 — CLI가 socket에는 닿았지만 듣고
-있는 `dockerd`가 없다는 뜻이다 (맥에서는 그걸 돌릴 VM이 안 떠 있어서).
+The familiar macOS error ``Cannot connect to the Docker daemon... Is the docker daemon
+running?`` points to this process. It means the CLI reached the socket path, but no
+`dockerd` was listening there, usually because the VM that runs it on a Mac is not up.
 
-## 무엇을 책임지나
+## What it owns
 
-`dockerd`는 "컨테이너를 날것으로 실행하는 행위"를 **제외한** 모든 "Docker 레벨"
-개념을 소유한다:
+`dockerd` owns every "Docker-level" concept **except** the raw act of running a
+container:
 
-- **이미지**: 레지스트리에서 pull, 빌드(`docker build`), 태깅, 레이어 저장,
-  빌드 캐시 관리.
-- **네트워킹**: bridge 네트워크 생성, 포트 매핑(`-p 8080:80`), 컨테이너 간 DNS,
-  기본 `bridge`/`host`/`none` 네트워크.
-- **볼륨 & 스토리지**: named volume, bind mount, 이미지 레이어를 쌓는 스토리지
-  드라이버(`overlay2`).
-- **API 표면**: 전체 Docker Engine API를 클라이언트에 제공.
-- **고수준 객체**: `docker compose`(데몬 경유), swarm 모드, 플러그인.
+- **Images**: pulling from registries, building with `docker build`, tagging, layer storage, and build cache management.
+- **Networking**: bridge network creation, port mapping (`-p 8080:80`), DNS between containers, and the default `bridge`/`host`/`none` networks.
+- **Volumes and storage**: named volumes, bind mounts, and storage drivers such as `overlay2` that stack image layers.
+- **API surface**: the full Docker Engine API exposed to clients.
+- **High-level objects**: `docker compose` through the daemon, swarm mode, and plugins.
 
-정작 컨테이너의 저수준 실행 자체는 직접 하지 않는다 —
-[containerd](./layer3_containerd.md)로 위임한다.
+It does not directly perform the low-level container execution itself. It delegates that
+to [containerd](./layer3_containerd.md).
 
 ## "Docker engine = server + api + client"
 
-Docker **Engine**은 세 가지다:
+Docker **Engine** consists of three parts:
 
-```
+```text
 Docker Engine
-├── client   →  docker (CLI)             [레이어 1]
-├── api      →  Docker Engine REST API (둘 사이의 계약)
-└── server   →  dockerd (데몬)           [레이어 2]  ← 이 글
+├── client   →  docker (CLI)             [Layer 1]
+├── api      →  Docker Engine REST API (contract between them)
+└── server   →  dockerd (daemon)         [Layer 2]  ← this article
 ```
 
-그래서 맥에서 "Docker를 깔았는데 안 돌아간다"는 보통: **클라이언트**는 깔렸는데
-**서버**(`dockerd`)가 돌 곳이 없다는 뜻이다. `dockerd`는 Linux 프로세스인데
-맥은 Linux가 아니니까.
+So on a Mac, "I installed Docker, but it does not run" usually means: the **client** is
+installed, but there is nowhere for the **server** (`dockerd`) to run. `dockerd` is a
+Linux process, and macOS is not Linux.
 
-## 왜 맥에서 네이티브로 못 도나
+## Why it cannot run natively on macOS
 
-[`dockerd`는 Linux 또는 Windows에서 도는 프로그램이다](https://docs.docker.com/reference/cli/dockerd/).
-Linux에서는 커널 기능(namespace, cgroup, overlay 파일시스템)에, Windows에서는
-HCS(Host Compute Service)에 의존한다. macOS(Darwin) 커널 위에서는 돌 수 없다. 이게
-Docker Desktop / Colima / Lima가 존재하는 이유 전부다: 얘네가 **Linux VM**을
-띄우고 그 *안에서* `dockerd`를 돌린다. 그럼 내 맥의 CLI가 포워딩된 socket을 통해
-VM 안으로 손을 뻗는 것이다.
+[`dockerd` runs on Linux or Windows](https://docs.docker.com/reference/cli/dockerd/).
+On Linux it depends on kernel features such as namespaces, cgroups, and overlay
+filesystems. On Windows it depends on HCS, the Host Compute Service. It cannot run on top
+of the macOS Darwin kernel. This is the whole reason Docker Desktop, Colima, and Lima
+exist: they start a **Linux VM** and run `dockerd` *inside* it. Then the CLI on the Mac
+reaches into the VM through a forwarded socket.
 
 ```bash
-# dockerd는 맥이 아니라 Colima VM 안에 산다:
+# dockerd lives inside the Colima VM, not on the Mac:
 $ colima ssh -- sh -c 'command -v dockerd; ps -e -o comm | grep dockerd'
 /usr/bin/dockerd
 dockerd
 ```
 
-## 모놀리식 해체: dockerd는 아래로 위임한다
+## Breaking up the monolith: dockerd delegates downward
 
-Docker는 원래 **모놀리식**이었다 — 한 프로그램이 API 서빙, 이미지 관리, 실제
-컨테이너 실행을 다 했다. 시간이 지나며 쪼개졌다:
+Docker was originally **monolithic**: one program served the API, managed images, and ran
+containers. Over time, it was split apart:
 
-```
-   예전 (모놀리식)                   지금
-   ┌──────────────┐                  ┌──────────────┐  dockerd: API, 이미지,
-   │              │                  │   dockerd    │  네트워킹, 볼륨
+```text
+   Old (monolithic)                 Now
+   ┌──────────────┐                  ┌──────────────┐  dockerd: API, images,
+   │              │                  │   dockerd    │  networking, volumes
    │    docker    │                  └──────┬───────┘
-   │   (전부 다)   │        →                │ gRPC
-   │              │                  ┌──────▼───────┐  containerd: 런타임,
-   │              │                  │  containerd  │  라이프사이클, 이미지 콘텐츠
+   │  (all of it) │        →                │ gRPC
+   │              │                  ┌──────▼───────┐  containerd: runtime,
+   │              │                  │  containerd  │  lifecycle, image content
    └──────────────┘                  └──────┬───────┘
                                             │
-                                     ┌──────▼───────┐  runc: 컨테이너 생성하고
-                                     │     runc     │  바로 종료
+                                     ┌──────▼───────┐  runc: creates container
+                                     │     runc     │  and exits immediately
                                      └──────────────┘
 ```
 
-그래서 `docker run`을 하면 `dockerd`가 이미지를 해석하고 네트워킹·볼륨을 세팅한
-뒤, 로컬 [gRPC API](https://docs.docker.com/reference/cli/dockerd/)로
-**containerd**를 불러 실제로 컨테이너를 시작시킨다. `dockerd`는
-계속 떠서 전체를 관리하고, 실행 자체는 위임한다.
+So when you run `docker run`, `dockerd` interprets the image and sets up networking and
+volumes. Then it calls **containerd** through a local
+[gRPC API](https://docs.docker.com/reference/cli/dockerd/) to actually start the
+container. `dockerd` stays alive to manage the whole system, while execution itself is
+delegated.
 
-이 분리 덕에 **Kubernetes가 `dockerd`를 버릴 수 있었다**
-("[dockershim 제거](https://kubernetes.io/blog/2022/05/03/dockershim-historical-context/)"):
-Docker Engine은 [CRI](https://kubernetes.io/docs/concepts/containers/cri/)를
-네이티브로 구현하지 않아서 Kubernetes가 dockershim이라는 브릿지를 유지해야 했다.
-그 부담을 없애기 위해 Kubernetes는 CRI를 직접 구현하는 `containerd`에 말하고
-`dockerd` 레이어를 통째로 건너뛴다.
+This separation is what allowed **Kubernetes to drop `dockerd`**
+("[dockershim removal](https://kubernetes.io/blog/2022/05/03/dockershim-historical-context/)").
+Docker Engine did not implement the
+[CRI](https://kubernetes.io/docs/concepts/containers/cri/) natively, so Kubernetes had to
+maintain a bridge called dockershim. To remove that burden, Kubernetes talks directly to
+`containerd`, which implements CRI, and skips the entire `dockerd` layer.
 
-## 데몬 설정
+## Daemon configuration
 
-`dockerd`의 동작은 [`daemon.json`](https://docs.docker.com/reference/cli/dockerd/#daemon-configuration-file)으로
-제어한다 (Colima에서는 VM 안에 있다):
+`dockerd` behavior is controlled through
+[`daemon.json`](https://docs.docker.com/reference/cli/dockerd/#daemon-configuration-file),
+which lives inside the VM when using Colima:
 
 ```jsonc
 // /etc/docker/daemon.json
@@ -117,33 +117,32 @@ Docker Engine은 [CRI](https://kubernetes.io/docs/concepts/containers/cri/)를
 }
 ```
 
-일반 Linux 호스트에서는 systemd가 `dockerd`를 띄우거나(`systemctl start docker`),
-디버깅용으로 포그라운드로 직접 돌린다(`sudo dockerd`). Colima에서는 직접 띄울 일이
-없다 — `colima start`가 VM을 부팅하면 VM이 알아서 `dockerd`를 띄운다.
+On a normal Linux host, systemd starts `dockerd` (`systemctl start docker`), or you can
+run it in the foreground for debugging (`sudo dockerd`). In Colima, you normally do not
+start it yourself. `colima start` boots the VM, and the VM starts `dockerd`.
 
-## 이 슬롯을 채우는 대안들
+## Alternatives that fill this slot
 
-| 도구 | dockerd와 다른 점 |
+| Tool | Difference from dockerd |
 |---|---|
-| [**Podman**](https://docs.podman.io/en/stable/markdown/podman.1.html) | **데몬리스** — 항상 떠 있는 서버 없이 컨테이너를 자식 프로세스로 실행. 기본 rootless. |
-| [**CRI-O**](https://cri-o.io/) | Kubernetes [CRI](https://kubernetes.io/docs/concepts/containers/cri/) 전용 최소 런타임. Docker API도 `build`도 없음. |
-| **containerd (단독)** | `dockerd` 없이도 사용 가능 (예: `nerdctl`). |
+| [**Podman**](https://docs.podman.io/en/stable/markdown/podman.1.html) | **Daemonless**: runs containers as child processes without an always-on server. Rootless by default. |
+| [**CRI-O**](https://cri-o.io/) | Minimal runtime dedicated to Kubernetes [CRI](https://kubernetes.io/docs/concepts/containers/cri/). No Docker API and no `build`. |
+| **containerd alone** | Can be used without `dockerd`, for example through `nerdctl`. |
 
-## 정리
+## Summary
 
-- `dockerd`는 **서버** — 이미지·네트워킹·볼륨, 그리고 API를 소유한다.
-- "Docker daemon not running" = 서버가 안 떠 있다는 뜻 (맥에서는 VM이 안 떠 있는 것).
-- 컨테이너를 가장 낮은 레벨에서 돌리는 건 얘가 **아니다** —
-  [containerd](./layer3_containerd.md)로 **위임**한다 (다음 레이어).
-- Kubernetes는 이 레이어를 통째로 건너뛰고 containerd에 직접 말한다.
+- `dockerd` is the **server**. It owns images, networking, volumes, and the API.
+- "Docker daemon not running" means the server is not running. On a Mac, that usually means the VM is not running.
+- It is **not** the thing that runs containers at the lowest level. It **delegates** to [containerd](./layer3_containerd.md), the next layer.
+- Kubernetes skips this entire layer and talks directly to containerd.
 
-## 참고
+## References
 
-- Docker 아키텍처 — dockerd가 이미지·네트워크·볼륨을 소유하는 구조: <https://docs.docker.com/get-started/docker-overview/#docker-architecture>
-- `dockerd` 레퍼런스 — `--containerd` gRPC 주소, daemon.json 설정, Linux/Windows 의존성: <https://docs.docker.com/reference/cli/dockerd/>
-- daemon.json 설정 (storage-driver, log-driver 등): <https://docs.docker.com/reference/cli/dockerd/#daemon-configuration-file>
-- Dockershim 제거의 역사적 배경 — Docker가 CRI를 구현하지 않은 이유: <https://kubernetes.io/blog/2022/05/03/dockershim-historical-context/>
-- Dockershim 제거 FAQ: <https://kubernetes.io/blog/2022/02/17/dockershim-faq/>
-- Kubernetes Container Runtime Interface(CRI) 스펙: <https://kubernetes.io/docs/concepts/containers/cri/>
-- Kubernetes 컨테이너 런타임 설정 (containerd, CRI-O): <https://kubernetes.io/docs/setup/production-environment/container-runtimes/>
-- Podman — 데몬리스 OCI 컨테이너 엔진: <https://docs.podman.io/en/stable/markdown/podman.1.html>
+- Docker architecture, where dockerd owns images, networking, and volumes: <https://docs.docker.com/get-started/docker-overview/#docker-architecture>
+- `dockerd` reference, `--containerd` gRPC address, daemon.json configuration, and Linux/Windows dependencies: <https://docs.docker.com/reference/cli/dockerd/>
+- daemon.json configuration, including storage-driver and log-driver: <https://docs.docker.com/reference/cli/dockerd/#daemon-configuration-file>
+- Historical context for dockershim removal and why Docker did not implement CRI: <https://kubernetes.io/blog/2022/05/03/dockershim-historical-context/>
+- Dockershim removal FAQ: <https://kubernetes.io/blog/2022/02/17/dockershim-faq/>
+- Kubernetes Container Runtime Interface (CRI) spec: <https://kubernetes.io/docs/concepts/containers/cri/>
+- Kubernetes container runtime setup, including containerd and CRI-O: <https://kubernetes.io/docs/setup/production-environment/container-runtimes/>
+- Podman, daemonless OCI container engine: <https://docs.podman.io/en/stable/markdown/podman.1.html>

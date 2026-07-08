@@ -7,109 +7,97 @@ categories = ["Data Structure"]
 tags = ["tree", "binary-tree", "DFS", "BFS"]
 +++
 
-Tree는 node와 edge로 이루어진 계층형 자료구조다. Graph 관점에서 보면 **connected
-acyclic graph**, 즉 모든 node가 연결되어 있고 cycle이 없는 graph다.
+A tree is a hierarchical data structure made of nodes and edges. From a graph perspective, it is a **connected acyclic graph**: every node is connected, and there are no cycles.
 
 ![tree](/images/DS/Tree/Treedatastructure.png)
 source: <https://www.geeksforgeeks.org/introduction-to-tree-data-structure-and-algorithm-tutorials/>
 
-## 핵심 성질
+## Core properties
 
-Tree를 이해할 때 가장 중요한 성질은 아래 3개다.
+The three most important properties of a tree are:
 
-1. node가 `n`개인 tree는 edge가 `n - 1`개다.
-2. 임의의 두 node 사이에는 path가 정확히 하나만 존재한다.
-3. edge를 하나 추가하면 cycle이 생기고, edge를 하나 제거하면 연결이 끊어진다.
+1. A tree with `n` nodes has `n - 1` edges.
+2. Between any two nodes, exactly one path exists.
+3. Adding one edge creates a cycle, and removing one edge disconnects the tree.
 
-보통 프로그래밍에서 말하는 tree는 root가 있는 **rooted tree**다. Root를 기준으로
-parent-child 관계가 생기고, root에서 멀어질수록 depth가 깊어진다.
+In programming, the word tree usually means a **rooted tree**, which has a root. The root defines parent-child relationships, and depth increases as nodes get farther from the root.
 
-## 용어
+## Terminology
 
-| 용어 | 의미 |
+| Term | Meaning |
 |---|---|
-| Root | 부모가 없는 시작 node |
-| Parent | 어떤 node 바로 위에 있는 node |
-| Child | 어떤 node 바로 아래에 있는 node |
-| Sibling | 같은 parent를 가진 node |
-| Leaf | child가 없는 node |
-| Internal node | leaf가 아닌 node |
-| Degree | child 개수 |
-| Depth | root에서 해당 node까지 edge 개수 |
-| Height | 해당 node에서 가장 먼 leaf까지 edge 개수 |
-| Subtree | 어떤 node를 root로 하는 부분 tree |
+| Root | The starting node with no parent |
+| Parent | The node directly above another node |
+| Child | The node directly below another node |
+| Sibling | A node with the same parent |
+| Leaf | A node with no children |
+| Internal node | A node that is not a leaf |
+| Degree | Number of children |
+| Depth | Number of edges from the root to the node |
+| Height | Number of edges from the node to the farthest leaf |
+| Subtree | A partial tree rooted at a specific node |
 
-예를 들어 root의 depth는 `0`이고, leaf의 height는 `0`이다. 문제마다 height를 edge 개수
-대신 node 개수로 정의하는 경우도 있으니 면접이나 알고리즘 문제에서는 정의를 먼저 확인하는
-게 좋다.
+For example, the root's depth is `0`, and a leaf's height is `0`. Some problems define height by the number of nodes instead of the number of edges, so in interviews or algorithm problems, it is best to confirm the definition first.
 
-## Tree 종류
+## Types of trees
 
 ### Binary Tree
 
-각 node가 최대 2개의 child를 가지는 tree다. 보통 child를 `left`, `right`로 부른다.
+A binary tree is a tree where each node has at most two children. The children are usually called `left` and `right`.
 
 ### Binary Search Tree
 
-Binary tree에 ordering rule을 추가한 tree다.
+A binary search tree is a binary tree with an ordering rule.
 
 ```text
-left subtree의 모든 값 < root 값 < right subtree의 모든 값
+all values in left subtree < root value < all values in right subtree
 ```
 
-이 규칙 덕분에 search, insert, delete가 평균적으로 `O(log n)`이 될 수 있다. 하지만 tree가
-한쪽으로 기울면 height가 `n`이 되어 `O(n)`까지 나빠진다.
+Because of this rule, search, insert, and delete can be `O(log n)` on average. But if the tree becomes skewed to one side, its height becomes `n`, and those operations can degrade to `O(n)`.
 
 ### Self-balancing Search Tree
 
-Insert/delete 이후 height가 너무 커지지 않도록 스스로 균형을 맞추는 search tree다.
+A self-balancing search tree adjusts itself after insert/delete operations so its height does not grow too large.
 
 - AVL tree
 - Red-black tree
 - B-tree
 
-여기서 주의할 점: **B-tree는 binary tree가 아니다.** 하나의 node가 여러 key와 여러 child를
-가질 수 있는 multi-way balanced search tree다. Database index나 filesystem에서 자주
-등장한다.
+Important note: **a B-tree is not a binary tree.** It is a multi-way balanced search tree where one node can have multiple keys and multiple children. It commonly appears in database indexes and filesystems.
 
 ### Full / Complete / Perfect Binary Tree
 
-이 세 용어는 이름이 비슷해서 자주 헷갈린다.
+These three terms look similar, so they are easy to confuse.
 
-| 종류 | 조건 |
+| Type | Condition |
 |---|---|
-| Full binary tree | 모든 node의 child 개수가 0개 또는 2개다 |
-| Complete binary tree | 마지막 level을 제외한 모든 level이 꽉 차 있고, 마지막 level은 왼쪽부터 채워져 있다 |
-| Perfect binary tree | 모든 internal node가 child 2개를 가지고, 모든 leaf가 같은 depth에 있다 |
+| Full binary tree | Every node has either 0 or 2 children |
+| Complete binary tree | Every level except the last is full, and the last level is filled from the left |
+| Perfect binary tree | Every internal node has 2 children, and all leaves are at the same depth |
 
-Perfect binary tree는 항상 full이면서 complete다. 하지만 full이라고 해서 complete인 것은
-아니고, complete라고 해서 full인 것도 아니다.
+A perfect binary tree is always both full and complete. But a full tree is not necessarily complete, and a complete tree is not necessarily full.
 
 ## Traversal
 
-Traversal은 tree의 모든 node를 한 번씩 방문하는 방법이다. Tree node가 `n`개라면 모든
-traversal은 기본적으로 `O(n)`이다.
+Traversal is a method for visiting every node in a tree exactly once. If a tree has `n` nodes, every traversal is basically `O(n)`.
 
 ![Tree](/images/DS/Tree/full_binary_tree.png)
 
 ### DFS: Depth-First Search
 
-DFS는 한 방향으로 끝까지 내려갔다가 다시 돌아오는 방식이다. Recursive call stack을 쓰거나
-직접 stack을 만들어 구현한다.
+DFS goes all the way down in one direction, then comes back. It can be implemented with the recursive call stack or with an explicit stack.
 
-Binary tree에서 DFS 순회는 root를 언제 방문하느냐에 따라 이름이 달라진다.
+In a binary tree, DFS traversals are named by when the root is visited.
 
-| 순회 | 순서 | 예시 |
+| Traversal | Order | Example |
 |---|---|---|
 | Preorder | Root -> Left -> Right | A-B-D-E-H-I-C-F-G |
 | Inorder | Left -> Root -> Right | D-B-H-E-I-A-F-C-G |
 | Postorder | Left -> Right -> Root | D-H-I-E-B-F-G-C-A |
 
-외우는 법은 간단하다. Left는 항상 Right보다 먼저 간다. Root가 앞이면 preorder, 중간이면
-inorder, 뒤면 postorder다.
+The way to remember this is simple. Left always comes before Right. If Root comes first, it is preorder. If Root is in the middle, it is inorder. If Root comes last, it is postorder.
 
-Inorder traversal은 binary search tree에서 특히 중요하다. BST를 inorder로 순회하면 값이
-정렬된 순서로 나온다.
+Inorder traversal is especially important for binary search trees. Traversing a BST inorder produces values in sorted order.
 
 ```rust
 fn inorder(node: Option<&Box<TreeNode>>, output: &mut Vec<i32>) {
@@ -121,18 +109,15 @@ fn inorder(node: Option<&Box<TreeNode>>, output: &mut Vec<i32>) {
 }
 ```
 
-DFS의 extra space는 tree height를 `h`라고 할 때 recursive call stack 기준 `O(h)`다.
-Balanced tree라면 `O(log n)`, 한쪽으로 기운 tree라면 `O(n)`이다.
+The extra space for DFS is `O(h)` from the recursive call stack, where `h` is the tree height. For a balanced tree it is `O(log n)`, and for a tree skewed to one side it is `O(n)`.
 
 ### BFS: Breadth-First Search
 
-BFS는 level order traversal이라고도 부른다. Root에서 시작해 같은 depth의 node를 먼저
-방문한 뒤 다음 level로 내려간다.
+BFS is also called level-order traversal. It starts from the root, visits nodes at the same depth first, then moves down to the next level.
 
 ![Tree](/images/DS/Tree/binary_tree_level_order.png)
 
-BFS는 queue로 구현한다. Tree의 level별 처리, 최단 edge 수 계산, serialization 문제에서
-자주 등장한다.
+BFS is implemented with a queue. It appears often in problems involving level-by-level tree processing, shortest edge counts, and serialization.
 
 ```rust
 use std::collections::VecDeque;
@@ -161,15 +146,13 @@ fn level_order(root: Option<&Box<TreeNode>>) -> Vec<i32> {
 }
 ```
 
-BFS의 extra space는 queue에 들어가는 최대 node 수에 비례한다. Tree의 최대 width를 `w`라고
-하면 `O(w)`다. Complete binary tree의 마지막 level은 node가 많기 때문에 최악의 경우
-`O(n)`이 될 수 있다.
+The extra space for BFS is proportional to the maximum number of nodes stored in the queue. If the tree's maximum width is `w`, the space is `O(w)`. In a complete binary tree, the last level contains many nodes, so the worst case can be `O(n)`.
 
-## 표현 방법
+## Representation
 
 ### Linked node
 
-가장 일반적인 표현 방식이다. 각 node가 자기 child를 가리킨다.
+This is the most common representation. Each node points to its children.
 
 ```rust
 #[derive(Debug)]
@@ -190,15 +173,13 @@ impl TreeNode {
 }
 ```
 
-LeetCode의 Rust tree 문제에서는 공유 ownership과 interior mutability 때문에
-`Option<Rc<RefCell<TreeNode>>>` 형태를 자주 본다. 하지만 tree 개념 자체를 설명할 때는
-`Box<TreeNode>`가 더 단순하다.
+In Rust tree problems on LeetCode, you often see `Option<Rc<RefCell<TreeNode>>>` because of shared ownership and interior mutability. But when explaining the tree concept itself, `Box<TreeNode>` is simpler.
 
 ### Array
 
-Complete binary tree처럼 빈 공간이 거의 없는 tree는 array로 표현하기 좋다.
+Trees with almost no empty spaces, such as complete binary trees, are easy to represent with an array.
 
-Root index를 `0`이라고 하면:
+If the root index is `0`:
 
 ```text
 left child  = 2 * i + 1
@@ -206,7 +187,7 @@ right child = 2 * i + 2
 parent      = (i - 1) / 2
 ```
 
-Heap이 이 표현을 사용한다.
+Heaps use this representation.
 
 ```rust
 struct ArrayTree {
@@ -224,39 +205,37 @@ impl ArrayTree {
 }
 ```
 
-Array 표현은 index 계산이 빠르고 cache locality가 좋다. 하지만 sparse tree에는 빈 칸이
-많아져 memory가 낭비된다.
+The array representation has fast index calculation and good cache locality. But for sparse trees, many empty slots are needed, so memory is wasted.
 
 ## Complexity
 
-| 작업 | 일반 binary tree | balanced BST | 한쪽으로 기운 BST |
+| Operation | General binary tree | Balanced BST | Skewed BST |
 |---|---:|---:|---:|
 | Search | O(n) | O(log n) | O(n) |
-| Insert | O(n) 또는 위치를 알면 O(1) | O(log n) | O(n) |
+| Insert | O(n), or O(1) if the position is known | O(log n) | O(n) |
 | Delete | O(n) | O(log n) | O(n) |
 | Traversal | O(n) | O(n) | O(n) |
 
-Tree 문제에서 중요한 것은 "binary tree인가, BST인가, balanced인가"를 먼저 구분하는 것이다.
-셋을 섞어서 생각하면 time complexity를 쉽게 틀린다.
+The important thing in tree problems is to first distinguish whether it is a binary tree, a BST, or a balanced tree. If you mix those up, it is easy to get the time complexity wrong.
 
-## 어디에 쓰나
+## Where trees are used
 
-- File system directory 구조
+- Filesystem directory structures
 - HTML/XML DOM
-- Compiler AST(Abstract Syntax Tree)
-- Database index(B-tree, B+tree)
-- Priority queue(heap)
-- Prefix search(trie)
-- Range query(segment tree, Fenwick tree)
+- Compiler AST, or Abstract Syntax Tree
+- Database indexes such as B-tree and B+tree
+- Priority queue, or heap
+- Prefix search, or trie
+- Range query structures such as segment tree and Fenwick tree
 
-## 기억할 점
+## Things to remember
 
-- Tree는 cycle이 없는 connected graph다.
-- Rooted tree에서는 parent-child 관계가 생긴다.
-- Binary tree와 binary search tree는 다르다.
-- Balanced BST는 height를 낮게 유지해서 search/insert/delete를 `O(log n)`에 가깝게 만든다.
-- BFS는 queue, DFS는 stack 또는 recursion으로 구현한다.
-- Array tree 표현은 complete binary tree나 heap에 잘 맞고, sparse tree에는 비효율적이다.
+- A tree is a connected graph with no cycles.
+- In a rooted tree, parent-child relationships exist.
+- A binary tree and a binary search tree are different.
+- A balanced BST keeps height low so search/insert/delete stay close to `O(log n)`.
+- BFS uses a queue, while DFS uses a stack or recursion.
+- Array tree representation fits complete binary trees and heaps, but is inefficient for sparse trees.
 
 ## Ref
 

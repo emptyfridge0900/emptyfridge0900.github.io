@@ -10,25 +10,27 @@ tags = ["RabbitMQ","Event bus"]
 <https://www.rabbitmq.com/tutorials/tutorial-one-dotnet.html>
 
 
-# setup
+# Setup
 
-## 1. RabbitMQ 설치
-나는 로컬에 설치하기 보다는 docker를 사용해서 설치하는걸 선호한다
+## 1. Install RabbitMQ
 
-[docker 이미지로 설치하기](https://hub.docker.com/_/rabbitmq)
-```
-docker run -d 
---hostname hello-world 
---name test-rabbit 
--p 7777:5672 
--p 17777:15672 
--e RABBITMQ_DEFAULT_USER=test 
--e RABBITMQ_DEFAULT_PASS=test123 
+I prefer installing it with Docker rather than installing it locally.
+
+[Install with the Docker image](https://hub.docker.com/_/rabbitmq)
+
+```bash
+docker run -d
+--hostname hello-world
+--name test-rabbit
+-p 7777:5672
+-p 17777:15672
+-e RABBITMQ_DEFAULT_USER=test
+-e RABBITMQ_DEFAULT_PASS=test123
 rabbitmq:3-management
 ```
 
 
-## 2. Sedning client
+## 2. Sending client
 ```ps1
 dotnet new console --name Send
 mv Send/Program.cs Send/Send.cs
@@ -65,7 +67,7 @@ Console.ReadLine();
 
 
 
-## 3. Receving client
+## 3. Receiving client
 ```ps1
 dotnet new console --name Receive
 mv Receive/Program.cs Receive/Receive.cs
@@ -107,15 +109,25 @@ Console.ReadLine();
 
 
 # Management Plugin
-docker run을 할때 -p 17777:15672 옵션을 넣었던걸 기억하는가? 15672는 관리페이지 플러그인 포트다. 
-<http://localhost:17777/> 를 통하여 관리페이지에 접속할수 있다.
-## Sender, Receiver 실행 시키기 전
-sender, receiver 클라이언트를 실행시키기 전에는  queue가 비어있는 것을 볼수 있다
+
+Remember the `-p 17777:15672` option used when running `docker run`? `15672` is the management page plugin port.
+
+You can access the management page through <http://localhost:17777/>.
+
+## Before running Sender and Receiver
+
+Before running the sender and receiver clients, the queue is empty.
+
 ![](/images/rabbitmq/hello-world/3.png)
-## Sender 실행 시킨 후
-Sender 클라이언트를 실행시킨후에는 queue에 변화가 있다.
-Queue에 메세지가 들어가 있는것을 볼수 있다
+
+## After running Sender
+
+After running the Sender client, the queue changes. You can see that a message has entered the queue.
+
 ![](/images/rabbitmq/hello-world/7.png)
-## Receiver 실행 시킨 후
-Sender를 종료시키고 Receiver를 실행시킨후에 관리페이지를 보면 Queue가 다시 비어서 0이 되어있다.
+
+## After running Receiver
+
+After stopping Sender and running Receiver, the management page shows that the queue is empty again and back to 0.
+
 ![](/images/rabbitmq/hello-world/8.png)

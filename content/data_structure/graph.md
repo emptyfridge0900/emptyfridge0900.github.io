@@ -7,7 +7,7 @@ categories = ["Data Structure"]
 tags = ["graph", "BFS", "DFS"]
 +++
 
-Graph는 **node(vertex)** 와 **edge** 로 관계를 표현하는 자료구조다.
+A graph is a data structure that represents relationships using **nodes, also called vertices**, and **edges**.
 
 ```text
 G = (V, E)
@@ -16,104 +16,97 @@ V = vertices, nodes
 E = edges, relationships between vertices
 ```
 
-Tree도 graph의 한 종류다. 정확히는 cycle이 없는 connected undirected graph를 tree라고
-볼 수 있다.
+A tree is also a kind of graph. More precisely, it can be viewed as a connected undirected graph with no cycles.
 
-## Graph가 필요한 순간
+## When graphs are needed
 
-Graph는 "데이터 사이의 관계"가 핵심일 때 쓴다.
+Graphs are useful when the core of the data is the relationship between items.
 
-- Social network: 사람 = vertex, 친구 관계 = edge
-- Map: 도시/교차로 = vertex, 도로 = edge
+- Social network: person = vertex, friendship = edge
+- Map: city/intersection = vertex, road = edge
 - Dependency graph: package/module = vertex, dependency = edge
 - Web: page = vertex, hyperlink = edge
 - Workflow/state machine: state = vertex, transition = edge
 
-Array나 list가 "순서" 중심이라면, graph는 "연결" 중심이다.
+If arrays and lists focus on order, graphs focus on connection.
 
-## Graph 종류
+## Types of graphs
 
 ### Undirected Graph
 
-Edge에 방향이 없다.
+The edges have no direction.
 
 ```text
 A -- B
 ```
 
-`A`가 `B`와 연결되어 있으면 `B`도 `A`와 연결되어 있다. Facebook 친구 관계 같은 모델에
-어울린다.
+If `A` is connected to `B`, then `B` is also connected to `A`. This fits models such as Facebook friendships.
 
 ### Directed Graph
 
-Edge에 방향이 있다.
+The edges have direction.
 
 ```text
 A -> B
 ```
 
-`A`가 `B`를 가리킨다고 해서 `B`가 `A`를 가리키는 것은 아니다. Twitter follow, package
-dependency, web link 같은 모델에 어울린다.
+Just because `A` points to `B` does not mean `B` points to `A`. This fits models such as Twitter follows, package dependencies, and web links.
 
 ### Weighted Graph
 
-Edge에 비용이나 거리 같은 값이 붙는다.
+The edges have values such as cost or distance.
 
 ```text
 A --(7)-- B
 ```
 
-도로 거리, 네트워크 latency, 환승 비용, similarity score 등을 표현할 때 쓴다.
+Weighted graphs are used to represent road distance, network latency, transfer cost, similarity score, and similar values.
 
 ### Cyclic / Acyclic Graph
 
-Cycle은 어떤 vertex에서 시작해서 edge를 따라 이동했을 때 다시 자기 자신으로 돌아올 수 있는
-경로다.
+A cycle is a path where you start at a vertex, move along edges, and can return to the same vertex.
 
-Cycle이 없는 directed graph를 DAG(Directed Acyclic Graph)라고 한다. Build dependency,
-course prerequisite, job scheduling 같은 문제에서 많이 나온다.
+A directed graph with no cycles is called a DAG, or Directed Acyclic Graph. DAGs appear often in build dependencies, course prerequisites, and job scheduling problems.
 
 ### Connected Graph
 
-Undirected graph에서 모든 vertex가 서로 도달 가능하면 connected graph다. 연결되지 않은
-부분이 여러 개 있으면 connected component가 여러 개 있다고 말한다.
+In an undirected graph, if every vertex can reach every other vertex, it is a connected graph. If the graph has several disconnected parts, those parts are called connected components.
 
-Directed graph에서는 방향까지 고려해서 서로 도달 가능한 경우 strongly connected라고 한다.
+In a directed graph, when vertices can reach each other while respecting direction, they are called strongly connected.
 
-## Graph 표현 방법
+## Graph representation
 
-Graph 알고리즘을 풀 때는 표현 방법이 매우 중요하다. Vertex 수를 `V`, edge 수를 `E`라고
-하자.
+Representation is very important when solving graph algorithms. Let `V` be the number of vertices and `E` the number of edges.
 
 ### Adjacency Matrix
 
-2차원 배열로 edge 존재 여부나 weight를 저장한다.
+An adjacency matrix stores whether an edge exists, or the edge weight, in a two-dimensional array.
 
 ```text
 matrix[u][v] = true
 matrix[u][v] = weight
 ```
 
-| 작업 | Complexity |
+| Operation | Complexity |
 |---|---:|
 | Memory | O(V^2) |
-| Edge 존재 확인 | O(1) |
-| 어떤 vertex의 모든 neighbor 순회 | O(V) |
+| Edge existence check | O(1) |
+| Iterate all neighbors of a vertex | O(V) |
 
-장점:
+Advantages:
 
-- 구현이 쉽다.
-- `u`와 `v`가 연결되어 있는지 바로 확인할 수 있다.
-- Dense graph(edge가 매우 많은 graph)에 적합하다.
+- It is easy to implement.
+- You can immediately check whether `u` and `v` are connected.
+- It is suitable for dense graphs, meaning graphs with many edges.
 
-단점:
+Disadvantages:
 
-- Sparse graph에서는 memory 낭비가 심하다.
-- Neighbor를 찾으려면 한 row 전체를 훑어야 한다.
+- Sparse graphs waste a lot of memory.
+- To find neighbors, you must scan the entire row.
 
 ### Adjacency List
 
-각 vertex마다 연결된 neighbor 목록을 저장한다.
+An adjacency list stores a list of connected neighbors for each vertex.
 
 ```text
 0: [1, 2]
@@ -122,7 +115,7 @@ matrix[u][v] = weight
 3: [1]
 ```
 
-Rust로는 보통 이렇게 표현한다.
+In Rust, it is usually represented like this.
 
 ```rust
 let graph: Vec<Vec<usize>> = vec![
@@ -133,7 +126,7 @@ let graph: Vec<Vec<usize>> = vec![
 ];
 ```
 
-Weighted graph라면 neighbor와 weight를 같이 저장한다.
+For a weighted graph, store the neighbor and weight together.
 
 ```rust
 let graph: Vec<Vec<(usize, i32)>> = vec![
@@ -144,24 +137,24 @@ let graph: Vec<Vec<(usize, i32)>> = vec![
 ];
 ```
 
-| 작업 | Complexity |
+| Operation | Complexity |
 |---|---:|
 | Memory | O(V + E) |
-| Edge 존재 확인 | O(deg(u)), set을 쓰면 평균 O(1) |
-| 어떤 vertex의 모든 neighbor 순회 | O(deg(u)) |
+| Edge existence check | O(deg(u)), average O(1) with a set |
+| Iterate all neighbors of a vertex | O(deg(u)) |
 
-장점:
+Advantages:
 
-- Sparse graph에 memory 효율적이다.
-- BFS/DFS처럼 neighbor를 순회하는 알고리즘에 좋다.
+- It is memory-efficient for sparse graphs.
+- It works well for algorithms that iterate neighbors, such as BFS and DFS.
 
-단점:
+Disadvantages:
 
-- 특정 edge 존재 여부만 자주 묻는 문제에서는 matrix보다 느릴 수 있다.
+- It can be slower than a matrix for problems that frequently ask only whether a specific edge exists.
 
 ### Edge List
 
-Edge 목록만 저장한다.
+An edge list stores only the list of edges.
 
 ```rust
 let edges = vec![
@@ -171,24 +164,23 @@ let edges = vec![
 ];
 ```
 
-Kruskal MST처럼 edge를 정렬해서 처리하는 알고리즘에 잘 맞는다. 하지만 특정 vertex의
-neighbor를 자주 찾아야 한다면 매번 edge 전체를 훑어야 해서 비효율적이다.
+It fits algorithms such as Kruskal MST, where edges are sorted and processed. But if you often need to find the neighbors of a specific vertex, it is inefficient because you must scan the whole edge list every time.
 
-## 표현 방법 비교
+## Representation comparison
 
-| 표현 | Memory | Edge check | Neighbor traversal | 잘 맞는 경우 |
+| Representation | Memory | Edge check | Neighbor traversal | Best fit |
 |---|---:|---:|---:|---|
-| Adjacency matrix | O(V^2) | O(1) | O(V) | Dense graph, 빠른 edge lookup |
+| Adjacency matrix | O(V^2) | O(1) | O(V) | Dense graph, fast edge lookup |
 | Adjacency list | O(V + E) | O(deg) | O(deg) | Sparse graph, BFS/DFS |
-| Edge list | O(E) | O(E) | O(E) | Edge 중심 알고리즘, Kruskal |
+| Edge list | O(E) | O(E) | O(E) | Edge-centered algorithms, Kruskal |
 
-대부분의 코딩 테스트 graph 문제는 sparse graph가 많아서 adjacency list가 기본 선택이다.
+Most coding-test graph problems use sparse graphs, so an adjacency list is the default choice.
 
 ## BFS
 
-BFS(Breadth-First Search)는 시작점에서 가까운 vertex부터 방문한다. Queue를 사용한다.
+BFS, or Breadth-First Search, visits vertices closest to the start first. It uses a queue.
 
-Unweighted graph에서 BFS는 시작점으로부터의 **최단 edge 수**를 구할 수 있다.
+In an unweighted graph, BFS can find the **shortest number of edges** from the starting point.
 
 ```rust
 use std::collections::VecDeque;
@@ -215,20 +207,19 @@ fn bfs(graph: &[Vec<usize>], start: usize) -> Vec<Option<usize>> {
 }
 ```
 
-Complexity는 adjacency list 기준 `O(V + E)`다.
+With an adjacency list, the complexity is `O(V + E)`.
 
-자주 쓰이는 문제:
+Common use cases:
 
 - Unweighted shortest path
-- Connected component 찾기
-- Bipartite graph 검사
+- Finding connected components
+- Bipartite graph check
 - Level-order traversal
-- Grid에서 최소 이동 횟수 구하기
+- Finding the minimum number of moves in a grid
 
 ## DFS
 
-DFS(Depth-First Search)는 한 경로를 끝까지 들어갔다가 되돌아온다. Recursion 또는 stack으로
-구현한다.
+DFS, or Depth-First Search, follows one path all the way down, then backtracks. It can be implemented with recursion or with a stack.
 
 ```rust
 fn dfs(graph: &[Vec<usize>], current: usize, visited: &mut [bool]) {
@@ -242,29 +233,29 @@ fn dfs(graph: &[Vec<usize>], current: usize, visited: &mut [bool]) {
 }
 ```
 
-Complexity는 adjacency list 기준 `O(V + E)`다.
+With an adjacency list, the complexity is `O(V + E)`.
 
-자주 쓰이는 문제:
+Common use cases:
 
 - Cycle detection
-- Connected component 찾기
+- Finding connected components
 - Topological sort
 - Backtracking
 - Tree/graph traversal
-- Strongly connected component 알고리즘의 기본 재료
+- Building block for strongly connected component algorithms
 
-## 대표 알고리즘
+## Representative algorithms
 
-Graph 문제는 보통 "무엇을 구해야 하는가"로 알고리즘을 고른다.
+For graph problems, the algorithm is usually chosen by asking, "What do we need to find?"
 
-| 문제 | 대표 알고리즘 |
+| Problem | Representative algorithm |
 |---|---|
 | Unweighted shortest path | BFS |
 | Non-negative weighted shortest path | Dijkstra |
-| Negative edge가 있는 shortest path | Bellman-Ford |
+| Shortest path with negative edges | Bellman-Ford |
 | All-pairs shortest path | Floyd-Warshall |
 | Minimum spanning tree | Kruskal, Prim |
-| Topological order | DFS 또는 Kahn's algorithm |
+| Topological order | DFS or Kahn's algorithm |
 | Strongly connected components | Kosaraju, Tarjan |
 | Bipartite check | BFS/DFS coloring |
 | Connectivity / cycle in undirected graph | DFS, Union-Find |
@@ -273,32 +264,31 @@ Graph 문제는 보통 "무엇을 구해야 하는가"로 알고리즘을 고른
 
 | Tree | Graph |
 |---|---|
-| Graph의 특수한 형태 | 더 일반적인 관계 모델 |
-| Connected + acyclic | connected일 수도 있고 아닐 수도 있음 |
-| node `n`개면 edge `n - 1`개 | edge 개수 제한이 훨씬 자유로움 |
-| 두 node 사이 path가 정확히 하나 | path가 0개, 1개, 여러 개일 수 있음 |
-| 보통 root/parent/child가 있음 | root가 없을 수도 있음 |
+| A special form of graph | A more general relationship model |
+| Connected + acyclic | May or may not be connected |
+| If there are `n` nodes, there are `n - 1` edges | Edge count is much more flexible |
+| Exactly one path exists between two nodes | There can be zero, one, or many paths |
+| Usually has root/parent/child | May have no root |
 
-Tree 문제처럼 보여도 입력이 "parent-child" 관계가 아니라 임의 edge 목록으로 주어진다면
-graph로 보고 cycle, visited 처리를 생각해야 한다.
+Even if a problem looks like a tree problem, if the input is given as arbitrary edges instead of parent-child relationships, treat it as a graph and think about cycle handling and `visited` tracking.
 
-## 흔한 실수
+## Common mistakes
 
-- Undirected graph에서 edge를 한 방향만 추가함
-- `visited` 처리를 queue에 넣을 때 하지 않고 pop할 때 해서 중복 enqueue가 많아짐
-- Weighted graph에 BFS를 사용함
-- Dijkstra에 negative weight edge를 사용함
-- Directed graph와 undirected graph의 cycle detection 방식을 섞음
-- Recursion DFS에서 graph가 깊을 때 stack overflow 가능성을 무시함
+- Adding an edge in only one direction for an undirected graph
+- Marking `visited` when popping from the queue instead of when pushing, causing duplicate enqueues
+- Using BFS on a weighted graph
+- Using Dijkstra with negative-weight edges
+- Mixing up cycle detection methods for directed and undirected graphs
+- Ignoring stack overflow risk when recursive DFS runs on a deep graph
 
-## 기억할 점
+## Things to remember
 
-- Graph는 관계를 표현하는 자료구조다.
-- Sparse graph는 adjacency list, dense graph는 adjacency matrix가 잘 맞는다.
-- BFS는 queue, DFS는 stack 또는 recursion을 사용한다.
-- BFS는 unweighted shortest path에 적합하다.
-- Weighted shortest path는 weight 조건에 따라 Dijkstra, Bellman-Ford 등을 골라야 한다.
-- Tree는 graph의 특수한 형태다.
+- A graph is a data structure that represents relationships.
+- Sparse graphs fit adjacency lists, and dense graphs fit adjacency matrices.
+- BFS uses a queue, while DFS uses a stack or recursion.
+- BFS is suitable for unweighted shortest path.
+- For weighted shortest path, choose Dijkstra, Bellman-Ford, or another algorithm based on the weight conditions.
+- A tree is a special form of graph.
 
 ## Ref
 

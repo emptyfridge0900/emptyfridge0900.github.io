@@ -1,6 +1,6 @@
 +++
 title = "Docker"
-description = "요즘 다들 container 쓰잖아?"
+description = "Everyone uses containers these days, right?"
 sort_by = "date"
 paginate_by = 5
 +++

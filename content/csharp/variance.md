@@ -7,52 +7,61 @@ categories = ["post"]
 tags = ["C#"]
 +++
 
+In C#, covariance and contravariance enable implicit reference conversion for **array types**, **delegate types**, and **generic type arguments**.
 
-In C#, covariance and contravariance enable implicit reference conversion for **array types**, **delegate types**, and **generic type arguments**
-
-Covariance는 한국어로 공변성이라고 하고 자식(파생,하위) 타입이 부모 타입의 변수로 할당되는 형변환\
-Contravariance는 한국어로 반공변성이라고 하고 부모 타입이 자식 타입 변수로 할당되는 형변환
+Covariance means a value of a child, derived, or more specific type can be assigned to a variable of a parent type.
+Contravariance means a value typed for a parent type can be assigned where a child type is expected, in specific input-position scenarios.
 
 ## Covariance for arrays
-이것은 우리가 흔히 아는 개념이다. 자식객체가 부모객체에 할당 
+
+This is the familiar direction: a child object can be assigned to a parent object reference.
+
 ```cs
-object[] array = new String[10];  
+object[] array = new String[10];
 ```
-다만 array covariance는 type-safe하지 않다. 위 배열에 `array[0] = 10;` 같은 값을 넣으면 compile은 될 수 있지만 runtime에 `ArrayTypeMismatchException`이 난다.
+
+However, array covariance is not type-safe. If you insert a value like `array[0] = 10;`, it may compile, but it throws `ArrayTypeMismatchException` at runtime.
 
 ## [Variance in Generic Interfaces](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/covariance-contravariance/variance-in-generic-interfaces)
+
 ```cs
 public class Animal{
 	public string Name{get;set;}
 }
 
 public class Cat:Animal{
-	
+
 }
 public class Dog:Animal{
-	
+
 }
 public class Schnauzer:Dog{
-	
+
 }
 public class GermanShepherd : Dog{
-	
+
 }
 ```
-Covariance
+
+Covariance:
+
 ```cs
 IEnumerable<GermanShepherd> germanShepherds = new List<GermanShepherd>();
 IEnumerable<Dog> dogs = germanShepherds;
 dogs = new List<Schnauzer>();
 ```
-It is also important to remember that classes that implement variant interfaces are still invariant. 
+
+It is also important to remember that classes that implement variant interfaces are still invariant.
+
 ```cs
 //this generates a compiler error
 List<Dog> dogList = new List<GermanShepherd>();
 //this compiles
 IEnumerable<Dog> dogEnumerable = new List<GermanShepherd>();
 ```
-Contravariance  
+
+Contravariance:
+
 ```cs
 class BaseComparer : IEqualityComparer<Dog>
 {
@@ -71,27 +80,30 @@ IEqualityComparer<GermanShepherd> comparer = new BaseComparer();
 IEqualityComparer<Animal> comparer = new BaseComparer();
 ```
 
-
 ## [Creating Variant Generic Interfaces](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/covariance-contravariance/creating-variant-generic-interfaces)
+
 A generic interface that has covariant or contravariant generic type parameters is called **variant**.
+
 ```cs
 interface IDogHospital<in T,out R>
 {
     R DoSomething(T t);
-	
+
 	//compile error, type with out keyword cannot be an argument of a method
 	//void DoSomething(R r);
-	
+
 	// compile error, type with in keyword cannot be a return type
 	//T DoSomething();
-	
+
 	void DoSomething(Action<R> callback);
 	R DoSomethingElse<TT>() where TT:T;
 	//compile error
 	//R DoSomethingElse<TT>() where TT:R;
 }
 ```
-Implementation
+
+Implementation:
+
 ```cs
 public class DogHospital<T,R> : IDogHospital<T, R>
 {

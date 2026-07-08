@@ -1,6 +1,6 @@
 +++
 title = "Azure"
-description = "Azure 쓰다가 막히면 여기"
+description = "Notes for issues I run into while using Azure"
 sort_by = "date"
 paginate_by = 5
 +++

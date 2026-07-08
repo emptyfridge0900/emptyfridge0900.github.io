@@ -2,4 +2,49 @@
 
 {% block user_custom_stylesheet %}
 <link href="{{ get_url(path='code-highlighting.css') }}" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+</style>
 {% endblock user_custom_stylesheet %}
+
+{% block user_custom_js %}
+<script>
+  (function () {
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+{% endblock user_custom_js %}

@@ -7,7 +7,7 @@ categories = ["post"]
 tags = ["C#"]
 +++
 
-AddIdentityCore와 AddIdentity가 무엇이 다른지 궁굼한 사람은 [나 뿐만이 아니였다](https://stackoverflow.com/questions/55361533/addidentity-vs-addidentitycore)
+I was not the only person wondering about the difference between `AddIdentityCore` and `AddIdentity`: [Stack Overflow discussion](https://stackoverflow.com/questions/55361533/addidentity-vs-addidentitycore)
 
 ## [AddIdentityCore](https://github.com/dotnet/aspnetcore/blob/main/src/Identity/Extensions.Core/src/IdentityServiceCollectionExtensions.cs)
 
@@ -70,15 +70,19 @@ services.TryAddScoped<SignInManager<TUser>>();
 services.TryAddScoped<RoleManager<TRole>>();
 ```
 
-AddIdentityCore 와 AddIdentity 같은점
-1. 둘다 유저관리 서비스를 제공한다  
-2. 둘 다 `Microsoft.Extensions.DependencyInjection` namespace에 있는 extension method다. `AddIdentity`와 `AddIdentityCore`는 둘 다 `IdentityServiceCollectionExtensions` class에 있지만 source 위치와 포함하는 서비스 범위가 다르다.
-`AddIdentity`는 [Identity.Core](https://github.com/dotnet/aspnetcore/blob/main/src/Identity/Core) 쪽에 있고,
-`AddIdentityCore`는 [Identity.Extensions.Core](https://github.com/dotnet/aspnetcore/blob/main/src/Identity/Extensions.Core) 쪽에 있다.
+Similarities between `AddIdentityCore` and `AddIdentity`:
 
-AddIdentityCore 와 AddIdentity 다른 점은 아래와 같다.  
-`AddIdentityCore<TUser>`는 지정한 user type을 위한 core Identity system을 추가한다. role service는 기본으로 추가되지 않고 `.AddRoles<TRole>()`로 붙일 수 있다.
-`AddIdentity<TUser, TRole>`는 user와 role type을 모두 받으며, default Identity system configuration을 추가한다. cookie 인증, `SignInManager<TUser>`, `RoleManager<TRole>` 같은 서비스가 기본으로 들어온다.
+1. Both provide user-management services.
+2. Both are extension methods in the `Microsoft.Extensions.DependencyInjection` namespace. `AddIdentity` and `AddIdentityCore` both live in an `IdentityServiceCollectionExtensions` class, but their source locations and the range of services they register are different.
+
+`AddIdentity` is under [Identity.Core](https://github.com/dotnet/aspnetcore/blob/main/src/Identity/Core), while `AddIdentityCore` is under [Identity.Extensions.Core](https://github.com/dotnet/aspnetcore/blob/main/src/Identity/Extensions.Core).
+
+The differences are roughly:
+
+`AddIdentityCore<TUser>` adds the core Identity system for the specified user type. Role services are not added by default, but can be attached with `.AddRoles<TRole>()`.
+
+`AddIdentity<TUser, TRole>` receives both user and role types and adds the default Identity system configuration. Cookie authentication, `SignInManager<TUser>`, `RoleManager<TRole>`, and related services are registered by default.
+
 ```cs
 
 services.AddAuthentication(o =>
@@ -134,9 +138,12 @@ return services.AddIdentityCore<TUser>(o =>
 .AddDefaultUI()
 .AddDefaultTokenProviders();
 ```
-`AddDefaultIdentity<TUser>`는 흔히 쓰는 Identity 구성을 한 번에 추가한다. 공식 API 설명 기준으로 default UI, token providers를 포함하고, authentication이 Identity cookie를 사용하도록 설정한다. 내부적으로는 `AddIdentityCore<TUser>` 위에 cookie 인증, [AddDefaultUI](https://github.com/dotnet/aspnetcore/blob/main/src/Identity/UI/src/IdentityBuilderUIExtensions.cs#L32), default token providers 등을 얹는 형태로 보면 된다.  
-로그인 페이지를 만들 시간이 없다면 AddDefaultIdentity를 사용하여 AddDefaultUI의 도움을 받자. Role이 기본으로 들어가지 않으니 알아서 추가해야한다.  
-처음부터 튜닝하고 싶으면 AddIdentityCore를 쓰고, 모든 기능이 필요하다면 AddIdentity를 쓰면 되겠다. 근데 Identity를 처음쓰는 초보자라면 AddIdentity에 있는 기능을 다 훑어보기도 벅찰거다.
+
+`AddDefaultIdentity<TUser>` adds the commonly used Identity setup in one call. According to the official API description, it includes the default UI and token providers, and configures authentication to use the Identity cookie. Internally, it can be understood as `AddIdentityCore<TUser>` plus cookie authentication, [AddDefaultUI](https://github.com/dotnet/aspnetcore/blob/main/src/Identity/UI/src/IdentityBuilderUIExtensions.cs#L32), default token providers, and related setup.
+
+If you do not have time to build login pages, use `AddDefaultIdentity` and let `AddDefaultUI` help. Roles are not included by default, so add them yourself if needed.
+
+If you want to tune everything from the beginning, use `AddIdentityCore`. If you need the full default feature set, use `AddIdentity`. But if you are new to Identity, even understanding everything `AddIdentity` includes can be a lot.
 
 ## Ref
 

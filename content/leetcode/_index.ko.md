@@ -1,5 +1,5 @@
 +++
-title = "Korean Grammar and Usage Study"
+title = "Leet code"
 description = ""
 sort_by = "date"
 paginate_by = 5

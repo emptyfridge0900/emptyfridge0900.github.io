@@ -7,16 +7,18 @@ categories = ["Post"]
 tags = ["post","Rust"]
 +++
 
-간만에 rust 공부를 하다가 예전에 공부했던 closure의 lifetime을 복습해야겠다는 생각이 들었다.
+While studying Rust again after a while, I decided to review the lifetime of closures that I had studied before.
 
-## 문제의 발단
-몇달전 interpreter 프로젝트를 할때 제일 골치 아팠던게 evaluation을 끝낸 결과 같을 화면에 보여주는 일이었다.  
-기존의 코드는 evaluation이 끝나면 마지막 결과 값만을 출력했는데 그렇게 마지막 값만 출력하면 string 을 출력하는 함수 put은 사실상 마지막 라인에서만 쓰일 수 있는 있으나 마나 한 함수 가 되어버리므로 put을 어디서든 쓸 수 있도록 업데이트 해야했다.  
+## Where the problem started
 
+A few months ago, while working on an interpreter project, one of the most annoying problems was showing evaluation results on the same screen after evaluation finished.
 
+The existing code printed only the final result after evaluation ended. But if only the final value is printed, a string-output function like `put` can practically be used only on the last line, making it almost useless. So I needed to update it so `put` could be used anywhere.
 
-## 해결책
-그래서 찾아낸 방법은 evaluator안에 put 함수를 주입시켜서 evaluator가 소유한 메소드처럼 언제든지 중간중에 call을 할 수 있도록 만드는 것이였다. C#으로 치면 Func delegate를 evaluator의 constructor에 패스해 주어서 delegate를 필요할때마다 부르는 형식이다.
+## Solution idea
+
+The method I found was to inject the `put` function into the evaluator so the evaluator could call it at any point, as if it owned the method. In C# terms, it is like passing a `Func` delegate into the evaluator's constructor and calling that delegate whenever needed.
+
 ```cs
 public class Evaluator{
     private Func<string,string> _func;
@@ -31,10 +33,13 @@ Func<string,string> print = (string msg)=> Console.WriteLine(msg);
 var evaluator = new Evaluator(print);
 evaluator.PrintToScreen("hello world!");
 ```
-C#으로 말하자면 이런느낌?  
 
-## 하지만...
-모든 코드가 생각대로 구현되기만 하면 얼마나 좋을까? C#으로는 아주 쉽게 구현할 수 있는 해결책이였지만 rust로 구현하기에는 내 내공이 짧았다.
+In C#, it would feel something like this.
+
+## But...
+
+It would be nice if every idea could be implemented exactly as imagined. In C#, this solution would be very easy, but I did not have enough Rust skill to implement it cleanly.
+
 ```rs
 fn main() {
     let mut s1:Vec<String> = vec!["hello".to_string()];
@@ -59,18 +64,22 @@ impl Test{
     }
 }
 ```
-위의 코드는 내가 당시 테스트 하려고 썼던 rust 코드를 그대로 가져온 것이다.  
-그리고 compiler가 뱉어내는 error 메세지는
-> s1 does not live long enough  
-> note: due to object lifetime defaults, Box<dyn for<'a> FnMut(&'a str)> actually means Box<(dyn for<'a> FnMut(&'a str) + 'static)> 
 
-분명 s1의 lifetime은 프로그램이 끝날때까지이고 test.world()는 프로그램이 끝나기 전에 불리는데.  
-하지만 note를 보면 closure가 static lifetime을 갖는다는 힌트를 볼 수 있다.  
-왜인지 모르겠지만 기본 lifetime이 static이여서 그런건데 vector를 static으로 변환해보고 여기저기 lifetime을 변경해보았는데 잘 안됬다. 그래서 커뮤니티에 물어봤다.
+The code above is the exact Rust test code I wrote at the time.
 
-https://users.rust-lang.org/t/lifetime-and-closure/123655
+The compiler error was:
 
+> s1 does not live long enough
+> note: due to object lifetime defaults, Box<dyn for<'a> FnMut(&'a str)> actually means Box<(dyn for<'a> FnMut(&'a str) + 'static)>
 
-## 해결
-jofas라는 행님이 10분만에 답을 달아주셨는데, 정답은 Box<dyn FnMut(&str)> lifetime을 Box<dyn FnMut(&str) + a`> 로 바꿔주는 것!  
-Boxed closure의 lifetime이 Test 보다 오래 갈 수 없으니 문제 해결이다.
+I thought the lifetime of `s1` clearly lasted until the program ended, and `test.world()` was called before the program ended.
+
+But the note hints that the closure has a static lifetime. For some reason, the default lifetime was static. I tried turning the vector into static and changing lifetimes in several places, but it did not work, so I asked the community.
+
+<https://users.rust-lang.org/t/lifetime-and-closure/123655>
+
+## Fix
+
+Someone named jofas answered in about 10 minutes. The answer was to change the lifetime of `Box<dyn FnMut(&str)>` to `Box<dyn FnMut(&str) + 'a>`!
+
+The boxed closure cannot outlive `Test`, so the problem is solved.

@@ -7,14 +7,14 @@ categories = ["Post"]
 tags = ["post","Rust"]
 +++
 
-요즘 axum을 공부하고 있는데 지난 이틀동안은 Service trait가 어떻게 만들어 졌는지 살펴보았다.
+I have been studying axum recently, and over the last two days I looked into how the `Service` trait was created.
 
-[링크](https://tokio.rs/blog/2021-05-14-inventing-the-service-trait)
+[Link](https://tokio.rs/blog/2021-05-14-inventing-the-service-trait)
 
-내가 보기에 편하게 주절주절 써놓은 것이지 위의 아티클을 번역한 건 아니다.
+This is not a translation of that article. It is my own loose explanation written in a way that is easier for me to follow.
 
+Suppose we have an API like this:
 
-아래와 같은 api가 있다고 치자
 ```rs
 // Create a server that listens on port 3000
 let server = Server::new("127.0.0.1:3000").await?;
@@ -23,15 +23,18 @@ let server = Server::new("127.0.0.1:3000").await?;
 server.run(the_users_application).await?;
 ```
 
-the_users_application은 어떻게 생겼을까?
+What would `the_users_application` look like?
+
 ```rs
 fn handle_request(request: HttpRequest) -> HttpResponse {
     // ...
 }
 ```
-위에 `HttpRequest`와 `HttpResponse`는 Tower가 제공하는 타입이 아니라, 예시로 만든 HTTP 프레임워크가 제공한다고 가정한 구조체이다.
 
-run함수는 아래와 같이 생겼을 것이다.
+Here, `HttpRequest` and `HttpResponse` are not types provided by Tower. Assume they are structs provided by an example HTTP framework.
+
+The `run` function would probably look like this.
+
 ```rs diff, hl_lines=4
 impl Server {
     async fn run<F>(self, handler: F) -> Result<(), Error>
@@ -55,14 +58,16 @@ impl Server {
 }
 ```
 
-run함수는 HttpRequest를 받아서 HttpResponse를 return하는 closure를 파라미터로 받는다.
-그럼 handle_request함수는 아래와 같이 구현할 수 있다.
+The `run` function receives a closure that takes an `HttpRequest` and returns an `HttpResponse`.
+
+Then `handle_request` can be implemented like this.
+
 ```rs diff
 fn handle_request(request: HttpRequest) -> HttpResponse {
     // ...
 }
 
-↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
 fn handle_request(request: HttpRequest) -> HttpResponse {
 +    if request.path() == "/" {
@@ -75,7 +80,8 @@ fn handle_request(request: HttpRequest) -> HttpResponse {
 server.run(handle_request).await?;
 ```
 
-하지만 이 설계에서는 핸들러가 요청을 비동기적으로 처리할 수 없다. DB 조회나 외부 API 호출을 기다리는 동안 다른 작업을 처리할 수 있게 하려면 아래와 같이 바꿔주자
+But with this design, the handler cannot process requests asynchronously. If we want it to do other work while waiting for a database lookup or external API call, we need to change it like this.
+
 ```rust diff
 impl Server {
     async fn run<F>(self, handler: F) -> Result<(), Error>
@@ -97,7 +103,7 @@ impl Server {
     }
 }
 
-↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
 impl Server {
     async fn run<F, Fut>(self, handler: F) -> Result<(), Error>
@@ -126,10 +132,9 @@ impl Server {
 }
 ```
 
-서버 파라미터가 바뀌었으니 handle_request도 비동기 처리를 할수 있게되었다
+Now that the server parameter changed, `handle_request` can also process requests asynchronously.
 
 ```rs diff
-
 fn handle_request(request: HttpRequest) -> HttpResponse {
     if request.path() == "/" {
         HttpResponse::ok("Hello, World!")
@@ -138,7 +143,7 @@ fn handle_request(request: HttpRequest) -> HttpResponse {
     }
 }
 
-↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
 async fn handle_request(request: HttpRequest) -> HttpResponse {
     if request.path() == "/" {
@@ -153,7 +158,8 @@ async fn handle_request(request: HttpRequest) -> HttpResponse {
 }
 ```
 
-서버의 run함수가 error를 처리할수 있게 한번 더 업그레이드 해주자
+Let's upgrade the server's `run` function once more so it can handle errors.
+
 ```rs diff,hl_lines=28 39
 impl Server {
     async fn run<F, Fut>(self, handler: F) -> Result<(), Error>
@@ -176,7 +182,7 @@ impl Server {
     }
 }
 
-↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
 impl Server {
     async fn run<F, Fut>(self, handler: F) -> Result<(), Error>
@@ -207,14 +213,14 @@ impl Server {
 }
 ```
 
+## Adding features
 
-## 기능 추가 
+Let's add a *timeout feature* and a feature that adds the `content-type: application/json` header.
 
-*타임아웃 기능*과 그리고 *content-type:application/json을 헤더에 추가하는 기능*을 추가해보자
+Since `run` was changed above to receive `Result<HttpResponse, Error>`, assume from this point that `handle_request` also returns `Result<HttpResponse, Error>`.
 
-앞에서 `run`이 `Result<HttpResponse, Error>`를 받도록 바뀌었으므로, 여기서부터 `handle_request`도 `Result<HttpResponse, Error>`를 반환한다고 가정한다.
+Create a new handler that uses `handle_request`.
 
-handle_request를 사용하는 새로운 handler를 만들자
 ```rs
 async fn handler_with_timeout(request: HttpRequest) -> Result<HttpResponse, Error> {
     let result = tokio::time::timeout(
@@ -230,7 +236,8 @@ async fn handler_with_timeout(request: HttpRequest) -> Result<HttpResponse, Erro
 }
 ```
 
-그리고 handler_with_timeout을 사용하는 handler를 만들자
+Now create a handler that uses `handler_with_timeout`.
+
 ```rs
 async fn handler_with_timeout_and_content_type(
     request: HttpRequest,
@@ -241,28 +248,34 @@ async fn handler_with_timeout_and_content_type(
 }
 ```
 
-이 방식은 잘 작동하겠지만 스케일 하기에는 쉽지 않다.
-지금은 2개의 handler를 추가 했지만 나중에 몇개의 handler를 더 추가 한다면 handler를 추가할 때마다 중간 핸들러 호출의 체인을 하드 코딩해야 하므로 추가하기 힘들다.
+This approach works, but it does not scale well.
+
+We have added only two handlers so far, but if we add more later, we would need to hard-code the chain of intermediate handler calls every time a handler is added.
+
 ```rs
 let final_handler = with_content_type(with_timeout(handle_request));
 ```
-예를 들어 handler_with_timeout_and_content_type 함수는 handler_with_timeout 함수를 필요로 하고 handler_with_timeout 함수는 handle_request 함수를 필요로 한다. 그래서 엄격하게 순서를 지켜야하는데 이 함수들을 유연하게 compose하는 방법이 없을까?
+
+For example, `handler_with_timeout_and_content_type` needs `handler_with_timeout`, and `handler_with_timeout` needs `handle_request`. The order must be strict. Is there a way to compose these functions more flexibly?
 
 ```rs
 async fn handle_request<F>(
     fn: F
-) -> impl Fn(HttpRequest) -> impl Future<Output = Result<HttpResponse, Error>> 
+) -> impl Fn(HttpRequest) -> impl Future<Output = Result<HttpResponse, Error>>
 where
     F: Fn(HttpRequest) -> Future<Output = Result<HttpResponse, Error>>
 {
 }
 ```
-이런 형태의 핸들러 변환 함수를 쓸 수 있다면 좋겠지만, Rust에서는 `impl Trait`를 이런 위치에 중첩해서 쓸 수 없다. 특히 `impl Fn() -> impl Future` 형태는 불가능하다.
-`Box<dyn Future<...>>`를 사용해서 우회할 수는 있지만 heap allocation과 dynamic dispatch 비용이 있으므로 여기서는 배제한다.
+
+It would be nice to write a handler-transforming function like this, but Rust cannot nest `impl Trait` in this position. In particular, `impl Fn() -> impl Future` is not possible.
+
+We could work around it with `Box<dyn Future<...>>`, but that has heap allocation and dynamic dispatch costs, so I will leave it out here.
 
 ### Handler trait
 
-Server::run이 F: Fn(HttpRequest) -> Fut 클로저를 받아들이게 하지 말고 async fn(HttpRequest) -> Result<HttpResponse, Error> 을 캡슐화 하는 Trait를 만들자
+Instead of making `Server::run` receive an `F: Fn(HttpRequest) -> Fut` closure, create a trait that encapsulates `async fn(HttpRequest) -> Result<HttpResponse, Error>`.
+
 ```rs diff, hl_lines=26 28
 impl Server {
     async fn run<F, Fut>(self, handler: F) -> Result<(), Error>
@@ -286,7 +299,7 @@ impl Server {
     }
 }
 
-↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
 impl Server {
 -    async fn run<F, Fut>(self, handler: F) -> Result<(), Error>
@@ -318,12 +331,15 @@ trait Handler {
 }
 ```
 
-원문이 쓰인 2021년에는 Rust stable에서 async 메소드를 가진 trait를 지원하지 않았다. 현재 Rust 1.75+에서는 `async fn` in trait가 안정화되었지만, Tower의 `Service`처럼 future 타입을 associated type으로 노출하고 `poll_ready`까지 포함하는 설계에는 아래 방식이 더 잘 맞는다.
-1. Pin<Box<dyn Future<Output = Result<HttpResponse, Error>>> 을 리턴하는 메소드
-2. type Future을 associated type으로 가지는 Handler
-둘 중 하나의 방식을 택할 수 있다.
+When the original article was written in 2021, stable Rust did not support async methods in traits. Today, Rust 1.75+ has stabilized `async fn` in traits, but for a design like Tower's `Service`, where the future type is exposed as an associated type and `poll_ready` is included, the following approach still fits better.
 
-두번째 방식으로 하자
+1. A method returning `Pin<Box<dyn Future<Output = Result<HttpResponse, Error>>>>`
+2. A `Handler` with `type Future` as an associated type
+
+We can choose either approach.
+
+Let's use the second one.
+
 ```rs
 trait Handler {
     type Future: Future<Output = Result<HttpResponse, Error>>;
@@ -332,7 +348,8 @@ trait Handler {
 }
 ```
 
-기존의 handle_request 함수를 Handler trait로 바꿔주자
+Now convert the existing `handle_request` function into the `Handler` trait.
+
 ```rs
 async fn handle_request(request: HttpRequest) -> HttpResponse {
     if request.path() == "/" {
@@ -345,7 +362,7 @@ async fn handle_request(request: HttpRequest) -> HttpResponse {
     }
 }
 
-↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
 struct RequestHandler;
 
@@ -371,6 +388,7 @@ impl Handler for RequestHandler {
 ```
 
 ### Timeout Handler
+
 ```rs
 async fn handler_with_timeout(request: HttpRequest) -> Result<HttpResponse, Error> {
     let result = tokio::time::timeout(
@@ -385,7 +403,7 @@ async fn handler_with_timeout(request: HttpRequest) -> Result<HttpResponse, Erro
     }
 }
 
-↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
 struct Timeout<T> {
     // T will be some type that implements `Handler`
@@ -416,8 +434,8 @@ where
 }
 ```
 
+This will produce a compile error.
 
-컴파일 에러가 뜰것이다
 ```rs
 144 |       fn call(&mut self, request: HttpRequest) -> Self::Future {
     |               --------- this data with an anonymous lifetime `'_`...
@@ -431,18 +449,22 @@ where
 156 | |         })
     | |_________^ ...is captured here, requiring it to live as long as `'static`
 ```
-self가 async block으로 빨려들어가서 lifetime이 끝까지 살아남지 못해서 생긴 에러
 
+The error happens because `self` is captured into the async block and cannot live long enough.
 
-trait bound에 `Clone`을 추가해주자
+Add `Clone` to the trait bound.
+
 ```rs diff
 impl<T> Handler for Timeout<T>
 where
 -    T: Handler
 +    T: Handler + Clone,
 ```
-그래도 에러가 뜬다.
-컴파일러가 말하길 static lifetime이 필요하다고 한다
+
+It still errors.
+
+The compiler says a static lifetime is required.
+
 ```rs
 140 |   impl<T> Handler for Timeout<T>
     |        - help: consider adding an explicit lifetime bound...: `T: 'static`
@@ -457,7 +479,8 @@ where
     | |__________^ ...so that the type `impl Future` will meet its required lifetime bounds
 ```
 
-'static을 추가해주자. 이제 컴파일 잘 된다
+Add `'static`. Now it compiles.
+
 ```rs diff
 impl<T> Handler for Timeout<T>
 where
@@ -465,10 +488,10 @@ where
 +    T: Handler + Clone + 'static,
 ```
 
+### Content-Type Handler
 
-###  Content-Type Handler
+Do not forget to add `Clone` and `'static` to the `T` type.
 
-T Type에 Clone, 'static 추가해주는걸 잊지말자
 ```rs, hl_lines=9
 #[derive(Clone)]
 struct JsonContentType<T> {
@@ -494,8 +517,8 @@ where
 }
 ```
 
+Now it is easier to compose handlers.
 
-이제는 handler들을 합성하기에 수월해졌다
 ```rs
 let handler = RequestHandler;
 let handler = Timeout::new(handler, Duration::from_secs(30));
@@ -506,8 +529,10 @@ let handler = JsonContentType::new(handler);
 server.run(handler).await
 ```
 
-## Handler를 더 유연하게...
-우리의 handler는 현재 HttpRequest만 다룰 수있다. 좀더 generic한 handler를 만들어보자
+## Making Handler more flexible
+
+Our handler can currently handle only `HttpRequest`. Let's make a more generic handler.
+
 ```rs diff
 trait Handler {
     type Future: Future<Output = Result<HttpResponse, Error>>;
@@ -515,7 +540,7 @@ trait Handler {
     fn call(&mut self, request: HttpRequest) -> Self::Future;
 }
 
-↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
 trait Handler{+<Request>+} {
 +    type Response;
@@ -535,7 +560,9 @@ trait Handler{+<Request>+} {
     fn call(&mut self, request: Request) -> Self::Future;
 }
 ```
+
 ### Request Handler
+
 ```rs diff
 impl Handler for RequestHandler {
     type Future = Pin<Box<dyn Future<Output = Result<HttpResponse, Error>>>>;
@@ -543,7 +570,7 @@ impl Handler for RequestHandler {
     }
 }
 
-↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
 impl Handler{+<HttpRequest>+} for RequestHandler {
 +    type Response = HttpResponse;
@@ -556,15 +583,18 @@ impl Handler{+<HttpRequest>+} for RequestHandler {
     }
 }
 ```
+
 ### Timeout Handler
 
-타임아웃 핸들러는 좀 다르다. 다른 핸들러를 감싸고 있고 비동기 timeout도 추가했기 때문이다.
-감싸고 있는 핸들러가 같은 타입을 가지고 있는한 요청과 응답 타입에는 신경쓰지 않아도 된다.
+The timeout handler is a little different because it wraps another handler and also adds an async timeout.
 
-에러타입은 좀 다르다. tokio::time::timeout은 Result<T, tokio::time::error::Elapsed> 을 리턴한다
-우리는 tokio::time::error::Elapsed 타입을 내부 핸들러의 에러타입(T::Error)으로 변환해야한다
+As long as the wrapped handler has the same type, we do not need to care about the request and response types.
+
+The error type is different. `tokio::time::timeout` returns `Result<T, tokio::time::error::Elapsed>`.
+
+We need to convert `tokio::time::error::Elapsed` into the inner handler's error type, `T::Error`.
+
 ```rs diff
-
 impl<T> Handler for Timeout<T>
 where
     T: Handler,
@@ -587,7 +617,7 @@ where
     }
 }
 
-↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
 impl<{+R,+}T> Handler{+<R>+} for Timeout<T>
 where
@@ -633,9 +663,13 @@ where
     }
 }
 ```
+
 ### Content-Type Handler
-JsonContentType Handler도 앞의 두 핸들러와는 좀 다르다. 요청과 에러 타입에 대해서는 신경 안쓰지만 응답 타입에 대해서는 신경써야한다.
-응답 타입은 반드시 set_header를 콜 할수 있는 타입이여야 한다.
+
+`JsonContentType` is also different from the previous two handlers. It does not care about the request or error type, but it does care about the response type.
+
+The response type must be able to call `set_header`.
+
 ```rs diff
 impl<T> Handler for JsonContentType<T>
 where
@@ -654,7 +688,7 @@ where
     }
 }
 
-↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
 impl<{+R,+} T> Handler{+<R>+} for JsonContentType<T>
 where
@@ -683,7 +717,6 @@ where
 }
 ```
 
-
 ```rs diff
 impl Server {
     async fn run<T>(self, mut handler: T) -> Result<(), Error>
@@ -694,7 +727,7 @@ impl Server {
     }
 }
 
-↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
 impl Server {
     async fn run<T>(self, mut handler: T) -> Result<(), Error>
@@ -707,8 +740,10 @@ impl Server {
 }
 ```
 
-## Service trait의 등장
-Handler trait는 server에서도 client에서도 사용될 수 있다. server, client 둘다 사용 될 수 있기 때문에 Handler 라는 이름은 부적절하다. client는 요청을 handle하지 않기 때문이다. 그러니 Handler대신 Service라고 부르자
+## The appearance of the Service trait
+
+The `Handler` trait can be used on both servers and clients. Since it can be used by both, the name `Handler` is not appropriate. A client does not "handle" a request. So let's call it `Service` instead.
+
 ```rs diff
 trait Handler<Request> {
     type Response;
@@ -718,7 +753,7 @@ trait Handler<Request> {
     fn call(&mut self, request: Request) -> Self::Future;
 }
 
-↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
 -trait Handler<Request> {
 +trait Service<Request> {
@@ -729,13 +764,17 @@ trait Handler<Request> {
     fn call(&mut self, request: Request) -> Self::Future;
 }
 ```
-이것은 Tower에서 정의하는 Service trait에 근접했다. Tower에서는 이미 구현되어 있는 Timeout, Retry, RateLimit 같은 service들이 존재한다.
 
-Timeout 과 JsonContentType 같은 타입을 middleware라고 부른다. 얘들은 다른 service를 감싸기 때문. Request Handler같은 타입은 leaf service라고 부른다. 중첩된 서비스들 중 말단에 위치해있기 때문이다. 응답은 leaf service에서 생성되고 변조는 middleware에서 일어난다.
+This is close to the `Service` trait defined by Tower. Tower already provides implemented services such as `Timeout`, `Retry`, and `RateLimit`.
 
-## 배압
-배압은 생성하는 속도를 소모하는 속도가 못 따라갈때 일어난다.
-동시 처리하는 요청의 최대 값을 설정하는 ConcurrencyLimit middleware를 만든다고 생각해보자. 처리할수 있는 부하의 양의 상한선을 지켜주는 서비스가 있으면 좋을 것이다.
+Types like `Timeout` and `JsonContentType` are called middleware because they wrap another service. Types like `RequestHandler` are called leaf services because they sit at the end of a nested service stack. The response is created by the leaf service, and middleware modifies it.
+
+## Backpressure
+
+Backpressure happens when the production rate is faster than the consumption rate.
+
+Imagine building a `ConcurrencyLimit` middleware that sets the maximum number of requests processed concurrently. It would be useful to have a service that enforces an upper bound on how much load can be processed.
+
 ```rs
 impl<R, T> Service<R> for ConcurrencyLimit<T> {
     fn call(&mut self, request: R) -> Self::Future {
@@ -748,17 +787,20 @@ impl<R, T> Service<R> for ConcurrencyLimit<T> {
     }
 }
 ```
-정원이 차면 자리가 빌때까지 기다려야하는데 요청을 메모리에 대기 시키기 때문에 메모리 손실이 일어남. 
 
-이러한 method가 있으면 요청을 줄 세워 놓을 필요가 없음.
+If capacity is full, the request must wait until a slot opens. But if requests are held in memory while waiting, memory is wasted.
+
+With a method like this, requests do not need to be queued up.
+
 ```rs
 trait Service<R> {
     async fn ready(&mut self);
 }
 ```
-service.call(request).await 하기 전에 service.ready().await 로 자리가 있는지 확인하면 메모리를 아낄수 있다.
 
-원문이 쓰인 2021년에는 async 함수를 trait에서 사용할 수 없었다. 현재는 가능하지만, `ReadyFuture`라는 associated type을 하나 더 추가해서 Future를 리턴하면 예전과 같은 lifetime 문제를 야기할 수 있다. 우리는 Future trait에서 아이디어를 얻을 수 있다. 바로 poll_ready 함수를 사용하는 것이다.
+Before calling `service.call(request).await`, we can call `service.ready().await` to check whether there is capacity and save memory.
+
+When the original article was written in 2021, async functions could not be used in traits. Today they can, but adding another associated type such as `ReadyFuture` and returning a future can create the same kind of lifetime problem as before. We can borrow an idea from the `Future` trait: use a `poll_ready` function.
 
 ```rs
 use std::task::{Context, Poll};
@@ -767,11 +809,14 @@ trait Service<R> {
     fn poll_ready(&mut self, cx: &mut Context<'_>) -> Poll<()>;
 }
 ```
-만약 서비스가 수용량이 부족하면 poll_ready가 Poll::Pending을 리턴하고 caller에게 capacity가 다시 가능하게 되면 Context의 waker를 사용하여 통지한다.
-poll_ready가 Future를 리턴하지 않는다는 말은 우리는 기다리지 않고 신속하게 ready 상태를 체크할수 있다는 말이다. 만약 우리가 poll_ready를 부르고 Poll::Pending을 리턴받으면, 기다리는 대신 다른 일을 하기로 결정할 수도 있다. 무엇보다도 이것은 서비스가 얼마나 자주 Poll::Pending을 리턴하는지 평가해서 load balancer를 만들수 있게 해준다. 
-이런식으로 caller와 capacity에 대해 소통하는 것을 backpressure propagation이라고 한다. caller한테 요청이 너무 많으니 좀 줄이라고 말하는 것과 같다. 다른 방법으로 backpressure를 다루는 방법은 buffering, load shedding 이 있다.
 
-마지막으로 capacity 예약을 하는 동안 에러가 발생할 수 있으므로 poll_ready 는 Poll<Result<(), Self::Error>> 를 리턴해야 할 것이다.
+If the service does not have enough capacity, `poll_ready` returns `Poll::Pending` and uses the `Context` waker to notify the caller when capacity becomes available again.
+
+Because `poll_ready` does not return a future, we can check readiness quickly without waiting. If we call `poll_ready` and receive `Poll::Pending`, we may decide to do something else instead of waiting. More importantly, this lets us build load balancers by evaluating how often a service returns `Poll::Pending`.
+
+Communicating capacity from callee to caller like this is called backpressure propagation. It is like telling the caller, "There are too many requests, please slow down." Other ways to handle backpressure include buffering and load shedding.
+
+Finally, an error can happen while reserving capacity, so `poll_ready` should return `Poll<Result<(), Self::Error>>`.
 
 ```rs
 trait Service<Request> {
@@ -782,7 +827,7 @@ trait Service<Request> {
     fn call(&mut self, request: Request) -> Self::Future;
 }
 
-↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
 pub trait Service<Request> {
     type Response;
@@ -797,11 +842,13 @@ pub trait Service<Request> {
     fn call(&mut self, req: Request) -> Self::Future;
 }
 ```
-이렇게 tower의 Service trait가 완성되었다.
 
-많은 middleware들이 자신만의 backpressure를 추가 하지 않고 자기가 감싸고 있는 service의 poll_ready 의 구현을 가져다 쓴다. 하지만 middleware에서의 backpressure는 의미있는 사용법들이 있다. 예를 들어 rate limiting, load balancing, 그리고 auto scaling등이다.
+This completes Tower's `Service` trait.
 
-마지막으로 아래는 service를 사용하는 제일 흔한방법이다
+Many middleware types do not add their own backpressure and instead reuse the `poll_ready` implementation of the service they wrap. But backpressure in middleware has meaningful uses, such as rate limiting, load balancing, and auto scaling.
+
+Finally, this is the most common way to use a service.
+
 ```rs
 use tower::{
     Service,

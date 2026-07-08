@@ -1,5 +1,5 @@
 +++
-title="문법공부..."
+title="Korean Grammar Terms"
 date=2025-05-22
 
 [taxonomies]
@@ -7,45 +7,47 @@ categories = ["Korean"]
 tags = ["korean", "grammar"]
 +++
 
-한국어 문법을 공부하면서 헷갈리는 기본 용어를 정리한다. 영어 문법 용어와 1:1로
-대응되지 않는 경우가 많으니, 한국어 문법 안에서 어떤 역할을 하는지 먼저 보는 게 좋다.
+This note organizes basic grammar terms that are easy to confuse while studying Korean grammar. They often do not map one-to-one to English grammar terms, so it is better to first understand what role each term plays inside Korean grammar.
 
-## 큰 그림
+## Big picture
 
 ```text
-문장
-└── 어절
-    └── 단어
-        └── 형태소
+sentence
+└── eojeol, spacing unit
+    └── word
+        └── morpheme
 ```
 
-예문:
+Example sentence:
 
 ```text
 철수가 밥을 먹었다.
 ```
 
-| 단위 | 분석 |
+| Unit | Analysis |
 |---|---|
-| 문장 | 철수가 밥을 먹었다. |
-| 어절 | 철수가 / 밥을 / 먹었다 |
-| 단어 | 철수, 가, 밥, 을, 먹었다 |
-| 형태소 | 철수 / 가 / 밥 / 을 / 먹- / -었- / -다 |
+| Sentence | 철수가 밥을 먹었다. |
+| Eojeol, spacing unit | 철수가 / 밥을 / 먹었다 |
+| Word | 철수, 가, 밥, 을, 먹었다 |
+| Morpheme | 철수 / 가 / 밥 / 을 / 먹- / -었- / -다 |
 
-## 기본 단위
+## Basic units
 
-| 용어 | 영어 느낌 | 뜻 | 예 |
+| Korean term | English feel | Meaning | Example |
 |---|---|---|---|
-| 음절 | syllable | 한 번에 발음되는 소리 단위 | 철 / 수 / 가 |
-| 형태소 | morpheme | 뜻을 가진 가장 작은 말의 단위 | 먹-, -었-, -다 |
-| 단어 | word | 홀로 쓰이거나 조사가 붙을 수 있는 말의 단위 | 철수, 밥, 먹었다 |
-| 어절 | spacing unit | 띄어쓰기 단위 | 철수가, 밥을, 먹었다 |
-| 구 | phrase | 두 단어 이상이 모여 하나의 성분처럼 쓰이는 말 | 아주 예쁜 꽃 |
-| 절 | clause | 주어+서술어 구조를 가진 말 덩어리 | 비가 오면 |
-| 문장 | sentence | 완결된 생각을 나타내는 말 | 비가 온다. |
+| 음절 | syllable | A sound unit pronounced at once | 철 / 수 / 가 |
+| 형태소 | morpheme | The smallest unit of language with meaning | 먹-, -었-, -다 |
+| 단어 | word | A unit that can stand alone or take a particle | 철수, 밥, 먹었다 |
+| 어절 | spacing unit | A unit separated by spaces in writing | 철수가, 밥을, 먹었다 |
+| 구 | phrase | Two or more words acting like one sentence component | 아주 예쁜 꽃 |
+| 절 | clause | A chunk with a subject-predicate structure | 비가 오면 |
+| 문장 | sentence | A complete expression of thought | 비가 온다. |
 
-한국어에서는 **어절**이 중요하다. 띄어쓰기 단위라서 눈에 잘 보이고, 보통 하나의 어절은
-`실질 형태소 + 형식 형태소`로 이루어진다.
+In Korean, **어절** is important. It is visible because it corresponds to spacing, and one eojeol is usually made of:
+
+```text
+substantive morpheme + formal morpheme
+```
 
 ```text
 철수가 = 철수 + 가
@@ -53,11 +55,11 @@ tags = ["korean", "grammar"]
 먹었다 = 먹- + -었- + -다
 ```
 
-## 품사
+## Parts of speech
 
-한국어 학교 문법에서는 보통 9품사를 사용한다.
+Korean school grammar usually uses nine parts of speech.
 
-| 큰 분류 | 품사 | 영어 느낌 | 예 |
+| Broad class | Part of speech | English feel | Example |
 |---|---|---|---|
 | 체언 | 명사 | noun | 사람, 학교, 사랑 |
 | 체언 | 대명사 | pronoun | 나, 너, 이것 |
@@ -69,9 +71,9 @@ tags = ["korean", "grammar"]
 | 관계언 | 조사 | particle | 이/가, 은/는, 을/를 |
 | 독립언 | 감탄사 | interjection | 아!, 어머!, 와! |
 
-### 체언
+### Nominal words, 체언
 
-체언은 문장에서 주어, 목적어, 보어 등으로 쓰일 수 있고 조사가 붙는다.
+체언 can be used as the subject, object, complement, and similar sentence components. Particles attach to them.
 
 ```text
 철수가 왔다.
@@ -79,127 +81,124 @@ tags = ["korean", "grammar"]
 둘이 먼저 갔다.
 ```
 
-- `철수`: 명사
-- `나`: 대명사
-- `둘`: 수사
+- `철수`: noun
+- `나`: pronoun
+- `둘`: numeral
 
-### 용언
+### Predicative words, 용언
 
-용언은 문장의 서술어가 될 수 있고 활용한다. 한국어에서 동사와 형용사는 둘 다 어미가 붙어
-형태가 바뀐다.
+용언 can become the predicate of a sentence and conjugate. In Korean, both verbs and adjectives change form when endings attach.
 
 ```text
 먹다 -> 먹었다 -> 먹는다 -> 먹고
 예쁘다 -> 예뻤다 -> 예쁘다 -> 예쁘고
 ```
 
-영어식으로 생각하면 한국어 형용사는 adjective라기보다 **descriptive verb / state verb**에
-가깝다. `예쁘다`, `크다`, `춥다`는 한국어에서 용언이고 활용한다.
+From an English grammar mindset, Korean adjectives are closer to **descriptive verbs / state verbs** than to English adjectives. `예쁘다`, `크다`, and `춥다` are 용언 in Korean, and they conjugate.
 
-### 수식언
+### Modifiers, 수식언
 
-수식언은 다른 말을 꾸민다.
+수식언 modify other words.
 
 ```text
 새 책을 샀다.
 아주 빨리 달렸다.
 ```
 
-- `새`: 관형사. 뒤의 명사 `책`을 꾸민다.
-- `아주`, `빨리`: 부사. 뒤의 부사나 용언을 꾸민다.
+- `새`: determiner. It modifies the following noun `책`.
+- `아주`, `빨리`: adverbs. They modify a following adverb or predicative word.
 
-### 관계언
+### Relational words, 관계언
 
-조사는 앞말에 붙어서 문장 안의 관계를 표시한다.
+Particles attach to the preceding word and mark relationships inside the sentence.
 
 ```text
 철수가 밥을 먹었다.
 나는 학교에 간다.
 ```
 
-- `가`: 주격 조사
-- `을`: 목적격 조사
-- `에`: 부사격 조사
+- `가`: subject case particle
+- `을`: object case particle
+- `에`: adverbial case particle
 
-### 독립언
+### Independent words, 독립언
 
-감탄사는 다른 문장 성분과 직접적인 문법 관계 없이 독립적으로 쓰인다.
+Interjections are used independently, without a direct grammatical relationship to other sentence components.
 
 ```text
 와, 정말 예쁘다!
 아, 이제 알겠다.
 ```
 
-## 문장 성분
+## Sentence components
 
-문장 성분은 단어가 아니라 **문장에서 맡은 역할**이다.
+Sentence components are not word classes. They are **roles inside a sentence**.
 
-| 성분 | 뜻 | 예 |
+| Component | Meaning | Example |
 |---|---|---|
-| 주어 | 동작/상태의 주체 | 철수가 밥을 먹었다 |
-| 서술어 | 주어의 동작/상태를 설명 | 철수가 밥을 먹었다 |
-| 목적어 | 동작의 대상 | 철수가 밥을 먹었다 |
-| 보어 | `되다`, `아니다` 앞에서 필요한 성분 | 철수가 의사가 되었다 |
-| 관형어 | 체언을 꾸미는 성분 | 예쁜 꽃이 피었다 |
-| 부사어 | 용언, 관형어, 부사어, 문장 전체를 꾸미는 성분 | 철수가 빨리 달렸다 |
-| 독립어 | 문장과 독립적으로 쓰이는 성분 | 와, 정말 좋다 |
+| 주어 | Subject of an action/state | 철수가 밥을 먹었다 |
+| 서술어 | Describes the subject's action/state | 철수가 밥을 먹었다 |
+| 목적어 | Object of an action | 철수가 밥을 먹었다 |
+| 보어 | Required before `되다`, `아니다` | 철수가 의사가 되었다 |
+| 관형어 | Modifies a nominal word | 예쁜 꽃이 피었다 |
+| 부사어 | Modifies a predicative word, determiner phrase, adverbial, or whole sentence | 철수가 빨리 달렸다 |
+| 독립어 | Used independently from the sentence | 와, 정말 좋다 |
 
-같은 단어라도 문장 안에서 맡은 역할이 달라질 수 있다.
+The same word can play different roles depending on its sentence position.
 
 ```text
-철수가 학생이다.       -> 철수가: 주어
-나는 철수를 만났다.   -> 철수를: 목적어
+철수가 학생이다.       -> 철수가: subject
+나는 철수를 만났다.   -> 철수를: object
 ```
 
-## 어근, 접사, 어간, 어미
+## Root, affix, stem, and ending
 
-이 부분이 제일 헷갈린다.
+This is the part that is easiest to confuse.
 
-| 용어 | 뜻 | 예 |
+| Korean term | Meaning | Example |
 |---|---|---|
-| 어근 | 단어의 중심 의미를 가진 부분 | 먹-, 예쁘-, 믿- |
-| 접사 | 어근에 붙어 새 단어를 만드는 요소 | 맨-, 풋-, -이, -히 |
-| 어간 | 활용할 때 변하지 않는 중심 부분 | 먹-, 가-, 예쁘- |
-| 어미 | 용언 어간 뒤에 붙어 활용을 만드는 부분 | -다, -고, -면, -었- |
+| 어근 | The part carrying the core meaning of a word | 먹-, 예쁘-, 믿- |
+| 접사 | An element that attaches to a root to make a new word | 맨-, 풋-, -이, -히 |
+| 어간 | The central part that does not change during conjugation | 먹-, 가-, 예쁘- |
+| 어미 | The part attached after a predicative stem to create conjugation | -다, -고, -면, -었- |
 
 ### 어근 vs 어간
 
-어근은 단어 형성 관점이고, 어간은 용언 활용 관점이다.
+어근 is a word-formation concept. 어간 is a predicative conjugation concept.
 
 ```text
 먹다 = 먹- + -다
 ```
 
-- `먹-`: 어근이면서 어간
-- `-다`: 어미
+- `먹-`: both root and stem
+- `-다`: ending
 
 ```text
 풋사과 = 풋- + 사과
 ```
 
-- `사과`: 어근
-- `풋-`: 접두사
-- 이 단어는 용언 활용이 아니므로 어간/어미 분석이 핵심이 아니다.
+- `사과`: root
+- `풋-`: prefix
+- This word is not a predicative conjugation, so stem/ending analysis is not the key point.
 
-## 접사
+## Affixes
 
-접사는 어근에 붙어서 새 단어를 만든다. 영어의 prefix/suffix와 비슷하지만 한국어 문법에서는
-활용 어미와 구분해야 한다.
+Affixes attach to roots and create new words. They are similar to English prefixes/suffixes, but in Korean grammar they must be distinguished from conjugational endings.
 
-| 종류 | 위치 | 예 |
+| Type | Position | Example |
 |---|---|---|
-| 접두사 | 앞에 붙음 | 맨손, 풋사과, 헛수고 |
-| 접미사 | 뒤에 붙음 | 먹이, 높이, 사람답다 |
+| Prefix | Attaches before | 맨손, 풋사과, 헛수고 |
+| Suffix | Attaches after | 먹이, 높이, 사람답다 |
 
 ```text
 먹다 -> 먹이
 ```
 
-`먹이`의 `-이`는 새 명사를 만드는 접미사다.
+The `-이` in `먹이` is a suffix that creates a new noun.
 
-## 어미
+## Endings
 
-어미는 용언의 어간 뒤에 붙어서 시제, 높임, 연결, 종결 같은 문법 의미를 만든다.
+Endings attach after the stem of a predicative word and create grammatical meaning such as tense, honorifics, connection, and sentence ending.
 
 ```text
 먹다 = 먹- + -다
@@ -208,112 +207,110 @@ tags = ["korean", "grammar"]
 먹으면 = 먹- + -으면
 ```
 
-### 선어말 어미
+### Pre-final ending, 선어말 어미
 
-어말 어미 앞에 오는 어미다.
+A pre-final ending comes before the final ending.
 
 ```text
 먹었다 = 먹- + -었- + -다
 가셨다 = 가- + -시- + -었- + -다
 ```
 
-- `-었-`: 과거 시제 선어말 어미
-- `-시-`: 주체 높임 선어말 어미
+- `-었-`: past-tense pre-final ending
+- `-시-`: subject-honorific pre-final ending
 
-`-았-/-었-`은 접미사가 아니라 **선어말 어미**다. `먹었다`는 `먹- + -었- + -다`로 분석한다.
+`-았-/-었-` is not a suffix. It is a **pre-final ending**. `먹었다` is analyzed as `먹- + -었- + -다`.
 
-### 어말 어미
+### Final ending, 어말 어미
 
-단어 끝에 오는 어미다.
+A final ending comes at the end of the word.
 
-| 종류 | 역할 | 예 |
+| Type | Role | Example |
 |---|---|---|
-| 종결 어미 | 문장을 끝냄 | -다, -어요, -습니다 |
-| 연결 어미 | 문장을 이어 줌 | -고, -지만, -면 |
-| 전성 어미 | 용언을 명사/관형사/부사처럼 쓰게 함 | -기, -ㅁ, -는, -게 |
+| Sentence-final ending | Ends a sentence | -다, -어요, -습니다 |
+| Connective ending | Connects clauses/sentences | -고, -지만, -면 |
+| Transformative ending | Lets a predicative word act like a noun, determiner, or adverb | -기, -ㅁ, -는, -게 |
 
-예:
+Examples:
 
 ```text
-밥을 먹었다.      -> -다: 종결 어미
-밥을 먹고 잤다.   -> -고: 연결 어미
-밥을 먹기 싫다.   -> -기: 명사형 전성 어미
-밥을 먹는 사람    -> -는: 관형사형 전성 어미
-빠르게 달린다.    -> -게: 부사형 전성 어미
+밥을 먹었다.      -> -다: sentence-final ending
+밥을 먹고 잤다.   -> -고: connective ending
+밥을 먹기 싫다.   -> -기: nominalizing transformative ending
+밥을 먹는 사람    -> -는: adnominal transformative ending
+빠르게 달린다.    -> -게: adverbial transformative ending
 ```
 
-## 조사
+## Particles
 
-조사는 체언이나 부사, 어미 뒤에 붙어 문법 관계나 의미를 더한다.
+Particles attach after nominal words, adverbs, or endings and add grammatical relationships or meaning.
 
-| 종류 | 역할 | 예 |
+| Type | Role | Example |
 |---|---|---|
-| 격조사 | 문장 성분의 격을 표시 | 이/가, 을/를, 에, 에서, 로 |
-| 보조사 | 특별한 의미를 더함 | 은/는, 도, 만, 까지, 조차 |
-| 접속 조사 | 단어를 이어 줌 | 와/과, 하고, 랑 |
+| Case particle | Marks the case of a sentence component | 이/가, 을/를, 에, 에서, 로 |
+| Auxiliary particle | Adds special meaning | 은/는, 도, 만, 까지, 조차 |
+| Conjunctive particle | Connects words | 와/과, 하고, 랑 |
 
-### 격조사
+### Case particles
 
 ```text
 철수가 밥을 학교에서 먹었다.
 ```
 
-- `철수가`: `가`가 주어 표시
-- `밥을`: `을`이 목적어 표시
-- `학교에서`: `에서`가 장소 부사어 표시
+- `철수가`: `가` marks the subject
+- `밥을`: `을` marks the object
+- `학교에서`: `에서` marks an adverbial of place
 
-### 보조사
+### Auxiliary particles
 
 ```text
 철수는 밥도 먹었다.
 ```
 
-- `는`: topic/contrast 느낌
-- `도`: also/even 느낌
+- `는`: topic/contrast feel
+- `도`: also/even feel
 
-`은/는`은 흔히 topic marker라고 설명하지만, 항상 영어의 topic과 완전히 같지는 않다. 대조,
-화제 제시, 이미 알고 있는 정보 표시 등 여러 느낌을 가질 수 있다.
+`은/는` is often explained as a topic marker, but it is not always exactly the same as English topic. It can carry several nuances: contrast, introducing a topic, or marking information already known in the discourse.
 
-## 동사 종류
+## Types of verbs
 
-| 용어 | 영어 느낌 | 뜻 | 예 |
+| Korean term | English feel | Meaning | Example |
 |---|---|---|---|
-| 자동사 | intransitive verb | 목적어 없이 쓰이는 동사 | 아이가 웃는다 |
-| 타동사 | transitive verb | 목적어를 필요로 하는 동사 | 밥을 먹는다 |
-| 보조 동사 | auxiliary verb | 다른 용언 뒤에서 의미를 보탬 | 먹어 보다, 가고 싶다 |
-| 사동사 | causative verb | 남에게 어떤 행동을 하게 함 | 먹이다, 앉히다 |
-| 피동사 | passive verb | 동작을 당함 | 먹히다, 잡히다 |
+| 자동사 | intransitive verb | A verb used without an object | 아이가 웃는다 |
+| 타동사 | transitive verb | A verb that requires an object | 밥을 먹는다 |
+| 보조 동사 | auxiliary verb | Adds meaning after another predicative word | 먹어 보다, 가고 싶다 |
+| 사동사 | causative verb | Makes someone perform an action | 먹이다, 앉히다 |
+| 피동사 | passive verb | Receives an action | 먹히다, 잡히다 |
 
-### 자동사 / 타동사
+### Intransitive / transitive verbs
 
 ```text
-아이가 웃는다.      -> 웃다: 자동사
-아이가 밥을 먹는다. -> 먹다: 타동사
+아이가 웃는다.      -> 웃다: intransitive verb
+아이가 밥을 먹는다. -> 먹다: transitive verb
 ```
 
-### 보조 동사
+### Auxiliary verbs
 
 ```text
 한번 먹어 보았다.
 집에 가고 싶다.
 ```
 
-- `보다`: 시도/경험의 의미를 보탬
-- `싶다`: 희망의 의미를 보탬
+- `보다`: adds a sense of attempt/experience
+- `싶다`: adds a sense of desire
 
-### 사동 / 피동
+### Causative / passive
 
 ```text
-엄마가 아이에게 밥을 먹였다. -> 사동
-밥이 아이에게 먹혔다.       -> 피동
+엄마가 아이에게 밥을 먹였다. -> causative
+밥이 아이에게 먹혔다.       -> passive
 ```
 
-사동/피동은 접사로 만들어질 수도 있고, `-게 하다`, `-어지다` 같은 구성으로 만들어질 수도 있다.
+Causative/passive forms can be made with affixes, or with constructions such as `-게 하다` and `-어지다`.
 
-## 형용사
+## Adjectives
 
-한국어 형용사는 상태를 나타내는 용언이다. 영어 adjective처럼 명사 앞에 바로 놓는 방식과
-다르다.
+Korean adjectives are predicative words that express states. They do not work the same way as English adjectives placed directly before nouns.
 
 ```text
 꽃이 예쁘다.
@@ -322,44 +319,44 @@ tags = ["korean", "grammar"]
 추운 날씨가 계속된다.
 ```
 
-`예쁘다`가 관형어처럼 명사를 꾸미려면 `예쁜`처럼 활용해야 한다.
+For `예쁘다` to modify a noun like an adnominal, it must conjugate into a form such as `예쁜`.
 
-## 헷갈리는 용어 정리
+## Commonly confusing terms
 
-| 질문 | 답 |
+| Question | Answer |
 |---|---|
-| `-았-/-었-`은 접미사인가? | 아니다. 과거 시제 선어말 어미다 |
-| `-어요`는 무엇인가? | 종결 어미다. 해요체 문장을 끝낸다 |
-| 동사와 형용사는 둘 다 활용하나? | 그렇다. 둘 다 용언이다 |
-| 조사는 단어인가? | 학교 문법에서는 조사도 단어로 본다. 다만 앞말에 붙여 쓴다 |
-| 어절과 단어는 같은가? | 아니다. `철수가`는 한 어절이지만 `철수`+`가` 두 단어로 볼 수 있다 |
-| 보어는 언제 쓰나? | 주로 `되다`, `아니다` 앞에서 필요하다 |
+| Is `-았-/-었-` a suffix? | No. It is a past-tense pre-final ending. |
+| What is `-어요`? | It is a sentence-final ending. It ends a sentence in 해요체 style. |
+| Do both verbs and adjectives conjugate? | Yes. Both are 용언. |
+| Are particles words? | In school grammar, particles are treated as words, but they are written attached to the preceding word. |
+| Are eojeol and word the same? | No. `철수가` is one eojeol, but it can be analyzed as two words: `철수` + `가`. |
+| When is a complement used? | Mainly before `되다` and `아니다`. |
 
-## 한 문장 분석 예시
+## One-sentence analysis example
 
 ```text
 철수가 새 책을 빨리 읽었다.
 ```
 
-| 표현 | 분석 |
+| Expression | Analysis |
 |---|---|
-| 철수 | 명사, 체언 |
-| 가 | 주격 조사 |
-| 철수가 | 주어 |
-| 새 | 관형사, 관형어 |
-| 책 | 명사, 체언 |
-| 을 | 목적격 조사 |
-| 책을 | 목적어 |
-| 빨리 | 부사, 부사어 |
-| 읽었다 | 동사, 서술어 |
-| 읽- | 어간/어근 |
-| -었- | 과거 시제 선어말 어미 |
-| -다 | 종결 어미 |
+| 철수 | noun, 체언 |
+| 가 | subject case particle |
+| 철수가 | subject |
+| 새 | determiner, adnominal modifier |
+| 책 | noun, 체언 |
+| 을 | object case particle |
+| 책을 | object |
+| 빨리 | adverb, adverbial |
+| 읽었다 | verb, predicate |
+| 읽- | stem/root |
+| -었- | past-tense pre-final ending |
+| -다 | sentence-final ending |
 
 ## Ref
 
-- 국립국어원 표준국어대사전: <https://stdict.korean.go.kr/>
-- 국립국어원 한국어교수학습샘터: <https://kcenter.korean.go.kr/>
-- 한국어 품사: <https://ko.wikipedia.org/wiki/%ED%95%9C%EA%B5%AD%EC%96%B4%EC%9D%98_%ED%92%88%EC%82%AC>
-- 조사: <https://ko.wikipedia.org/wiki/%EC%A1%B0%EC%82%AC_(%ED%92%88%EC%82%AC)>
-- 어미: <https://ko.wikipedia.org/wiki/%EC%96%B4%EB%AF%B8>
+- National Institute of Korean Language Standard Korean Dictionary: <https://stdict.korean.go.kr/>
+- National Institute of Korean Language Korean Teaching-Learning Center: <https://kcenter.korean.go.kr/>
+- Korean parts of speech: <https://ko.wikipedia.org/wiki/%ED%95%9C%EA%B5%AD%EC%96%B4%EC%9D%98_%ED%92%88%EC%82%AC>
+- Korean particles: <https://ko.wikipedia.org/wiki/%EC%A1%B0%EC%82%AC_(%ED%92%88%EC%82%AC)>
+- Korean endings: <https://ko.wikipedia.org/wiki/%EC%96%B4%EB%AF%B8>

@@ -1,5 +1,5 @@
 +++
-title = "Layer 1 — docker CLI (클라이언트)"
+title = "Layer 1 — docker CLI (Client)"
 date = 2026-06-17
 
 [taxonomies]
@@ -7,74 +7,76 @@ categories = ["post"]
 tags = ["docker", "cli", "layers"]
 +++
 
-> Docker 레이어 시리즈 1편. 스택은 위에서 아래로:
-> **1. docker CLI (클라이언트)** → 2. dockerd (데몬) → 3. containerd → 4. runc →
-> 5. Linux 커널. [개요 글](./component_and_layers.md) 참고.
+> Part 1 of the Docker layers series. From top to bottom, the stack is:
+> **1. docker CLI (client)** → 2. dockerd (daemon) → 3. containerd → 4. runc →
+> 5. Linux kernel. See the [overview article](./component_and_layers.md).
 
-## 정체
+## Identity
 
-`docker` CLI는 내가 명령을 입력하는 프로그램이다 — `docker ps`, `docker run`,
-`docker build`. 얘는 **클라이언트일 뿐이다**. 직접 컨테이너를 돌리거나 빌드하거나
-저장하지 않는다. 하는 일은 오직 내 명령을
+The `docker` CLI is the program where I type commands: `docker ps`, `docker run`,
+`docker build`. It is **only a client**. It does not directly run, build, or store
+containers. Its only job is to turn my command into a
 [Docker API](https://docs.docker.com/get-started/docker-overview/#docker-architecture)
-요청으로 바꿔서 데몬에게 보내고, 응답을 받아 화면에 보기 좋게 뿌리는 것뿐이다.
+request, send it to the daemon, receive the response, and print it nicely on the screen.
 
-쓸 만한 비유: CLI는 **리모컨**이다. 버튼을 누르면 신호를 보내고, 실제 일은 TV가
-한다. `docker`가 리모컨, `dockerd`가 TV다.
+A useful analogy: the CLI is a **remote control**. When you press a button, it sends a
+signal, and the TV does the real work. `docker` is the remote control, and `dockerd` is
+the TV.
 
-## 어디에 있나
+## Where it is
 
 ```bash
 $ which docker
-/opt/homebrew/bin/docker          # Homebrew 심볼릭 링크...
+/opt/homebrew/bin/docker          # Homebrew symlink...
 $ ls -l /opt/homebrew/bin/docker
-... -> ../Cellar/docker/29.5.3/bin/docker   # ...실제 바이너리로 연결
+... -> ../Cellar/docker/29.5.3/bin/docker   # ...pointing to the real binary
 ```
 
-이 맥에서는 CLI가 Docker Desktop이 아니라 **Homebrew**(`brew install docker`)에서
-왔다. 처음의 "command not found" 버그가 바로 이 구분 때문이었다: Docker Desktop은
-예전엔 자체 `docker` CLI를 번들했는데, 그걸 지우면서 번들 CLI도 같이 사라졌다.
-Homebrew로 깐 독립 CLI는 존재했지만 `brew link --overwrite docker`를 하기 전까지
-`$PATH`에 링크가 안 걸려 있었다.
+On this Mac, the CLI came from **Homebrew** (`brew install docker`), not Docker Desktop.
+That distinction was the cause of the earlier "command not found" bug: older Docker
+Desktop installs bundled their own `docker` CLI, and when Docker Desktop was removed,
+that bundled CLI disappeared too. The standalone Homebrew CLI existed, but it was not
+linked into `$PATH` until I ran `brew link --overwrite docker`.
 
-**핵심:** CLI는 엔진과 독립적이다. 같은 `docker` 바이너리가 Docker Desktop,
-Colima, 원격 서버 — Docker API만 말할 수 있으면 무엇에든 붙는다.
+**Key point:** the CLI is independent of the engine. The same `docker` binary can connect
+to Docker Desktop, Colima, or a remote server, as long as the target speaks the Docker API.
 
-## 명령을 치면 일어나는 일
+## What happens when a command is typed
 
-`docker ps`는 로컬에서 "컨테이너 목록" 코드가 도는 게 아니다.
+`docker ps` does not run "list containers" code locally. It is a
 [`GET /containers/json`](https://docs.docker.com/reference/api/engine/version/v1.47/#tag/Container/operation/ContainerList)
-API 호출이다:
+API call:
 
-```
+```text
 docker ps
-  └─ CLI가 HTTP 요청을 만든다:    GET /v1.43/containers/json
-  └─ socket을 연다:              unix:///Users/you/.colima/default/docker.sock
-  └─ 요청을 쓰고, JSON 응답을 읽는다
-  └─ JSON을 우리가 보는 표로 포맷팅한다
+  └─ CLI creates an HTTP request:    GET /v1.43/containers/json
+  └─ opens a socket:                 unix:///Users/you/.colima/default/docker.sock
+  └─ writes the request and reads the JSON response
+  └─ formats the JSON into the table we see
 ```
 
-CLI가 그냥 HTTP 클라이언트라는 걸 직접 증명할 수도 있다 — 데몬에 손으로 말 걸어보기:
+You can prove that the CLI is just an HTTP client by talking to the daemon manually:
 
 ```bash
-# `docker ps`와 같은 결과, docker CLI는 안 씀
+# Same result as `docker ps`, without using the docker CLI
 curl --unix-socket ~/.colima/default/docker.sock http://localhost/v1.43/containers/json
 ```
 
-`docker ps`가 표로 만들어주는 그 컨테이너 데이터가 그대로 돌아온다.
+The same container data that `docker ps` turns into a table comes back.
 
-## CLI는 어떤 데몬에게 말 걸지 어떻게 정하나
+## How the CLI chooses which daemon to talk to
 
-CLI는 *어떤* 데몬과 대화할지 다음 우선순위로 결정한다:
+The CLI chooses *which* daemon to talk to using this priority order:
 
-1. **`-H` / `--host` 또는 `--context` 플래그** — 명시적, 예: `docker -H tcp://1.2.3.4:2375 ps`
-2. **`DOCKER_CONTEXT` 환경변수** — 설정하면 `DOCKER_HOST`와 활성 context를 모두 덮어쓴다
-3. **활성 context** — `docker context ls` / `docker context use`
-4. **`DOCKER_HOST` 환경변수** — 예: `unix:///path/to/docker.sock`
-5. **기본값** — `/var/run/docker.sock`
+1. **`-H` / `--host` or `--context` flag** — explicit, for example `docker -H tcp://1.2.3.4:2375 ps`
+2. **`DOCKER_CONTEXT` environment variable** — when set, it overrides both `DOCKER_HOST` and the active context
+3. **Active context** — `docker context ls` / `docker context use`
+4. **`DOCKER_HOST` environment variable** — for example `unix:///path/to/docker.sock`
+5. **Default** — `/var/run/docker.sock`
 
-Colima 환경에서는 Colima가 `~/.colima/default/docker.sock`을 가리키는 **context**를
-등록(또는 `DOCKER_HOST` 설정)해 둔다. 그래서 플래그 없이도 CLI가 VM 안 데몬에 닿는다:
+In a Colima environment, Colima registers a **context** pointing to
+`~/.colima/default/docker.sock`, or sets `DOCKER_HOST`. That is why the CLI reaches the
+daemon inside the VM even without flags:
 
 ```bash
 $ docker context ls
@@ -83,49 +85,45 @@ colima *   colima                       unix:///Users/you/.colima/default/docker
 default    Current DOCKER_HOST based    unix:///var/run/docker.sock
 ```
 
-`*`가 활성 context. context를 바꾸는 게 곧 같은 CLI를 (예: Docker Desktop으로)
-다른 엔진에 재설치 없이 붙이는 방법이다.
+The `*` marks the active context. Changing the context is how the same CLI can connect to
+another engine, such as Docker Desktop, without reinstalling anything.
 
-## CLI가 말하는 Docker API
+## The Docker API spoken by the CLI
 
-CLI와 데몬은 [**Docker Engine API**](https://docs.docker.com/reference/api/engine/)로
-통신한다 — HTTP로 말하는 버전 있는 REST API다.
+The CLI and daemon communicate through the
+[**Docker Engine API**](https://docs.docker.com/reference/api/engine/): a versioned REST
+API spoken over HTTP.
 
-- **버전 있음**: 요청에 버전이 붙는다(`/v1.43/...`). 최신 CLI도
-  [협상으로 버전을 낮춰](https://docs.docker.com/reference/api/engine/) 옛 데몬과
-  대화할 수 있다.
-- **전송 방식 무관**: 같은 API가 Unix socket(로컬)으로도 TCP socket(원격)으로도
-  돈다. CLI는 어느 쪽인지 신경 안 쓴다.
-- **마법이 아님**: CLI가 하는 건 전부 socket에 `curl`로도 할 수 있다. CLI는 API
-  위에 얹힌 편의 포맷터일 뿐이다.
+- **Versioned**: requests include a version (`/v1.43/...`). Even a newer CLI can
+  [negotiate down](https://docs.docker.com/reference/api/engine/) and talk to an older daemon.
+- **Transport-independent**: the same API runs over a Unix socket locally or a TCP socket remotely. The CLI does not care which transport is used.
+- **Not magic**: everything the CLI does over the socket can also be done with `curl`. The CLI is a convenience formatter over the API.
 
-## 이 슬롯을 채우는 다른 도구들
+## Other tools that fill this slot
 
-데몬이 표준 API를 노출하니까 클라이언트는 갈아끼울 수 있다:
+Because the daemon exposes a standard API, clients can be swapped:
 
-| 클라이언트 | 비고 |
+| Client | Notes |
 |---|---|
-| `docker` | 표준 CLI. |
-| [`nerdctl`](https://github.com/containerd/nerdctl) | **containerd**를 직접 다루는 Docker 호환 CLI. |
-| `podman` | 데몬리스. CLI가 거의 Docker 호환 (`alias docker=podman`). |
-| [`crictl`](https://kubernetes.io/docs/tasks/debug/debug-cluster/crictl/) | Kubernetes 디버깅에 쓰는 CRI 중심 CLI. |
-| Docker SDK | 같은 API를 코드로 호출하는 Go/Python 등 라이브러리. |
+| `docker` | Standard CLI. |
+| [`nerdctl`](https://github.com/containerd/nerdctl) | Docker-compatible CLI that talks directly to **containerd**. |
+| `podman` | Daemonless. Its CLI is mostly Docker-compatible (`alias docker=podman`). |
+| [`crictl`](https://kubernetes.io/docs/tasks/debug/debug-cluster/crictl/) | CRI-focused CLI used for Kubernetes debugging. |
+| Docker SDK | Go/Python and other libraries that call the same API from code. |
 
-## 정리
+## Summary
 
-- CLI는 **얇은 클라이언트** — API 요청을 보내고 응답을 포맷팅한다.
-- 엔진과 **분리**돼 있다. 하나의 CLI가 `--host`/`DOCKER_HOST`/context로 여러
-  데몬을 겨냥할 수 있다.
-- 처음의 "command not found" 버그는 엔진 문제가 아니라 **클라이언트 패키징/PATH**
-  문제였다.
-- 한 칸 아래: 이 API 요청을 실제로 받는 [dockerd, 데몬](./layer2_dockerd.md).
+- The CLI is a **thin client**: it sends API requests and formats responses.
+- It is **separate from the engine**. One CLI can target several daemons with `--host`, `DOCKER_HOST`, or contexts.
+- The earlier "command not found" bug was not an engine problem. It was a **client packaging/PATH** problem.
+- One layer below: [dockerd, the daemon](./layer2_dockerd.md), which actually receives these API requests.
 
-## 참고
+## References
 
-- Docker 아키텍처 (client-server 구조, CLI가 API로 데몬에 말하는 구조): <https://docs.docker.com/get-started/docker-overview/#docker-architecture>
-- `docker` CLI 레퍼런스 — `--host`, `DOCKER_CONTEXT`, `DOCKER_HOST` 우선순위: <https://docs.docker.com/reference/cli/docker/>
-- Docker Engine API 버전 협상 ("Versioned API and SDK"): <https://docs.docker.com/reference/api/engine/>
-- `GET /containers/json` (= `docker ps`) API 레퍼런스: <https://docs.docker.com/reference/api/engine/version/v1.47/#tag/Container/operation/ContainerList>
-- Unix socket으로 직접 curl하는 예제: <https://docs.docker.com/reference/api/engine/sdk/examples/>
-- nerdctl — containerd용 Docker 호환 CLI: <https://github.com/containerd/nerdctl>
-- crictl — Kubernetes 노드 디버깅용 CRI CLI: <https://kubernetes.io/docs/tasks/debug/debug-cluster/crictl/>
+- Docker architecture, client-server structure and CLI-to-daemon API flow: <https://docs.docker.com/get-started/docker-overview/#docker-architecture>
+- `docker` CLI reference, `--host`, `DOCKER_CONTEXT`, and `DOCKER_HOST` priority: <https://docs.docker.com/reference/cli/docker/>
+- Docker Engine API version negotiation, "Versioned API and SDK": <https://docs.docker.com/reference/api/engine/>
+- `GET /containers/json`, the `docker ps` API reference: <https://docs.docker.com/reference/api/engine/version/v1.47/#tag/Container/operation/ContainerList>
+- Example of curling over a Unix socket directly: <https://docs.docker.com/reference/api/engine/sdk/examples/>
+- nerdctl, Docker-compatible CLI for containerd: <https://github.com/containerd/nerdctl>
+- crictl, CRI CLI for Kubernetes node debugging: <https://kubernetes.io/docs/tasks/debug/debug-cluster/crictl/>

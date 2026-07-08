@@ -1,6 +1,6 @@
 +++
 title = "CS"
-description = "잡다한 CS 지식"
+description = "Assorted computer science notes"
 sort_by = "date"
 paginate_by = 5
 +++

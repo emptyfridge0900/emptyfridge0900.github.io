@@ -41,7 +41,7 @@ println!("{r3}");
 ### Copy
 When I read [the book](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html) and its examples, I feel like I understood it. But when I started coding, I got confused between copy, borrow, and move. Recently, while coding in C#, I realized why I was confusing copy, borrow, and move.
 
-The example below is similar to a problem I encountered a few days ago while coding. 
+The example below is similar to a problem I encountered a few days ago while coding.
 
 ```cs
 public class Apple{
@@ -74,7 +74,7 @@ public static void Main(string[] args)
     var store = new Store();
     store.AppleBasckets.Enqueue(new Apple("Fuji",40));
     store.AppleBasckets.Enqueue(new Apple("Ambrosia",20));
-    
+
     var result = store.Take(5);
     Console.WriteLine(result.Total);
 }

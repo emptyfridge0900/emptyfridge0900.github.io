@@ -7,8 +7,10 @@ categories = ["post"]
 tags = ["C#","WPF"]
 +++
 
-Visual studio에서 wpf 프로그램을 실행할때 window가 두개 뜰때가 있다.  
+Sometimes two windows appear when running a WPF application in Visual Studio.
+
 App.xaml
+
 ```xml hl_lines=5
 <Application x:Class="Trading.WPFClient.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -16,11 +18,13 @@ App.xaml
              xmlns:local="clr-namespace:Trading.WPFClient"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+
     </Application.Resources>
 </Application>
 ```
+
 App.xaml.cs
+
 ```cs hl_lines=5 8
  public partial class App : Application
  {
@@ -36,8 +40,9 @@ App.xaml.cs
  }
 ```
 
-`StartupUri="MainWindow.xaml"`은 application 시작 시 해당 UI를 자동으로 보여준다. 그런데 `OnStartup`에서도 `new MainWindow()`를 만들고 `Show()`를 호출하고 있으니 window가 두 개 생긴다.  
-둘 중 하나를 없애주면 된다. 보통은 `StartupUri`를 쓰거나, `StartupUri`를 지우고 `OnStartup`에서 직접 window를 만들거나 둘 중 하나만 선택한다.
+`StartupUri="MainWindow.xaml"` automatically shows that UI when the application starts. But `OnStartup` also creates `new MainWindow()` and calls `Show()`, so two windows are created.
+
+Remove one of them. Usually, choose either `StartupUri`, or remove `StartupUri` and create the window directly in `OnStartup`. Do not use both.
 
 [Problem With WPF C# App Spawning Two Main Windows](https://stackoverflow.com/questions/2923431/problem-with-wpf-c-sharp-app-spawning-two-main-windows)
 

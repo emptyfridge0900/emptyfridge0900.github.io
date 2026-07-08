@@ -1,5 +1,5 @@
 +++
-title="Razor Page에서 Ajax로 Post 요청하기"
+title="Posting with Ajax in Razor Pages"
 date=2025-06-23
 
 [taxonomies]
@@ -7,23 +7,32 @@ categories = ["post"]
 tags = ["C#"]
 +++
 
-오늘도 평화롭게 코딩하고 있는데 내 시간을 2시간 넘게 잡아먹는 일이 생겨서 어떤 일이 생겼는지 간단 하게 적어본다.  
+I was coding peacefully when something ate more than two hours of my time, so I am writing down what happened.
 
-Razor page에서 ajax를 사용하여 사진을 업로드 하는 작업을 하고 있었다. 항상 OnGet, OnPost 같이 간단한 함수만 사용하다가 form 제출 없이 사진 업로드를 하려고 하다보니 ajax외에는 방법이 없는거 같았다. 그래서 서버에 간단한 요청을 날리는 것을 해보려고 했는데 생각대로 되지 않았다.  
+I was uploading a picture from a Razor Page using Ajax. I had only used simple handlers like `OnGet` and `OnPost` before. Since I wanted to upload an image without submitting a form, Ajax seemed like the only reasonable option. I tried sending a simple request to the server, but it did not work as expected.
+
 ### Named handler method
-사진업로드하는 handler이름이 UploadPicture였는데 404 not found 에러가 났다.  
-구글링을 좀 해보니 razor page에는 [named handler methods](https://www.learnrazorpages.com/razor-pages/handler-methods#named-handler-methods)라는 기능이 있었다.
-Handler를 만들때 post request를 보내고 싶으면 OnPost, get request를 보내고 싶으면 OnGet으로 핸들러 이름을 시작하고, 그 뒤에 원하는 이름을 적으면 된다.  
-예를 들어 나의 핸들러는 Post request이고 UploadPicture라는 이름의 함수였으니까 OnPostUploadPicture라고 이름하면 된다.
 
-### Anti Forgery Token
-이상하게도 핸들러 이름이 분명 정확한데 여전히 요청이 실패했다. 그래서 이름을 `OnGetUploadPicture`로 바꾸어 봤는데 GET 요청은 잘 되었다. 
-또 구글링을 했고 [여기서](https://www.talkingdotnet.com/handle-ajax-requests-in-asp-net-core-razor-pages/) 답을 찾았다. Razor Pages는 unsafe HTTP method(POST 같은 요청)에 대해 antiforgery validation을 자동으로 적용하므로 AJAX POST에도 request verification token을 같이 보내야 한다. 일반적으로 토큰이 없거나 잘못되면 handler까지 도달하지 못하고 400 Bad Request가 난다.  
-나는 그냥 input element 아래에 
+The upload handler was named `UploadPicture`, but the request returned 404 Not Found.
+After some searching, I found that Razor Pages has a feature called [named handler methods](https://www.learnrazorpages.com/razor-pages/handler-methods#named-handler-methods).
+
+When creating a handler, start the method name with `OnPost` for a POST request or `OnGet` for a GET request, then append the custom name.
+For example, my handler was a POST request named `UploadPicture`, so the method should be named `OnPostUploadPicture`.
+
+### Anti-forgery token
+
+Strangely, even after fixing the handler name, the request still failed. I changed the method to `OnGetUploadPicture` as a test, and the GET request worked.
+
+I searched again and found the answer [here](https://www.talkingdotnet.com/handle-ajax-requests-in-asp-net-core-razor-pages/). Razor Pages automatically applies antiforgery validation to unsafe HTTP methods such as POST, so an AJAX POST also needs to send the request verification token. If the token is missing or invalid, the request usually fails before it reaches the handler, often as 400 Bad Request.
+
+I added this under the input element:
+
 ```cs
-@Html.AntiForgeryToken() 
+@Html.AntiForgeryToken()
 ```
-추가해주었다. 그리고 ajax request에는 아래의 코드를 추가했다
+
+And added this to the Ajax request:
+
 ```js
 beforeSend: function (xhr) {
     xhr.setRequestHeader("XSRF-TOKEN",
@@ -31,8 +40,10 @@ beforeSend: function (xhr) {
 },
 ```
 
-### Header  
-Anti forgery token을 추가했는데도 404가 반환되어서 다시 구글링해보니, 내가
+### Header
+
+Even after adding the anti-forgery token, I still received 404. After searching again, I realized I had missed this setup:
+
 ```cs
 public void ConfigureServices(IServiceCollection services)
 {
@@ -40,7 +51,8 @@ public void ConfigureServices(IServiceCollection services)
     services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
 }
 ```
-이부분을 빼먹어서 그랬다. header name을 바꾸고 싶다면 modern hosting model에서는 보통 Program.cs에서 아래처럼 설정한다.
+
+If you want to change the header name in the modern hosting model, you usually configure it in `Program.cs` like this:
 
 ```cs
 builder.Services.AddAntiforgery(options =>
@@ -49,12 +61,12 @@ builder.Services.AddAntiforgery(options =>
 });
 ```
 
-기본 form field 이름은 `__RequestVerificationToken`이고, header로 보낼 때는 app의 antiforgery 설정이 기대하는 header name과 맞아야 한다. 나는 Program.cs 설정 건드리기 귀찮아서 AJAX request의 header name을 `RequestVerificationToken`로 바꾸어 주었더니 잘 동작했다.
+The default form field name is `__RequestVerificationToken`, and when sending it as a header, the header name must match what the app's antiforgery configuration expects. I did not want to touch `Program.cs`, so I changed the Ajax request's header name to `RequestVerificationToken`, and it worked.
 
+References:
 
-참고한 자료  
-https://www.talkingdotnet.com/handle-ajax-requests-in-asp-net-core-razor-pages/  
-https://www.mikesdotnetting.com/article/308/razor-pages-understanding-handler-methods  
-https://www.learnrazorpages.com/security/request-verification  
-https://learn.microsoft.com/en-us/aspnet/core/razor-pages/  
-https://learn.microsoft.com/en-us/aspnet/core/security/anti-request-forgery  
+https://www.talkingdotnet.com/handle-ajax-requests-in-asp-net-core-razor-pages/
+https://www.mikesdotnetting.com/article/308/razor-pages-understanding-handler-methods
+https://www.learnrazorpages.com/security/request-verification
+https://learn.microsoft.com/en-us/aspnet/core/razor-pages/
+https://learn.microsoft.com/en-us/aspnet/core/security/anti-request-forgery

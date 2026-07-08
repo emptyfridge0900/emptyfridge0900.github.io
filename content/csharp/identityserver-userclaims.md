@@ -1,5 +1,5 @@
 +++
-title = "IdentityServer UserClaims 이해하기: User, Identity Resource, API Resource의 차이"
+title = "Understanding IdentityServer UserClaims: The Difference Between User, Identity Resource, and API Resource"
 date = 2026-07-06
 
 [taxonomies]
@@ -7,22 +7,22 @@ categories = ["post"]
 tags = ["C#", "ASP.NET Core", "IdentityServer", "OAuth 2.0", "OpenID Connect", "Claims"]
 +++
 
-IdentityServer 관리 화면을 처음 보면 `UserClaims`라는 이름이 여러 곳에 반복해서 등장한다.
+When you first look at the IdentityServer management UI, the name `UserClaims` appears in several places.
 
-- Users/Roles의 User에 있는 UserClaims
-- Identity Resource의 UserClaims
-- API Resource의 UserClaims
-- 버전에 따라 API Scope에도 있는 UserClaims
+- UserClaims on Users/Roles users
+- UserClaims on Identity Resources
+- UserClaims on API Resources
+- UserClaims on API Scopes, depending on the version
 
-이름은 같지만 같은 데이터를 저장하는 필드는 아니다. 이 차이를 놓치면 Identity Resource가 사용자의 Claim을 소유한다고 생각하거나, User 자체도 Resource라고 생각하기 쉽다.
+They share the same name, but they are not fields that store the same kind of data. If you miss this distinction, it is easy to think that an Identity Resource owns a user's claims, or that the User itself is also a Resource.
 
-핵심은 한 문장으로 정리할 수 있다.
+The core idea can be summarized in one sentence.
 
-> User의 UserClaims는 실제 type/value 데이터이고, Resource의 UserClaims는 token에 필요한 claim type을 고르는 선택 목록이다.
+> User UserClaims are real type/value data, while Resource UserClaims are selection lists for claim types needed in tokens.
 
-## Claim은 type과 value로 이루어진다
+## Claims consist of a type and a value
 
-Claim은 어떤 주체에 관한 한 가지 사실이다.
+A claim is one fact about a subject.
 
 ```text
 type = department
@@ -34,28 +34,28 @@ type = app_role
 value = platform_admin
 ```
 
-`department`와 `app_role`은 claim type이고, `Engineering`과 `platform_admin`은 해당 사용자의 claim value다.
+`department` and `app_role` are claim types. `Engineering` and `platform_admin` are claim values for a particular user.
 
-.NET에서는 다음처럼 표현한다.
+In .NET, they are represented like this.
 
 ```cs
 new Claim("department", "Engineering");
 new Claim("app_role", "platform_admin");
 ```
 
-Claim type은 문자열이다. `role`도 token 안에서는 다른 Claim과 같은 문자열 type이다. 어떤 Claim을 이름이나 role로 해석할지는 Claim 자체가 아니라 IdentityServer의 발급 과정과 ASP.NET Core의 소비 설정이 결정한다.
+A claim type is a string. Inside a token, `role` is also just a string type like any other claim. Whether a claim is interpreted as a name or role is decided not by the claim itself, but by IdentityServer's issuance process and ASP.NET Core's consuming configuration.
 
-## Claim, Scope, Resource는 서로 다른 질문에 답한다
+## Claim, Scope, and Resource answer different questions
 
-Claim, Scope, Resource는 모두 token 발급 과정에 등장하지만 같은 계층의 개념이 아니다.
+Claim, Scope, and Resource all appear during token issuance, but they are not concepts at the same layer.
 
-| 개념 | 답하는 질문 | 예시 |
+| Concept | Question it answers | Examples |
 |---|---|---|
-| Claim | 이 user, client, token에 관해 어떤 사실을 알고 있는가? | `sub = alice-id`, `email = alice@example.com`, `app_role = platform_admin` |
-| Scope | client가 어떤 접근 범위를 요청했고 허가받았는가? | `openid`, `profile`, `omniapi.read` |
-| Resource | 보호하려는 대상은 무엇인가? | 사용자 identity data, `omniapi` API |
+| Claim | What facts are known about this user, client, or token? | `sub = alice-id`, `email = alice@example.com`, `app_role = platform_admin` |
+| Scope | What access range did the client request and receive permission for? | `openid`, `profile`, `omniapi.read` |
+| Resource | What is being protected? | User identity data, the `omniapi` API |
 
-한 요청에서 세 개념은 다음 순서로 연결된다.
+In one request, the three concepts connect in this order.
 
 ```text
 Client
@@ -63,90 +63,90 @@ Client
   │ scope=openid profile omniapi.read
   ▼
 IdentityServer
-  ├── 어떤 Identity Resource가 요청되었는가?
-  ├── 어떤 API Scope가 요청되었는가?
-  ├── 그 API Scope는 어떤 API Resource에 속하는가?
-  └── 각 Resource/Scope가 어떤 Claim type을 요구하는가?
+  ├── Which Identity Resource was requested?
+  ├── Which API Scope was requested?
+  ├── Which API Resource does that API Scope belong to?
+  └── Which claim types does each Resource/Scope require?
         │
         ▼
-Profile Service가 현재 User의 Claim value 조회
+Profile Service loads claim values for the current User
         │
         ├── identity token / userinfo
         └── access token
 ```
 
-### Claim은 판단에 사용할 데이터다
+### Claims are data used for decisions
 
-Claim은 subject 또는 client에 관한 assertion이다.
+A claim is an assertion about a subject or client.
 
 ```text
-sub       = alice-id
-email     = alice@example.com
+sub      = alice-id
+email    = alice@example.com
 app_role = platform_admin
 ```
 
-Claim은 그 자체로 접근 요청이 아니다. `app_role = platform_admin`이 token에 있어도 API가 그 Claim을 검사하는 authorization rule을 만들지 않으면 권한 판단에 사용되지 않는다.
+A claim is not an access request by itself. Even if the token contains `app_role = platform_admin`, it is not used for authorization unless the API defines an authorization rule that checks that claim.
 
-반대로 Claim은 permission만 표현하는 것도 아니다. `name`, `locale`, `birthdate`처럼 단순한 identity 정보도 Claim이다. `iss`, `aud`, `exp`처럼 token 자체를 설명하고 검증하는 Claim도 있다.
+Conversely, claims are not limited to permissions. Simple identity information such as `name`, `locale`, and `birthdate` are also claims. Claims such as `iss`, `aud`, and `exp` describe and validate the token itself.
 
-### Scope는 client가 요청하는 접근 범위다
+### Scope is the access range requested by the client
 
-OAuth에서 scope는 space로 구분된 대소문자 구분 문자열이다.
+In OAuth, a scope is a space-delimited, case-sensitive string.
 
 ```text
 scope=omniapi.read omniapi.write
 ```
 
-scope 이름의 구체적인 의미는 authorization server와 API가 정의한다.
+The authorization server and API define the concrete meaning of each scope name.
 
 ```text
-omniapi.read  = Omni API 읽기 범위
-omniapi.write = Omni API 쓰기 범위
+omniapi.read  = read access to Omni API
+omniapi.write = write access to Omni API
 ```
 
-client가 scope를 요청했다고 항상 허가되는 것은 아니다. client의 AllowedScopes, user 동의, server policy를 거쳐 실제로 허가된 scope만 access token에 반영된다.
+Just because a client requests a scope does not mean it is always granted. Only the scopes actually approved through the client's AllowedScopes, user consent, and server policy are reflected in the access token.
 
-여기서 `scope`라는 단어는 두 위치에 나타날 수 있다.
+The word `scope` can appear in two places.
 
 ```text
-Authorization request의 parameter
+Parameter in the authorization request
   scope=omniapi.read
 
-발급된 access token의 Claim
+Claim in the issued access token
   scope=omniapi.read
 ```
 
-첫 번째는 client의 요청이다. 두 번째는 authorization server가 실제로 허가한 범위를 API에 전달하는 결과다. 따라서 scope는 protocol 개념이고, 그 결과가 token 안에서는 `scope` Claim으로 직렬화될 수 있다.
+The first one is the client's request. The second one is the result that the authorization server sends to the API, meaning the range that was actually granted. Scope is therefore a protocol concept, and its result can be serialized inside the token as a `scope` claim.
 
-### Resource는 보호하려는 대상이다
+### Resource is the thing being protected
 
-Resource는 client가 접근하려는 보호 대상이다.
+A Resource is the protected target the client wants to access.
 
-IdentityServer는 Resource를 두 종류로 모델링한다.
+IdentityServer models Resources in two categories.
 
 ```text
 Resource
-  ├── Identity Resource: user의 identity 정보
-  └── API Resource: 호출할 API 또는 기능
+  ├── Identity Resource: identity information about the user
+  └── API Resource: an API or feature to call
 ```
 
-Identity Resource의 예는 `profile`이다. 여기서 보호하는 대상은 `name`, `email`, `locale` 같은 사용자 정보다.
+An example of an Identity Resource is `profile`. The protected target here is user information such as `name`, `email`, and `locale`.
 
-API Resource의 예는 `omniapi`다. 여기서 보호하는 대상은 Omni API의 endpoint와 기능이다. API Resource 이름은 access token의 `aud` audience를 구성하는 데 사용될 수 있다.
+An example of an API Resource is `omniapi`. The protected target here is the Omni API's endpoints and features. The API Resource name may be used to build the `aud` audience in an access token.
 
-Resource와 Scope의 차이는 다음처럼 생각할 수 있다.
+You can think about the difference between Resource and Scope like this.
 
 ```text
-Resource = 어디에 접근하는가?
-Scope    = 그곳에서 어느 범위까지 허용되는가?
-Claim    = 판단과 전달에 사용하는 사실은 무엇인가?
+Resource = Where are you accessing?
+Scope    = How much are you allowed to do there?
+Claim    = What facts are used for decisions and delivery?
 ```
 
-예를 들어 `omniapi`는 Resource이고, `omniapi.read`와 `omniapi.write`는 그 Resource에서 허용할 수 있는 서로 다른 Scope다. `app_role = platform_admin`은 API가 추가 authorization 판단에 사용할 수 있는 Claim이다.
+For example, `omniapi` is a Resource, while `omniapi.read` and `omniapi.write` are different Scopes that can be allowed within that Resource. `app_role = platform_admin` is a Claim that the API can use for additional authorization decisions.
 
-## Identity Resource와 API Resource가 요청을 처리하는 방식
+## How Identity Resources and API Resources process a request
 
-다음 설정을 생각해보자.
+Consider this configuration.
 
 ```text
 Identity Resources
@@ -163,42 +163,42 @@ API Scope
   omniapi.write → [approval_level]
 ```
 
-client가 다음을 요청한다.
+The client requests this.
 
 ```text
 scope=openid profile omniapi.read
 ```
 
-IdentityServer는 요청된 이름을 다음처럼 해석한다.
+IdentityServer interprets the requested names like this.
 
-| 요청된 scope | 찾는 설정 | 결과 |
+| Requested scope | Configuration found | Result |
 |---|---|---|
-| `openid` | Identity Resource `openid` | `sub` type 요청 |
-| `profile` | Identity Resource `profile` | `name`, `email`, `locale` type 요청 |
-| `omniapi.read` | API Scope `omniapi.read` | scope 허가 범위 결정 |
-| `omniapi.read`의 연결 Resource | API Resource `omniapi` | access token audience와 공통 `app_role` type 결정 |
+| `openid` | Identity Resource `openid` | Requests the `sub` type |
+| `profile` | Identity Resource `profile` | Requests the `name`, `email`, and `locale` types |
+| `omniapi.read` | API Scope `omniapi.read` | Determines the granted scope range |
+| Resource connected to `omniapi.read` | API Resource `omniapi` | Determines the access token audience and common `app_role` type |
 
-그 결과를 단순화하면 다음과 같다.
+Simplified, the result looks like this.
 
 ```text
-identity 정보 쪽
+identity information side
   openid + profile
     → sub, name, email, locale
-    → identity token / userinfo 처리
+    → identity token / userinfo processing
 
-API 접근 쪽
+API access side
   omniapi.read
     → aud = omniapi
     → scope = omniapi.read
-    → app_role Claim 요청
-    → access token 처리
+    → request app_role Claim
+    → access token processing
 ```
 
-같은 `scope` parameter 안에 identity scope와 API scope가 함께 들어가지만 역할은 다르다. Identity scope는 공개할 사용자 정보 집합을 고르고, API scope는 API에 대한 위임된 접근 범위를 고른다.
+Identity scopes and API scopes can appear together in the same `scope` parameter, but their roles are different. Identity scopes select the set of user information to disclose. API scopes select delegated access ranges for an API.
 
-## API Resource에는 Scopes가 있는데 Identity Resource에는 없는 이유
+## Why API Resources have Scopes but Identity Resources do not
 
-Identity Resource에 scope가 없는 것이 아니다. 정확히는 **Identity Resource 자체가 하나의 이름 있는 scope처럼 요청된다.**
+It is not that Identity Resources have no scope. More precisely, **an Identity Resource itself is requested like one named scope.**
 
 ```cs
 new IdentityResource(
@@ -206,29 +206,29 @@ new IdentityResource(
     userClaims: new[] { "name", "email", "locale" });
 ```
 
-이 설정에서는 `Name`인 `profile`이 곧 client가 요청하는 scope value다.
+In this configuration, the `Name`, `profile`, is the scope value requested by the client.
 
 ```text
 scope=profile
 ```
 
-Identity Resource의 관계는 기본적으로 다음과 같은 일대일 mapping이다.
+The Identity Resource relationship is basically a one-to-one mapping.
 
 ```text
-Identity Resource 이름
+Identity Resource name
         │
-        │ 같은 이름으로 scope 요청
+        │ requested as a scope with the same name
         ▼
-Claim type 묶음
+Claim type bundle
 
 profile → [name, email, locale]
 email   → [email, email_verified]
 openid  → [sub]
 ```
 
-따라서 Identity Resource 아래에 다시 child scope collection을 둘 필요가 없다. `profile`이라는 Identity Resource가 이미 `profile` scope의 설정 객체 역할을 한다.
+Therefore, there is no need for another child scope collection under an Identity Resource. The Identity Resource named `profile` already acts as the configuration object for the `profile` scope.
 
-반면 API Resource는 API 자체 또는 audience를 나타낸다. 하나의 API는 여러 접근 범위를 제공할 수 있다.
+In contrast, an API Resource represents the API itself or the audience. A single API can expose several access ranges.
 
 ```text
 API Resource: omniapi
@@ -238,7 +238,7 @@ API Resource: omniapi
   └── omniapi.admin
 ```
 
-그래서 API Resource에는 여러 API Scope 이름을 연결하는 `Scopes` collection이 있다.
+That is why API Resources have a `Scopes` collection that connects several API Scope names.
 
 ```cs
 new ApiResource("omniapi", "Omni API")
@@ -252,7 +252,7 @@ new ApiResource("omniapi", "Omni API")
 };
 ```
 
-각 API Scope는 별도로 정의되고 client가 독립적으로 요청할 수 있다.
+Each API Scope is defined separately and can be requested independently by a client.
 
 ```cs
 new ApiScope("omniapi.read", "Read Omni data");
@@ -260,19 +260,19 @@ new ApiScope("omniapi.write", "Write Omni data");
 new ApiScope("omniapi.export", "Export Omni data");
 ```
 
-즉 구조가 다른 이유는 대상의 모델링 방식이 다르기 때문이다.
+The structure is different because the target is modeled differently.
 
 ```text
 Identity Resource
-  하나의 scope 이름 = 하나의 identity Claim bundle
+  one scope name = one identity Claim bundle
 
 API Resource
-  하나의 API/audience = 여러 개의 독립적인 API Scope
+  one API/audience = multiple independent API Scopes
 ```
 
-### API Resource UserClaims와 API Scope UserClaims의 차이
+### Difference between API Resource UserClaims and API Scope UserClaims
 
-API Resource와 API Scope 모두 UserClaims를 가질 수 있다. 적용 범위가 다르다.
+Both API Resources and API Scopes can have UserClaims. The difference is the range where they apply.
 
 ```text
 API Resource omniapi
@@ -282,65 +282,65 @@ API Scope omniapi.write
   UserClaims = [approval_level]
 ```
 
-- `app_role`: `omniapi` Resource를 위한 공통 사용자 정보
-- `approval_level`: `omniapi.write` Scope를 요청했을 때 필요한 정보
+- `app_role`: common user information for the `omniapi` Resource
+- `approval_level`: information required when the `omniapi.write` Scope is requested
 
-client가 `omniapi.read`만 요청하면 `app_role`은 요청되지만 `approval_level`은 요청되지 않는다. `omniapi.write`를 요청하면 Resource 공통 Claim과 write Scope 전용 Claim이 함께 요청될 수 있다.
+If the client requests only `omniapi.read`, `app_role` is requested but `approval_level` is not. If the client requests `omniapi.write`, both the common Resource claim and the write Scope-specific claim may be requested.
 
-따라서 어디에 UserClaims를 둘지는 다음 질문으로 결정한다.
+So the place to put a UserClaim is decided by these questions.
 
 ```text
-이 Claim이 API 전체에서 필요한가?
+Is this Claim needed across the whole API?
   → API Resource.UserClaims
 
-특정 접근 범위에서만 필요한가?
+Is it needed only for a specific access range?
   → API Scope.UserClaims
 ```
 
-## 세 곳의 UserClaims는 역할이 다르다
+## The three UserClaims locations have different roles
 
-같은 `UserClaims`라는 이름을 다음처럼 구분해야 한다.
+You need to distinguish the same name, `UserClaims`, by location.
 
-| 위치 | 저장하는 것 | 역할 |
+| Location | What it stores | Role |
 |---|---|---|
-| User → UserClaims | type과 value | 특정 사용자에게 속한 실제 데이터 |
-| Identity Resource → UserClaims | type 이름 | identity scope가 요청할 사용자 정보 목록 |
-| API Resource / API Scope → UserClaims | type 이름 | access token에 필요하다고 요청할 사용자 정보 목록 |
+| User → UserClaims | Type and value | Real data belonging to a specific user |
+| Identity Resource → UserClaims | Type names | List of user information requested by an identity scope |
+| API Resource / API Scope → UserClaims | Type names | List of user information requested for an access token |
 
-첫 번째는 **데이터**다. 나머지 두 개는 **선택자(selector)** 또는 **포장 목록(packing list)** 이다.
+The first one is **data**. The other two are **selectors** or a **packing list**.
 
-## User의 UserClaims는 실제 사용자별 데이터다
+## User UserClaims are real per-user data
 
-Alice에게 다음 Claim이 저장되어 있다고 하자.
+Suppose Alice has these claims stored.
 
 ```text
 User: Alice
 
 department = Engineering
-app_role  = platform_admin
+app_role   = platform_admin
 locale     = ko-KR
 ```
 
-Bob은 다른 값을 가질 수 있다.
+Bob can have different values.
 
 ```text
 User: Bob
 
 department = Support
-app_role  = platform_member
+app_role   = platform_member
 locale     = en-US
 ```
 
-이 값들은 사용자별 데이터다. ASP.NET Core Identity를 저장소로 사용한다면 raw user claim은 일반적으로 `AspNetUserClaims` 같은 별도 table에 저장된다. 따라서 "User entity에 붙은 Claim"이라고 이해할 수 있지만, 반드시 User table의 column이라는 뜻은 아니다.
+These values are per-user data. If ASP.NET Core Identity is used as the store, raw user claims are usually stored in a separate table such as `AspNetUserClaims`. You can understand this as "claims attached to the User entity," but it does not necessarily mean they are columns on the User table.
 
-같은 type에 여러 value를 갖는 것도 가능하다.
+It is also possible to have multiple values for the same type.
 
 ```text
 role = Admin
 role = Auditor
 ```
 
-Resource 설정에는 `role`을 한 번만 적는다. 그 설정은 특정 value 하나가 아니라 `role`이라는 type을 선택하기 때문이다. Profile Service가 두 값을 모두 발급하면 token에서는 배열 또는 여러 Claim으로 표현될 수 있다.
+The Resource configuration lists `role` only once because it selects the type `role`, not one specific value. If the Profile Service issues both values, the token may represent them as an array or as multiple claims.
 
 ```json
 {
@@ -348,13 +348,13 @@ Resource 설정에는 `role`을 한 번만 적는다. 그 설정은 특정 value
 }
 ```
 
-완전히 같은 type/value 쌍을 중복 저장하는 것은 의미가 없으므로 피하는 것이 좋다.
+You should avoid storing the exact same type/value pair more than once because it has no practical meaning.
 
-## Identity Resource의 UserClaims는 identity claim type 목록이다
+## Identity Resource UserClaims are identity claim type lists
 
-Identity Resource는 사용자 한 명을 나타내지 않는다. 클라이언트가 OIDC `scope` parameter로 요청할 수 있는 **이름이 붙은 identity 정보 묶음**이다.
+An Identity Resource does not represent one user. It is a **named bundle of identity information** that a client can request through the OIDC `scope` parameter.
 
-예를 들어 다음 Identity Resource는 `name`, `email`, `locale` type을 묶는다.
+For example, this Identity Resource groups the `name`, `email`, and `locale` types.
 
 ```cs
 new IdentityResource(
@@ -363,13 +363,13 @@ new IdentityResource(
     displayName: "User profile");
 ```
 
-클라이언트는 다음처럼 `profile` scope를 요청한다.
+The client requests the `profile` scope like this.
 
 ```text
 scope=openid profile
 ```
 
-여기서 Identity Resource의 UserClaims에는 value가 없다.
+Here, the Identity Resource UserClaims do not contain values.
 
 ```text
 name
@@ -377,17 +377,17 @@ email
 locale
 ```
 
-이 목록의 뜻은 다음과 같다.
+The list means this.
 
-> 현재 로그인한 사용자의 `name`, `email`, `locale` 값을 Profile Service에 요청하라.
+> Ask the Profile Service for the current logged-in user's `name`, `email`, and `locale` values.
 
-Alice가 `locale = ko-KR`을 가지고 있으면 Alice의 값이 발급된다. Bob이 `locale = en-US`를 가지고 있으면 같은 Identity Resource를 요청해도 Bob의 값이 발급된다. Resource에 `ko-KR`이나 `en-US`가 저장되는 것은 아니다.
+If Alice has `locale = ko-KR`, Alice's value is issued. If Bob has `locale = en-US`, Bob's value is issued even though the same Identity Resource was requested. The Resource does not store `ko-KR` or `en-US`.
 
-Identity Resource에서 선택된 Claim은 identity token 또는 userinfo 처리에 사용된다. 정확히 어느 응답에 포함되는지는 flow와 IdentityServer 설정에 따라 달라질 수 있지만, API 호출 권한을 나타내는 API Scope와는 목적이 다르다.
+Claims selected by an Identity Resource are used for identity token or userinfo processing. Exactly which response includes them depends on the flow and IdentityServer configuration, but their purpose is different from API Scopes that represent API-call permissions.
 
-## API Resource의 UserClaims는 access token용 claim type 목록이다
+## API Resource UserClaims are claim type lists for access tokens
 
-API Resource는 보호할 논리적 API를 나타낸다. 일반적으로 access token의 audience와 관련되며 여러 API Scope를 묶을 수 있다.
+An API Resource represents a logical API to protect. It is usually related to the access token audience and can group several API Scopes.
 
 ```cs
 var omniApi = new ApiResource("omniapi", "Omni API")
@@ -397,17 +397,17 @@ var omniApi = new ApiResource("omniapi", "Omni API")
 };
 ```
 
-이 설정은 `app_role` 값을 API Resource 안에 저장한다는 의미가 아니다.
+This configuration does not mean the `app_role` value is stored inside the API Resource.
 
-> `omniapi`용 access token을 만들 때 현재 사용자의 `app_role` Claim을 요청하라.
+> When creating an access token for `omniapi`, request the current user's `app_role` Claim.
 
-Alice의 사용자 데이터에 다음 값이 있다면,
+If Alice's user data contains this value,
 
 ```text
 app_role = platform_admin
 ```
 
-Profile Service가 해당 값을 읽어 access token에 넣을 수 있다.
+the Profile Service can read that value and put it into the access token.
 
 ```json
 {
@@ -418,12 +418,12 @@ Profile Service가 해당 값을 읽어 access token에 넣을 수 있다.
 }
 ```
 
-API Scope에도 UserClaims를 설정할 수 있다. 차이는 적용 단위다.
+UserClaims can also be configured on API Scopes. The difference is the unit of application.
 
-- API Resource UserClaims: Resource에 속한 scope 전반에서 공통으로 필요한 Claim
-- API Scope UserClaims: 특정 scope를 요청했을 때만 필요한 Claim
+- API Resource UserClaims: claims commonly needed across scopes belonging to the Resource
+- API Scope UserClaims: claims needed only when a specific scope is requested
 
-예를 들어 `omniapi.write`에서만 `approval_level`이 필요하다면 API Scope에 둘 수 있다.
+For example, if `approval_level` is required only for `omniapi.write`, it can live on the API Scope.
 
 ```cs
 new ApiScope(
@@ -432,32 +432,32 @@ new ApiScope(
     userClaims: new[] { "approval_level" });
 ```
 
-## Profile Service가 데이터와 선택 목록을 연결한다
+## Profile Service connects data with the selection lists
 
-Resource 설정이 Claim value를 직접 읽어 token에 복사하는 것은 아니다. IdentityServer는 Claim이 필요할 때 Profile Service를 호출한다.
+Resource configuration does not directly read claim values and copy them into a token. IdentityServer calls the Profile Service when claims are needed.
 
-Profile Service가 받는 중요한 정보는 다음과 같다.
+The important inputs received by the Profile Service include:
 
-- 어떤 client가 요청했는가
-- 현재 user는 누구인가
-- identity token, access token, userinfo 중 어떤 요청인가
-- 어떤 claim type들이 요청되었는가
+- which client made the request
+- who the current user is
+- whether the request is for an identity token, access token, or userinfo
+- which claim types were requested
 
-단순화하면 다음과 같은 흐름이다.
+Simplified, the flow looks like this.
 
 ```text
-Client가 scope/resource 요청
+Client requests scopes/resources
         ↓
-IdentityServer가 Resource 설정에서 claim type 수집
+IdentityServer collects claim types from Resource configuration
         ↓
-Profile Service에 RequestedClaimTypes 전달
+Passes RequestedClaimTypes to the Profile Service
         ↓
-Profile Service가 현재 User의 실제 값 조회 또는 계산
+Profile Service loads or computes actual values for the current User
         ↓
-허용된 Claim을 token/userinfo에 발급
+Issues allowed Claims into the token/userinfo response
 ```
 
-개념적인 코드는 다음과 같다.
+Conceptually, the code looks like this.
 
 ```cs
 public async Task GetProfileDataAsync(ProfileDataRequestContext context)
@@ -470,69 +470,69 @@ public async Task GetProfileDataAsync(ProfileDataRequestContext context)
 }
 ```
 
-실제 구현에서는 user 활성 상태, client별 공개 범위, 동의, 민감 정보, 중복 Claim 등을 함께 처리해야 한다. 중요한 점은 Profile Service가 연결 지점이라는 것이다.
+A real implementation also needs to handle whether the user is active, client-specific disclosure rules, consent, sensitive data, duplicate claims, and similar concerns. The important point is that the Profile Service is the connection point.
 
-또한 Claim value가 반드시 Users/Roles 화면의 UserClaims에서 올 필요는 없다. Profile Service는 여러 source를 사용할 수 있다.
+Claim values do not have to come from UserClaims in the Users/Roles screen. The Profile Service can use many sources.
 
 - raw user claims
 - managed role assignment
-- 별도 application database
-- LDAP 또는 외부 identity provider
-- 요청 시 계산한 값
+- a separate application database
+- LDAP or an external identity provider
+- values computed at request time
 
-Resource의 UserClaims는 source를 지정하지 않는다. 필요한 **type**만 지정한다.
+Resource UserClaims do not specify the source. They specify only the required **types**.
 
-## User가 Resource는 아니다
+## User is not a Resource
 
-IdentityServer의 용어에서 User와 Resource는 역할이 다르다.
+In IdentityServer terminology, User and Resource play different roles.
 
-- User: client를 사용해 로그인하고 Resource에 접근하는 사람, 즉 token의 subject
-- Client: token을 요청하는 application
-- Identity Resource: 요청 가능한 사용자 identity 정보 묶음
-- API Resource: 보호할 API 또는 기능
+- User: the person who logs in through a client and accesses a Resource, meaning the token subject
+- Client: the application that requests tokens
+- Identity Resource: a requestable bundle of user identity information
+- API Resource: an API or feature to protect
 
-OAuth 용어로 User를 resource owner라고 부르기도 한다. 하지만 resource owner와 IdentityServer 설정 객체인 Resource는 같은 뜻이 아니다.
-
-```text
-User ──사용──▶ Client ──token 요청──▶ IdentityServer
-  │                                      │
-  └──────── Resource에 접근 ◀────────────┘
-```
-
-Identity Resource가 사용자 Claim을 묶기 때문에 User 자체도 Resource처럼 보일 수 있다. 그러나 Identity Resource가 나타내는 것은 User 객체가 아니라, client가 요청할 수 있도록 정의한 **사용자 정보의 일부**다.
-
-예를 들어 `profile`은 Alice라는 사용자가 아니다.
+In OAuth terminology, the User is sometimes called the resource owner. But resource owner and the IdentityServer configuration object named Resource do not mean the same thing.
 
 ```text
-profile = [name, email, locale]이라는 요청 가능한 schema
-Alice   = 그 schema에 실제 값을 제공하는 subject
+User ──uses──▶ Client ──requests token──▶ IdentityServer
+  │                                           │
+  └────────── accesses Resource ◀─────────────┘
 ```
 
-## 어디까지 표준이고 어디부터 IdentityServer 구현인가?
+Because Identity Resources bundle user claims, the User itself can look like a Resource. But an Identity Resource does not represent the User object. It represents **part of the user's information** defined so clients can request it.
 
-IdentityServer가 Claim 개념 전체를 발명한 것은 아니다. OAuth 2.0, OpenID Connect, JWT가 정의한 protocol 위에 IdentityServer가 자신의 configuration과 확장 model을 제공한다.
+For example, `profile` is not the user Alice.
 
-| 구조 | 표준 여부 | 정의한 곳 |
+```text
+profile = a requestable schema: [name, email, locale]
+Alice   = the subject that provides actual values for that schema
+```
+
+## Which parts are standards, and which parts are IdentityServer implementation?
+
+IdentityServer did not invent the entire concept of claims. It provides its own configuration and extension model on top of protocols defined by OAuth 2.0, OpenID Connect, and JWT.
+
+| Structure | Standard? | Defined by |
 |---|---|---|
-| JWT claim set과 `iss`, `sub`, `aud`, `exp` | 표준 | RFC 7519 |
-| ID token, UserInfo, `openid`, `profile`, `email` scope | 표준 | OpenID Connect |
-| `IdentityResource`, `ApiResource`, `UserClaims` collection | 제품 구현 | Duende IdentityServer |
-| `ProfileService`와 store interface | 제품 구현 | Duende IdentityServer |
-| `Claim`, `ClaimsIdentity`, `ClaimsPrincipal` | framework 구현 | .NET |
-| `AspNetUserClaims`, `AspNetUserRoles` table | framework 구현 | ASP.NET Core Identity |
+| JWT claim set and `iss`, `sub`, `aud`, `exp` | Standard | RFC 7519 |
+| ID token, UserInfo, `openid`, `profile`, `email` scope | Standard | OpenID Connect |
+| `IdentityResource`, `ApiResource`, `UserClaims` collection | Product implementation | Duende IdentityServer |
+| `ProfileService` and store interfaces | Product implementation | Duende IdentityServer |
+| `Claim`, `ClaimsIdentity`, `ClaimsPrincipal` | Framework implementation | .NET |
+| `AspNetUserClaims`, `AspNetUserRoles` table | Framework implementation | ASP.NET Core Identity |
 
-표준은 주로 system 사이에서 교환할 message와 의미를 정의한다.
+Standards mainly define the messages exchanged between systems and their meanings.
 
 ```text
 Identity Provider
     │
-    │ 표준화된 protocol/message
+    │ standardized protocol/message
     │ ID token, UserInfo, JWT claim set
     ▼
 Client / API
 ```
 
-예를 들어 JWT는 JSON claim set의 표현 방법과 registered claim name을 정의한다.
+For example, JWT defines how to represent a JSON claim set and the registered claim names.
 
 ```json
 {
@@ -544,40 +544,40 @@ Client / API
 }
 ```
 
-`iss`, `sub`, `aud`, `exp`는 JWT registered claim이다. `app_role`은 application이 정의한 private claim이다. JWT는 registered, public, private claim name을 모두 허용한다.
+`iss`, `sub`, `aud`, and `exp` are JWT registered claims. `app_role` is a private claim defined by the application. JWT allows registered, public, and private claim names.
 
-OpenID Connect는 `sub`, `name`, `email`, `picture` 같은 standard claim과 이를 요청하는 `openid`, `profile`, `email` 등의 scope를 정의한다. 그러나 `IdentityResource`라는 C# class나 관리 화면의 UserClaims field는 정의하지 않는다.
+OpenID Connect defines standard claims such as `sub`, `name`, `email`, and `picture`, and scopes such as `openid`, `profile`, and `email` that request them. But it does not define a C# class named `IdentityResource` or a UserClaims field in a management UI.
 
-IdentityServer의 `IdentityResource`는 다음 표준 동작을 구현하기 위한 configuration abstraction이다.
+IdentityServer's `IdentityResource` is a configuration abstraction for implementing this standard behavior.
 
 ```text
-OIDC 표준 개념
-  profile scope → name, family_name, picture 등의 Claim 요청
+OIDC standard concept
+  profile scope → request Claims such as name, family_name, picture
 
-IdentityServer 구현
+IdentityServer implementation
   IdentityResource("profile")
       UserClaims = [name, family_name, picture]
 ```
 
-API Resource와 Profile Service도 마찬가지다. 보호할 API, audience, scope, 사용자 Claim 발급이라는 protocol 요구사항은 표준에서 오지만, 이를 `ApiResource` class와 `IProfileService` interface로 구성하는 방식은 IdentityServer의 설계다.
+API Resources and Profile Service are similar. Protocol requirements such as protected APIs, audiences, scopes, and user claim issuance come from standards, but configuring them through an `ApiResource` class and an `IProfileService` interface is IdentityServer's design.
 
-또한 OAuth access token이 항상 JWT인 것은 아니다. Authorization server는 opaque access token을 발급할 수도 있다. JWT를 사용하는 경우에만 API가 JSON claim set을 직접 볼 수 있다.
+Also, OAuth access tokens are not always JWTs. An authorization server can issue opaque access tokens. Only when JWT is used can the API directly see the JSON claim set.
 
-## Claim 저장 구조는 표준화되어 있는가?
+## Is the claim storage structure standardized?
 
-OAuth, OpenID Connect, JWT는 IdP 내부 database schema를 규정하지 않는다. 다음 중 무엇을 사용해도 token이 protocol 규칙을 지키면 상호 운용할 수 있다.
+OAuth, OpenID Connect, and JWT do not prescribe the internal database schema of an IdP. Any of the following can be used as long as the token follows the protocol rules and remains interoperable.
 
 ```text
-Identity Provider 내부
+Inside the Identity Provider
   ├── relational database
-  ├── ASP.NET Core Identity table
+  ├── ASP.NET Core Identity tables
   ├── LDAP / Active Directory
-  ├── 외부 identity provider
-  ├── 별도 user-management API
-  └── 요청 시 계산한 Claim
+  ├── external identity provider
+  ├── separate user-management API
+  └── claims computed at request time
 ```
 
-따라서 다음 table 구조는 표준이 아니다.
+Therefore, this table structure is not a standard.
 
 ```text
 AspNetUsers
@@ -586,22 +586,22 @@ AspNetRoles
 AspNetUserRoles
 ```
 
-다른 IdP는 완전히 다른 schema를 사용할 수 있다. IdentityServer도 configuration, resource, persisted grant 등을 위한 store interface를 제공하며, in-memory store나 custom database implementation을 선택할 수 있다. User 저장소 역시 ASP.NET Core Identity로 고정되지 않는다.
+Another IdP may use a completely different schema. IdentityServer also provides store interfaces for configuration, resources, persisted grants, and similar data, and you can choose an in-memory store or a custom database implementation. The user store is not fixed to ASP.NET Core Identity either.
 
-표준이 내부 저장소를 강제하지 않는 이유는 Claim source가 다양하기 때문이다. `department`는 HR database에서, `role`은 directory group에서, `email`은 external IdP에서, 요청 시 계산하는 `risk_level`은 별도 service에서 올 수 있다. Profile Service는 이런 source를 token claim으로 projection하는 IdentityServer의 연결 지점이다.
+Standards do not force an internal store because claim sources vary. `department` can come from an HR database, `role` from directory groups, `email` from an external IdP, and a request-time `risk_level` from a separate service. The Profile Service is IdentityServer's connection point that projects these sources into token claims.
 
-## SCIM은 무엇을 표준화하는가?
+## What does SCIM standardize?
 
-사용자와 group을 system 사이에서 provisioning하기 위한 별도 표준으로 SCIM(System for Cross-domain Identity Management)이 있다.
+SCIM, or System for Cross-domain Identity Management, is a separate standard for provisioning users and groups between systems.
 
-SCIM은 다음을 정의한다.
+SCIM defines:
 
-- User와 Group의 JSON resource schema
-- `userName`, `name`, `emails`, `groups`, `roles`, `entitlements` 같은 attribute
-- schema extension과 namespace
-- HTTP를 이용한 생성, 조회, 수정, 삭제 protocol
+- JSON resource schemas for Users and Groups
+- attributes such as `userName`, `name`, `emails`, `groups`, `roles`, and `entitlements`
+- schema extensions and namespaces
+- an HTTP protocol for create, read, update, and delete operations
 
-SCIM User는 다음과 같은 형태다.
+A SCIM User looks like this.
 
 ```json
 {
@@ -618,47 +618,47 @@ SCIM User는 다음과 같은 형태다.
 }
 ```
 
-SCIM은 여러 system이 User와 Group 데이터를 같은 형식으로 provisioning하게 해준다. 하지만 다음은 여전히 결정하지 않는다.
+SCIM allows several systems to provision User and Group data in the same format. But it still does not decide:
 
-- 실제 database table을 어떻게 설계할지
-- SCIM attribute를 어떤 token claim으로 변환할지
-- `Admin` role이 실제로 어떤 권한을 부여할지
-- IdentityServer의 어느 Resource가 해당 Claim을 요청할지
+- how the physical database tables should be designed
+- which token claim a SCIM attribute should become
+- what actual permission the `Admin` role grants
+- which IdentityServer Resource should request that Claim
 
-즉 SCIM은 **user-management API와 교환 schema**를 표준화하지만, IdP의 물리적 저장 구조나 token 발급 정책까지 표준화하지 않는다.
+In other words, SCIM standardizes the **user-management API and exchange schema**, but not the IdP's physical storage structure or token issuance policy.
 
-전체 경계를 정리하면 다음과 같다.
+The overall boundary looks like this.
 
 ```text
 SCIM
-  User/Group provisioning과 교환 schema를 표준화
+  standardizes User/Group provisioning and exchange schema
         ↓
-IdP 내부 저장소
-  제품 또는 조직이 자유롭게 설계
+IdP internal store
+  designed freely by the product or organization
         ↓
 IdentityServer configuration + Profile Service
-  저장된 정보를 token Claim으로 projection
+  projects stored information into token Claims
         ↓
 OAuth / OpenID Connect / JWT
-  외부로 전달되는 protocol과 message를 표준화
+  standardizes externally delivered protocols and messages
         ↓
 .NET Claim / ClaimsIdentity / ClaimsPrincipal
-  API process 내부의 runtime object로 변환
+  converted into runtime objects inside the API process
 ```
 
-## `role`은 예약된 Claim type인가?
+## Is `role` a reserved Claim type?
 
-`role`은 token 형식 수준에서 예약된 특별한 자료형이 아니다. 문자열 claim type이다.
+`role` is not a special reserved data type at the token-format level. It is a string claim type.
 
 ```cs
 new Claim("role", "Admin");
 ```
 
-하지만 실제 system에서는 관례적으로 특별하게 취급될 수 있다.
+In real systems, however, it can be treated specially by convention.
 
-1. Identity provider의 Role 관리 기능이 role assignment를 `role` Claim으로 변환할 수 있다.
-2. Resource가 `role` type을 요청하면 그 값들이 token에 들어갈 수 있다.
-3. ASP.NET Core가 `role`을 `RoleClaimType`으로 지정하면 `IsInRole()`이 그 Claim을 role로 해석한다.
+1. The identity provider's role-management feature may project role assignments into `role` Claims.
+2. If a Resource requests the `role` type, those values may be included in the token.
+3. If ASP.NET Core configures `role` as the `RoleClaimType`, `IsInRole()` interprets that Claim as a role.
 
 ```cs
 options.TokenValidationParameters.RoleClaimType = "role";
@@ -668,15 +668,15 @@ options.TokenValidationParameters.RoleClaimType = "role";
 User.IsInRole("Admin");
 ```
 
-위 코드는 개념적으로 현재 `ClaimsIdentity`에 `type = role`, `value = Admin`인 Claim이 있는지 검사한다.
+Conceptually, the code above checks whether the current `ClaimsIdentity` has a Claim with `type = role` and `value = Admin`.
 
-따라서 `role`은 기술적으로 임의의 문자열이지만, system이 role namespace로 채택하면 운영상 소유권이 있는 이름처럼 다뤄야 한다.
+So `role` is technically an arbitrary string, but if your system adopts it as the role namespace, it should be treated operationally as a name with ownership.
 
-## raw user claim과 managed role assignment
+## Raw user claim and managed role assignment
 
-사용자에게 role 정보를 부여하는 방법은 두 가지가 있을 수 있다.
+There can be two ways to give role information to a user.
 
-### raw user claim
+### Raw user claim
 
 ```text
 UserClaims
@@ -684,7 +684,7 @@ UserClaims
   value = Admin
 ```
 
-### managed role assignment
+### Managed role assignment
 
 ```text
 Roles
@@ -694,7 +694,7 @@ UserRoles
   Alice → Admin
 ```
 
-저장 구조는 다르지만 Profile Service가 둘을 같은 방식으로 projection하면 token 결과는 같을 수 있다.
+The storage structures are different, but if the Profile Service projects both the same way, the token result can be the same.
 
 ```json
 {
@@ -702,28 +702,28 @@ UserRoles
 }
 ```
 
-managed role은 role 정의, 사용자 assignment, group inheritance, 관리 UI 같은 구조를 제공한다. raw user claim은 단순하고 유연하지만 typo와 잘못된 value를 통제하기 어렵다.
+A managed role gives structure such as role definitions, user assignment, group inheritance, and management UI. A raw user claim is simple and flexible, but typos and invalid values are harder to control.
 
-두 방식을 동시에 사용한다면 중복 또는 충돌 규칙을 명확히 해야 한다.
+If both methods are used together, duplicate and conflict rules must be clear.
 
 ```text
 Role assignment → role = Admin
 Raw user claim  → role = Support
 ```
 
-둘 다 발급되면 API 입장에서는 사용자가 `Admin`과 `Support` role을 모두 가진다. API는 어느 값이 어느 저장 source에서 왔는지 token만 보고 구분할 수 없다.
+If both are issued, the API sees the user as having both the `Admin` and `Support` roles. From the token alone, the API cannot tell which storage source each value came from.
 
-## 공유 IdP에서는 claim type을 namespace로 분리한다
+## In a shared IdP, separate claim types with namespaces
 
-여러 제품이 하나의 IdP를 공유한다면 generic한 `role`은 충돌하기 쉽다.
+If several products share one IdP, a generic `role` is easy to collide.
 
 ```text
 role = Admin
 ```
 
-이 값만 보면 어느 제품의 Admin인지 알 수 없다. 각 제품이 같은 type과 value를 사용하면 다른 제품의 role이 잘못된 권한으로 해석될 수 있다.
+From that value alone, you cannot know which product's Admin role it is. If several products use the same type and value, another product's role can be interpreted as the wrong permission.
 
-제품별 type을 사용하면 경계가 명확해진다.
+Product-specific types create clearer boundaries.
 
 ```text
 app_role     = platform_admin
@@ -731,40 +731,40 @@ billing_role = auditor
 support_role = agent
 ```
 
-Omni API는 다음과 같이 자신의 type만 role로 지정할 수 있다.
+Omni API can configure only its own type as the role type.
 
 ```cs
 options.TokenValidationParameters.RoleClaimType = "app_role";
 ```
 
-그러면 다음 검사는 `app_role`만 확인한다.
+Then this check looks only at `app_role`.
 
 ```cs
 User.IsInRole("platform_admin");
 ```
 
-value도 `Admin`이나 `Manager`처럼 문맥이 부족한 이름보다 `platform_admin`, `platform_member`처럼 의미가 드러나는 이름이 안전하다. Claim value 비교는 일반적으로 정확한 문자열 일치를 사용하므로 대소문자와 spelling도 계약의 일부로 관리해야 한다.
+Values such as `platform_admin` and `platform_member` are safer than context-poor names like `Admin` or `Manager`. Claim value comparison usually uses exact string matching, so casing and spelling also need to be managed as part of the contract.
 
-## 전체 예제로 다시 보기
+## Revisit the full example
 
-### 1. User에 실제 값을 저장한다
+### 1. Store actual values on the User
 
 ```text
 Alice
-  sub       = alice-id
-  name      = Alice
-  email     = alice@example.com
+  sub      = alice-id
+  name     = Alice
+  email    = alice@example.com
   app_role = platform_admin
 ```
 
-### 2. Identity Resource는 identity claim type을 고른다
+### 2. Identity Resource selects identity claim types
 
 ```text
 Identity Resource: profile
 UserClaims: name, email
 ```
 
-### 3. API Resource는 access token claim type을 고른다
+### 3. API Resource selects access token claim types
 
 ```text
 API Resource: omniapi
@@ -772,25 +772,25 @@ Scopes: omniapi.read, omniapi.write
 UserClaims: app_role
 ```
 
-### 4. Client가 요청한다
+### 4. Client requests scopes
 
 ```text
 scope=openid profile omniapi.read
 ```
 
-### 5. Profile Service가 Alice의 값을 찾는다
+### 5. Profile Service finds Alice's values
 
 ```text
-요청된 identity type: name, email
-요청된 API type: app_role
+Requested identity types: name, email
+Requested API type: app_role
 
-Alice의 값:
+Alice's values:
   name = Alice
   email = alice@example.com
   app_role = platform_admin
 ```
 
-### 6. API는 access token만 본다
+### 6. The API sees only the access token
 
 ```json
 {
@@ -801,57 +801,57 @@ Alice의 값:
 }
 ```
 
-API에 도착하면 Identity Resource, API Resource, Users/Roles 화면 구조는 사라진다. JWT bearer handler는 token을 검증하고 Claim 목록으로 `ClaimsIdentity`와 `ClaimsPrincipal`을 만든다. API는 최종 Claim만 소비한다.
+By the time the request reaches the API, the Identity Resource, API Resource, and Users/Roles screen structure are gone. The JWT bearer handler validates the token and creates a `ClaimsIdentity` and `ClaimsPrincipal` from the claim list. The API consumes only the final claims.
 
-## 자주 하는 오해
+## Common misunderstandings
 
-### Resource의 UserClaims에 value를 저장한다고 생각한다
+### Thinking Resource UserClaims store values
 
-Resource에는 type 이름만 저장한다. 실제 value는 현재 User와 Profile Service가 제공한다.
+Resources store only type names. The actual value is provided by the current User and the Profile Service.
 
-### UserClaims에 저장하면 자동으로 모든 token에 들어간다고 생각한다
+### Thinking claims stored in UserClaims automatically appear in every token
 
-저장과 발급은 별개다. Profile Service와 요청된 scope/resource의 filtering 정책이 해당 Claim을 발급해야 한다.
+Storage and issuance are separate. The Profile Service and filtering policy for the requested scopes/resources must issue that Claim.
 
-### Identity Resource와 API Resource가 같은 token을 꾸민다고 생각한다
+### Thinking Identity Resources and API Resources shape the same token
 
-둘 다 사용자 Claim type을 선택하지만 목적이 다르다. Identity Resource는 identity 정보 공개를 모델링하고, API Resource/API Scope는 API access token에 필요한 정보를 모델링한다.
+Both select user claim types, but they have different purposes. Identity Resources model disclosure of identity information. API Resources and API Scopes model information needed in API access tokens.
 
-### `role`이라는 이름 자체가 권한을 부여한다고 생각한다
+### Thinking the name `role` grants permission by itself
 
-Claim은 데이터다. API가 해당 type을 `RoleClaimType`으로 지정하거나 authorization policy에서 검사해야 권한 판단에 사용된다.
+A Claim is data. It affects authorization only when the API configures that type as the `RoleClaimType` or checks it in an authorization policy.
 
-### User가 Identity Resource라고 생각한다
+### Thinking User is an Identity Resource
 
-User는 subject/resource owner다. Identity Resource는 그 User에 관한 요청 가능한 정보 묶음이다.
+User is the subject/resource owner. An Identity Resource is a requestable bundle of information about that User.
 
-## 설계 체크리스트
+## Design checklist
 
-- Claim type과 value를 명확히 구분했는가?
-- User의 실제 데이터와 Resource의 type 선택 목록을 구분했는가?
-- 각 Claim이 identity token/userinfo와 access token 중 어디에 필요한지 결정했는가?
-- Claim value의 source와 Profile Service projection 규칙이 명확한가?
-- 같은 type에 여러 value가 있을 때 API가 올바르게 처리하는가?
-- raw user claim과 managed role assignment를 중복 사용하고 있지 않은가?
-- 공유 IdP라면 제품별 claim type namespace를 사용하는가?
-- API의 `RoleClaimType`이 발급된 claim type과 정확히 일치하는가?
-- token을 decode해 `aud`, `scope`, claim type/value를 실제로 확인했는가?
+- Have you clearly separated claim type and value?
+- Have you separated actual User data from Resource type-selection lists?
+- Have you decided whether each Claim is needed in identity token/userinfo or in access token?
+- Are the claim value sources and Profile Service projection rules clear?
+- If the same type has multiple values, does the API handle them correctly?
+- Are raw user claims and managed role assignments avoiding duplication?
+- In a shared IdP, are product-specific claim type namespaces being used?
+- Does the API's `RoleClaimType` exactly match the issued claim type?
+- Have you decoded the token and verified `aud`, `scope`, and claim type/value in practice?
 
-## 정리
+## Summary
 
-IdentityServer의 여러 화면에서 `UserClaims`라는 이름이 반복되지만 의미는 두 가지로 나뉜다.
+IdentityServer repeats the name `UserClaims` in several screens, but the meaning splits into two categories.
 
 ```text
-User의 UserClaims
-  = 현재 사용자에게 속한 실제 type/value 데이터
+User UserClaims
+  = actual type/value data belonging to the current user
 
-Resource의 UserClaims
-  = Profile Service에 요청할 claim type 이름 목록
+Resource UserClaims
+  = list of claim type names to request from the Profile Service
 ```
 
-Identity Resource는 사용자 자체가 아니라 요청 가능한 identity 정보 묶음이다. API Resource는 보호할 API다. Profile Service는 Resource가 선택한 type과 현재 User의 실제 value를 연결해 token에 발급한다.
+An Identity Resource is not the user itself; it is a requestable bundle of identity information. An API Resource is the protected API. The Profile Service connects the types selected by Resources with the current User's actual values and issues them into tokens.
 
-이 구조를 이해하면 `role`도 자연스럽게 설명된다. `role`은 문자열 Claim type이지만 IdP의 role projection과 ASP.NET Core의 `RoleClaimType` 설정이 그 Claim을 role 인가에 사용하도록 만든다. 공유 IdP에서는 `app_role`처럼 namespace가 분리된 type을 사용하는 편이 안전하다.
+Once this structure is clear, `role` also becomes easier to understand. `role` is a string Claim type, but role projection by the IdP and ASP.NET Core's `RoleClaimType` configuration make that Claim participate in role authorization. In a shared IdP, using a namespaced type such as `app_role` is safer.
 
 ## Ref
 
